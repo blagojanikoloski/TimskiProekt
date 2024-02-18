@@ -1,0 +1,527 @@
+<div class="my-profile-client-container">
+    <div class="my-profile-client-header">
+        <header data-thq="thq-navbar" class="my-profile-client-navbar-interactive navbarContainer">
+            <span class="logo">Zakazi</span>
+            <button class="buttonFilled" (click)="isAdmin= !isAdmin">Switch User Role</button>
+            <div data-thq="thq-navbar-nav" class="my-profile-client-desktop-menu">
+                <nav class="my-profile-client-links">
+                    <a routerLink="/home" class="login-nav12 bodySmall">Home</a>
+                    <a routerLink="/profile" class="login-nav3 bodySmall">My Profile</a>
+                </nav>
+            </div>
+            <div data-thq="thq-burger-menu" class="my-profile-client-burger-menu">
+                <svg viewBox="0 0 1024 1024" class="my-profile-client-icon socialIcons">
+                    <path
+                        d="M128 554.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667zM128 298.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667zM128 810.667h768c23.552 0 42.667-19.115 42.667-42.667s-19.115-42.667-42.667-42.667h-768c-23.552 0-42.667 19.115-42.667 42.667s19.115 42.667 42.667 42.667z">
+                    </path>
+                </svg>
+            </div>
+            <div data-thq="thq-mobile-menu" class="my-profile-client-mobile-menu1 mobileMenu">
+                <div class="my-profile-client-nav">
+                    <div class="my-profile-client-top">
+                        <span class="logo">Zakazi</span>
+                        <div data-thq="thq-close-menu" class="my-profile-client-close-menu">
+                            <svg viewBox="0 0 1024 1024" class="my-profile-client-icon02 socialIcons">
+                                <path
+                                    d="M810 274l-238 238 238 238-60 60-238-238-238 238-60-60 238-238-238-238 60-60 238 238 238-238z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <nav class="my-profile-client-links1">
+                        <span class="my-profile-client-nav1 bodySmall">Home</span>
+                        <span class="my-profile-client-nav5 bodySmall">
+                            My Profile
+                        </span>
+                    </nav>
+                </div>
+                <div>
+                    <svg viewBox="0 0 950.8571428571428 1024" class="my-profile-client-icon04 socialIcons">
+                        <path
+                            d="M925.714 233.143c-25.143 36.571-56.571 69.143-92.571 95.429 0.571 8 0.571 16 0.571 24 0 244-185.714 525.143-525.143 525.143-104.571 0-201.714-30.286-283.429-82.857 14.857 1.714 29.143 2.286 44.571 2.286 86.286 0 165.714-29.143 229.143-78.857-81.143-1.714-149.143-54.857-172.571-128 11.429 1.714 22.857 2.857 34.857 2.857 16.571 0 33.143-2.286 48.571-6.286-84.571-17.143-148-91.429-148-181.143v-2.286c24.571 13.714 53.143 22.286 83.429 23.429-49.714-33.143-82.286-89.714-82.286-153.714 0-34.286 9.143-65.714 25.143-93.143 90.857 112 227.429 185.143 380.571 193.143-2.857-13.714-4.571-28-4.571-42.286 0-101.714 82.286-184.571 184.571-184.571 53.143 0 101.143 22.286 134.857 58.286 41.714-8 81.714-23.429 117.143-44.571-13.714 42.857-42.857 78.857-81.143 101.714 37.143-4 73.143-14.286 106.286-28.571z">
+                        </path>
+                    </svg><svg viewBox="0 0 877.7142857142857 1024"
+                        class="my-profile-client-icon06 socialIcons">
+                        <path
+                            d="M585.143 512c0-80.571-65.714-146.286-146.286-146.286s-146.286 65.714-146.286 146.286 65.714 146.286 146.286 146.286 146.286-65.714 146.286-146.286zM664 512c0 124.571-100.571 225.143-225.143 225.143s-225.143-100.571-225.143-225.143 100.571-225.143 225.143-225.143 225.143 100.571 225.143 225.143zM725.714 277.714c0 29.143-23.429 52.571-52.571 52.571s-52.571-23.429-52.571-52.571 23.429-52.571 52.571-52.571 52.571 23.429 52.571 52.571zM438.857 152c-64 0-201.143-5.143-258.857 17.714-20 8-34.857 17.714-50.286 33.143s-25.143 30.286-33.143 50.286c-22.857 57.714-17.714 194.857-17.714 258.857s-5.143 201.143 17.714 258.857c8 20 17.714 34.857 33.143 50.286s30.286 25.143 50.286 33.143c57.714 22.857 194.857 17.714 258.857 17.714s201.143 5.143 258.857-17.714c20-8 34.857-17.714 50.286-33.143s25.143-30.286 33.143-50.286c22.857-57.714 17.714-194.857 17.714-258.857s5.143-201.143-17.714-258.857c-8-20-17.714-34.857-33.143-50.286s-30.286-25.143-50.286-33.143c-57.714-22.857-194.857-17.714-258.857-17.714zM877.714 512c0 60.571 0.571 120.571-2.857 181.143-3.429 70.286-19.429 132.571-70.857 184s-113.714 67.429-184 70.857c-60.571 3.429-120.571 2.857-181.143 2.857s-120.571 0.571-181.143-2.857c-70.286-3.429-132.571-19.429-184-70.857s-67.429-113.714-70.857-184c-3.429-60.571-2.857-120.571-2.857-181.143s-0.571-120.571 2.857-181.143c3.429-70.286 19.429-132.571 70.857-184s113.714-67.429 184-70.857c60.571-3.429 120.571-2.857 181.143-2.857s120.571-0.571 181.143 2.857c70.286 3.429 132.571 19.429 184 70.857s67.429 113.714 70.857 184c3.429 60.571 2.857 120.571 2.857 181.143z">
+                        </path>
+                    </svg><svg viewBox="0 0 602.2582857142856 1024"
+                        class="my-profile-client-icon08 socialIcons">
+                        <path
+                            d="M548 6.857v150.857h-89.714c-70.286 0-83.429 33.714-83.429 82.286v108h167.429l-22.286 169.143h-145.143v433.714h-174.857v-433.714h-145.714v-169.143h145.714v-124.571c0-144.571 88.571-223.429 217.714-223.429 61.714 0 114.857 4.571 130.286 6.857z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+        </header>
+    </div>
+    <div class="my-profile-client-hero">
+        <div class="my-profile-client-hero1 heroContainer">
+            <div class="my-profile-client-container01">
+                <h1 class="my-profile-client-hero-heading heading1">
+                    My Profile
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isAdmin" class="my-profile-client-features">
+        <div class="my-profile-client-features-container featuresContainer">
+            <div class="my-profile-client-container02">
+                <h1 class="my-profile-client-hero-heading1 heading1">
+                    My appointments
+                </h1>
+            </div>
+            <div class="my-profile-client-features1">
+                <div class="my-profile-client-container03">
+                    <div class="my-profile-client-container04">
+                        <div class="my-profile-client-container05">
+                            <span class="my-profile-client-text">Hair dresser</span>
+                            <span class="my-profile-client-text01">10$/hr</span>
+                        </div>
+                        <h1 class="my-profile-client-text02">I will cut your hair</h1>
+                        <span class="my-profile-client-text03">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                            non volutpat turpis. Mauris luctus rutrum mi ut rhoncus.
+                            Integer in dignissim tortor. Lorem ipsum dolor sit amet,
+                            consectetur adipiscing ...
+                        </span>
+                        <div class="my-profile-client-container06">
+                            <div class="my-profile-client-container07">
+                                <span class="my-profile-client-text04">
+                                    01/01/2024 6:00:00
+                                </span>
+                                <span class="my-profile-client-text05">-</span>
+                                <span class="my-profile-client-text06">
+                                    01/01/2024 9:00:00
+                                </span>
+                            </div>
+                            <div class="my-profile-client-container08">
+                                <button class="buttonFilled">
+                                    <span>
+                                        <span>Cancel</span>
+                                        <br />
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="my-profile-client-container09">
+                            <div class="my-profile-client-profile">
+                                <img alt="profile"
+                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fHBvcnRyYWl0fGVufDB8fHx8MTYyNjM3ODk3Mg&amp;ixlib=rb-1.2.1&amp;w=200"
+                                    class="my-profile-client-image" />
+                                <span class="my-profile-client-text10">Jane Doe</span>
+                            </div>
+                            <div class="my-profile-client-container10">
+                                <span class="my-profile-client-text11">
+                                    Status:&nbsp; &nbsp;
+                                </span>
+                                <span class="my-profile-client-text12">Pending</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-profile-client-container11">
+                        <div class="my-profile-client-container12">
+                            <span class="my-profile-client-text13">Hair dresser</span>
+                            <span class="my-profile-client-text14">10$/hr</span>
+                        </div>
+                        <h1 class="my-profile-client-text15">I will cut your hair</h1>
+                        <span class="my-profile-client-text16">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                            non volutpat turpis. Mauris luctus rutrum mi ut rhoncus.
+                            Integer in dignissim tortor. Lorem ipsum dolor sit amet,
+                            consectetur adipiscing ...
+                        </span>
+                        <div class="my-profile-client-container13">
+                            <div class="my-profile-client-container14">
+                                <span class="my-profile-client-text17">
+                                    01/01/2024 6:00:00
+                                </span>
+                                <span class="my-profile-client-text18">-</span>
+                                <span class="my-profile-client-text19">
+                                    01/01/2024 9:00:00
+                                </span>
+                            </div>
+                            <div class="my-profile-client-container15">
+                                <button class="buttonFilled">
+                                    <span>
+                                        <span>Cancel</span>
+                                        <br />
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="my-profile-client-container16">
+                            <div class="my-profile-client-profile1">
+                                <img alt="profile"
+                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fHBvcnRyYWl0fGVufDB8fHx8MTYyNjM3ODk3Mg&amp;ixlib=rb-1.2.1&amp;w=200"
+                                    class="my-profile-client-image1" />
+                                <span class="my-profile-client-text23">Jane Doe</span>
+                            </div>
+                            <div class="my-profile-client-container17">
+                                <span class="my-profile-client-text24">
+                                    Status:&nbsp; &nbsp;
+                                </span>
+                                <span class="my-profile-client-text25">Pending</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-profile-client-container18">
+                        <div class="my-profile-client-container19">
+                            <span class="my-profile-client-text26">Hair dresser</span>
+                            <span class="my-profile-client-text27">10$/hr</span>
+                        </div>
+                        <h1 class="my-profile-client-text28">I will cut your hair</h1>
+                        <span class="my-profile-client-text29">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                            non volutpat turpis. Mauris luctus rutrum mi ut rhoncus.
+                            Integer in dignissim tortor. Lorem ipsum dolor sit amet,
+                            consectetur adipiscing ...
+                        </span>
+                        <div class="my-profile-client-container20">
+                            <div class="my-profile-client-container21">
+                                <span class="my-profile-client-text30">
+                                    01/01/2024 6:00:00
+                                </span>
+                                <span class="my-profile-client-text31">-</span>
+                                <span class="my-profile-client-text32">
+                                    01/01/2024 9:00:00
+                                </span>
+                            </div>
+                            <div class="my-profile-client-container22">
+                                <button class="buttonFilled">
+                                    <span>
+                                        <span>Cancel</span>
+                                        <br />
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="my-profile-client-container23">
+                            <div class="my-profile-client-profile2">
+                                <img alt="profile"
+                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fHBvcnRyYWl0fGVufDB8fHx8MTYyNjM3ODk3Mg&amp;ixlib=rb-1.2.1&amp;w=200"
+                                    class="my-profile-client-image2" />
+                                <span class="my-profile-client-text36">Jane Doe</span>
+                            </div>
+                            <div class="my-profile-client-container24">
+                                <span class="my-profile-client-text37">
+                                    Status:&nbsp; &nbsp;
+                                </span>
+                                <span class="my-profile-client-text38">Pending</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isAdmin" class="my-profile-worker-features">
+        <div class="my-profile-worker-features-container featuresContainer">
+            <div class="my-profile-worker-container02">
+                <h1 class="my-profile-worker-hero-heading1 heading1">
+                    Pending requests
+                </h1>
+            </div>
+            <div class="my-profile-worker-features1">
+                <div class="my-profile-worker-container03">
+                    <div class="my-profile-worker-container04">
+                        <span class="my-profile-worker-text">Hair Dresser</span>
+                        <span class="my-profile-worker-text01">
+                            I will cut you hair
+                        </span>
+                        <span class="my-profile-worker-text02">
+                            Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
+                            Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
+                            rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
+                            sit amet, consectetur adipiscing elit.
+                        </span>
+                        <div class="my-profile-worker-container05">
+                            <div class="my-profile-worker-profile">
+                                <img alt="profile"
+                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                    class="my-profile-worker-image" />
+                                <span class="my-profile-worker-text03">Jon Doe</span>
+                            </div>
+                            <span class="my-profile-worker-text04">10$/hr</span>
+                        </div>
+                        <div class="my-profile-worker-container06">
+                            <span class="my-profile-worker-text05">
+                                01/01/2024 6:00:00
+                            </span>
+                            <span class="my-profile-worker-text06">-</span>
+                            <span class="my-profile-worker-text07">
+                                01/01/2024 9:00:00
+                            </span>
+                        </div>
+                        <div class="my-profile-worker-container07">
+                            <button class="buttonFilled">Accept</button>
+                            <button class="buttonFilled">Decline</button>
+                        </div>
+                    </div>
+                    <div class="my-profile-worker-container08">
+                        <span class="my-profile-worker-text08">Hair Dresser</span>
+                        <span class="my-profile-worker-text09">
+                            I will cut you hair
+                        </span>
+                        <span class="my-profile-worker-text10">
+                            Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
+                            Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
+                            rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
+                            sit amet, consectetur adipiscing elit.
+                        </span>
+                        <div class="my-profile-worker-container09">
+                            <div class="my-profile-worker-profile1">
+                                <img alt="profile"
+                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                    class="my-profile-worker-image1" />
+                                <span class="my-profile-worker-text11">Jon Doe</span>
+                            </div>
+                            <span class="my-profile-worker-text12">10$/hr</span>
+                        </div>
+                        <div class="my-profile-worker-container10">
+                            <span class="my-profile-worker-text13">
+                                01/01/2024 6:00:00
+                            </span>
+                            <span class="my-profile-worker-text14">-</span>
+                            <span class="my-profile-worker-text15">
+                                01/01/2024 9:00:00
+                            </span>
+                        </div>
+                        <div class="my-profile-worker-container11">
+                            <button class="buttonFilled">Accept</button>
+                            <button class="buttonFilled">Decline</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isAdmin" class="my-profile-worker-features2">
+        <div class="my-profile-worker-features-container1 featuresContainer">
+            <div class="my-profile-worker-container12">
+                <h1 class="my-profile-worker-hero-heading2 heading1">
+                    My Offers
+                </h1>
+            </div>
+            <div class="my-profile-worker-features3">
+                <div class="my-profile-worker-container13">
+                    <div class="my-profile-worker-container14">
+                        <span class="my-profile-worker-text16">Hair Dresser</span>
+                        <span class="my-profile-worker-text17">
+                            I will cut you hair
+                        </span>
+                        <span class="my-profile-worker-text18">
+                            Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
+                            Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
+                            rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
+                            sit amet, consectetur adipiscing elit.
+                        </span>
+                        <div class="my-profile-worker-container15">
+                            <div class="my-profile-worker-profile2">
+                                <img alt="profile"
+                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
+                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                    class="my-profile-worker-image2" />
+                                <span class="my-profile-worker-text19">Jon Doe</span>
+                            </div>
+                            <span class="my-profile-worker-text20">10$/hr</span>
+                        </div>
+                        <div class="my-profile-worker-container16">
+                            <span class="my-profile-worker-text21">
+                                01/01/2024 6:00:00
+                            </span>
+                            <span class="my-profile-worker-text22">-</span>
+                            <span class="my-profile-worker-text23">
+                                01/01/2024 9:00:00
+                            </span>
+                        </div>
+                        <div class="my-profile-worker-container17">
+                            <button (click)="onDeleteOfferClick()" class="buttonFilled">Delete Offer</button>
+                            <button (click)="onEditOfferClick()" class="buttonFilled">Edit Offer</button>
+                        </div>
+                    </div>
+                    <div class="my-profile-worker-container18">
+                        <span class="my-profile-worker-text24">Hair Dresser</span>
+                        <span class="my-profile-worker-text25">
+                            I will cut you hair
+                        </span>
+                        <span class="my-profile-worker-text26">
+                            Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
+                            Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
+                            rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
+                            sit amet, consectetur adipiscing elit.
+                        </span>
+                        <div class="my-profile-worker-container19">
+                            <div class="my-profile-worker-profile3">
+                                <img alt="profile"
+                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
+                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                    class="my-profile-worker-image3" />
+                                <span class="my-profile-worker-text27">Jon Doe</span>
+                            </div>
+                            <span class="my-profile-worker-text28">10$/hr</span>
+                        </div>
+                        <div class="my-profile-worker-container20">
+                            <span class="my-profile-worker-text29">
+                                01/01/2024 6:00:00
+                            </span>
+                            <span class="my-profile-worker-text30">-</span>
+                            <span class="my-profile-worker-text31">
+                                01/01/2024 9:00:00
+                            </span>
+                        </div>
+                        <div class="my-profile-worker-container21">
+                            <button (click)="onDeleteOfferClick()" class="buttonFilled">Delete Offer</button>
+                            <button (click)="onEditOfferClick()" class="buttonFilled">Edit Offer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isAdmin" class="my-profile-worker-features4">
+        <div class="my-profile-worker-features-container2 featuresContainer">
+            <div class="my-profile-worker-container22">
+                <h1 class="my-profile-worker-hero-heading3 heading1">
+                    Past orders
+                </h1>
+            </div>
+            <div class="my-profile-worker-features5">
+                <div class="my-profile-worker-container23">
+                    <div class="my-profile-worker-container24">
+                        <span class="my-profile-worker-text32">Hair Dresser</span>
+                        <span class="my-profile-worker-text33">
+                            I will cut you hair
+                        </span>
+                        <div class="my-profile-worker-container25">
+                            <div class="my-profile-worker-profile4">
+                                <img alt="profile"
+                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
+                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                    class="my-profile-worker-image4" />
+                                <span class="my-profile-worker-text34">Jon Doe</span>
+                            </div>
+                            <span class="my-profile-worker-text35">10$/hr</span>
+                        </div>
+                        <div class="my-profile-worker-container26">
+                            <span class="my-profile-worker-text36">
+                                01/01/2024 6:00:00
+                            </span>
+                            <span class="my-profile-worker-text37">-</span>
+                            <span class="my-profile-worker-text38">
+                                01/01/2024 9:00:00
+                            </span>
+                        </div>
+                    </div>
+                    <div class="my-profile-worker-container27">
+                        <span class="my-profile-worker-text39">Hair Dresser</span>
+                        <span class="my-profile-worker-text40">
+                            I will cut you hair
+                        </span>
+                        <div class="my-profile-worker-container28">
+                            <div class="my-profile-worker-profile5">
+                                <img alt="profile"
+                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
+                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                    class="my-profile-worker-image5" />
+                                <span class="my-profile-worker-text41">Jon Doe</span>
+                            </div>
+                            <span class="my-profile-worker-text42">10$/hr</span>
+                        </div>
+                        <div class="my-profile-worker-container29">
+                            <span class="my-profile-worker-text43">
+                                01/01/2024 6:00:00
+                            </span>
+                            <span class="my-profile-worker-text44">-</span>
+                            <span class="my-profile-worker-text45">
+                                01/01/2024 9:00:00
+                            </span>
+                        </div>
+                    </div>
+                    <div class="my-profile-worker-container30">
+                        <span class="my-profile-worker-text46">Hair Dresser</span>
+                        <span class="my-profile-worker-text47">
+                            I will cut you hair
+                        </span>
+                        <div class="my-profile-worker-container31">
+                            <div class="my-profile-worker-profile6">
+                                <img alt="profile"
+                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
+                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                    class="my-profile-worker-image6" />
+                                <span class="my-profile-worker-text48">Jon Doe</span>
+                            </div>
+                            <span class="my-profile-worker-text49">10$/hr</span>
+                        </div>
+                        <div class="my-profile-worker-container32">
+                            <span class="my-profile-worker-text50">
+                                01/01/2024 6:00:00
+                            </span>
+                            <span class="my-profile-worker-text51">-</span>
+                            <span class="my-profile-worker-text52">
+                                01/01/2024 9:00:00
+                            </span>
+                        </div>
+                    </div>
+                    <div class="my-profile-worker-container33">
+                        <span class="my-profile-worker-text53">Hair Dresser</span>
+                        <span class="my-profile-worker-text54">
+                            I will cut you hair
+                        </span>
+                        <div class="my-profile-worker-container34">
+                            <div class="my-profile-worker-profile7">
+                                <img alt="profile"
+                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
+                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                                    class="my-profile-worker-image7" />
+                                <span class="my-profile-worker-text55">Jon Doe</span>
+                            </div>
+                            <span class="my-profile-worker-text56">10$/hr</span>
+                        </div>
+                        <div class="my-profile-worker-container35">
+                            <span class="my-profile-worker-text57">
+                                01/01/2024 6:00:00
+                            </span>
+                            <span class="my-profile-worker-text58">-</span>
+                            <span class="my-profile-worker-text59">
+                                01/01/2024 9:00:00
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="my-profile-client-footer">
+        <footer class="my-profile-client-footer1 footerContainer">
+            <div class="my-profile-client-container25">
+                <span class="logo">ZAKAZI</span>
+            </div>
+            <div class="my-profile-client-separator"></div>
+            <div class="my-profile-client-container26">
+                <span class="bodySmall my-profile-client-text39">
+                    © 2024 finki, All Rights Reserved.
+                </span>
+                <div class="my-profile-client-icon-group1">
+                    <svg viewBox="0 0 950.8571428571428 1024" class="my-profile-client-icon10 socialIcons">
+                        <path
+                            d="M925.714 233.143c-25.143 36.571-56.571 69.143-92.571 95.429 0.571 8 0.571 16 0.571 24 0 244-185.714 525.143-525.143 525.143-104.571 0-201.714-30.286-283.429-82.857 14.857 1.714 29.143 2.286 44.571 2.286 86.286 0 165.714-29.143 229.143-78.857-81.143-1.714-149.143-54.857-172.571-128 11.429 1.714 22.857 2.857 34.857 2.857 16.571 0 33.143-2.286 48.571-6.286-84.571-17.143-148-91.429-148-181.143v-2.286c24.571 13.714 53.143 22.286 83.429 23.429-49.714-33.143-82.286-89.714-82.286-153.714 0-34.286 9.143-65.714 25.143-93.143 90.857 112 227.429 185.143 380.571 193.143-2.857-13.714-4.571-28-4.571-42.286 0-101.714 82.286-184.571 184.571-184.571 53.143 0 101.143 22.286 134.857 58.286 41.714-8 81.714-23.429 117.143-44.571-13.714 42.857-42.857 78.857-81.143 101.714 37.143-4 73.143-14.286 106.286-28.571z">
+                        </path>
+                    </svg><svg viewBox="0 0 877.7142857142857 1024"
+                        class="my-profile-client-icon12 socialIcons">
+                        <path
+                            d="M585.143 512c0-80.571-65.714-146.286-146.286-146.286s-146.286 65.714-146.286 146.286 65.714 146.286 146.286 146.286 146.286-65.714 146.286-146.286zM664 512c0 124.571-100.571 225.143-225.143 225.143s-225.143-100.571-225.143-225.143 100.571-225.143 225.143-225.143 225.143 100.571 225.143 225.143zM725.714 277.714c0 29.143-23.429 52.571-52.571 52.571s-52.571-23.429-52.571-52.571 23.429-52.571 52.571-52.571 52.571 23.429 52.571 52.571zM438.857 152c-64 0-201.143-5.143-258.857 17.714-20 8-34.857 17.714-50.286 33.143s-25.143 30.286-33.143 50.286c-22.857 57.714-17.714 194.857-17.714 258.857s-5.143 201.143 17.714 258.857c8 20 17.714 34.857 33.143 50.286s30.286 25.143 50.286 33.143c57.714 22.857 194.857 17.714 258.857 17.714s201.143 5.143 258.857-17.714c20-8 34.857-17.714 50.286-33.143s25.143-30.286 33.143-50.286c22.857-57.714 17.714-194.857 17.714-258.857s5.143-201.143-17.714-258.857c-8-20-17.714-34.857-33.143-50.286s-30.286-25.143-50.286-33.143c-57.714-22.857-194.857-17.714-258.857-17.714zM877.714 512c0 60.571 0.571 120.571-2.857 181.143-3.429 70.286-19.429 132.571-70.857 184s-113.714 67.429-184 70.857c-60.571 3.429-120.571 2.857-181.143 2.857s-120.571 0.571-181.143-2.857c-70.286-3.429-132.571-19.429-184-70.857s-67.429-113.714-70.857-184c-3.429-60.571-2.857-120.571-2.857-181.143s-0.571-120.571 2.857-181.143c3.429-70.286 19.429-132.571 70.857-184s113.714-67.429 184-70.857c60.571-3.429 120.571-2.857 181.143-2.857s120.571-0.571 181.143 2.857c70.286 3.429 132.571 19.429 184 70.857s67.429 113.714 70.857 184c3.429 60.571 2.857 120.571 2.857 181.143z">
+                        </path>
+                    </svg><svg viewBox="0 0 602.2582857142856 1024"
+                        class="my-profile-client-icon14 socialIcons">
+                        <path
+                            d="M548 6.857v150.857h-89.714c-70.286 0-83.429 33.714-83.429 82.286v108h167.429l-22.286 169.143h-145.143v433.714h-174.857v-433.714h-145.714v-169.143h145.714v-124.571c0-144.571 88.571-223.429 217.714-223.429 61.714 0 114.857 4.571 130.286 6.857z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>

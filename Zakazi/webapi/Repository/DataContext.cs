@@ -11,8 +11,7 @@ namespace webapi.Repository
         {
         }
 
-        public DbSet<Client> Clients { get; set; }
-        public DbSet<Worker> Workers { get; set; }
+        public DbSet<ZakaziUser> ZakaziUsers { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Request> Requests { get; set; }
 

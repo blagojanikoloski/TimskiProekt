@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-public class Worker : IdentityUser
+public class ZakaziUser : IdentityUser
 {
 
     [Required]
@@ -18,7 +18,7 @@ public class Worker : IdentityUser
     [Required]
     public string PhoneNumber { get; set; }
 
-    [Required]
+    // Can be null for clients
     public string Profession { get; set; }
 
     // Password property is inherited from IdentityUser

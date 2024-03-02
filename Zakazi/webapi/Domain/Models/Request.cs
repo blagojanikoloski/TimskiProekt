@@ -2,16 +2,17 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using webapi.Domain.Enumerators;
 
 public class Request
 {
     public int RequestId { get; set; }
 
     [Required]
-    public DateTime Timestamp { get; set; }
+    public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.Now;
 
     [Required]
-    public string Status { get; set; }
+    public RequestStatus RequestStatus { get; set; }
 
     [Required]
     public int PostId { get; set; }

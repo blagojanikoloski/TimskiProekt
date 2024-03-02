@@ -14,11 +14,11 @@ public class Post
     public string NameOfService { get; set; }
 
     [Required]
-    public float Price { get; set; }
+    public double Price { get; set; } = 0;
 
     [Required]
-    public DateTime AvailabilityFrom { get; set; }
+    public DateTimeOffset AvailabilityFrom { get; set; } = DateTimeOffset.UtcNow;
 
     [Required]
-    public DateTime AvailabilityTo { get; set; }
+    public DateTimeOffset AvailabilityTo { get; set; } = DateTimeOffset.UtcNow;
 }

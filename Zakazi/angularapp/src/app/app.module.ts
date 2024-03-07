@@ -6,17 +6,20 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomePageComponent } from './home-page/home-page.component';
 import { API_BASE_URL, WebApiClient } from './services/web-api-client.service';
-import { environment } from './environments/environment';
+import { environment } from '../environments/environment';
 import { SharedModule } from './shared/shared.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { OffersComponent } from './offers/offers.component';
 import { EditOfferComponent } from './offers/edit-offer/edit-offer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [AppComponent, HomePageComponent, LoginComponent, RegisterComponent, ProfileComponent, OffersComponent, EditOfferComponent],
-  imports: [BrowserModule, HttpClientModule, NgbModule, SharedModule],
+  imports: [BrowserModule, HttpClientModule, NgbModule, SharedModule, BrowserAnimationsModule, FormsModule,ReactiveFormsModule, ],
   providers: [
     WebApiClient,
     { provide: API_BASE_URL, useValue: environment.apiUrl },

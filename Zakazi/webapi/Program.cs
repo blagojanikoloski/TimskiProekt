@@ -14,6 +14,8 @@ builder.Services.AddOpenApiDocument();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 
+builder.Services.AddCors();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -54,8 +56,8 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseOpenApi();
     // Enable middleware to serve generated Swagger as a JSON endpoint.
     app.UseSwagger(options =>
@@ -67,11 +69,23 @@ if (app.Environment.IsDevelopment())
     {
         c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Web Api");
     });
-}
+//}
 
-app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseCors(
+        b => b.AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .WithOrigins(
+                   builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? new string[] { "https://localhost:4200" }
+               )
+    );
+
+app.UseHttpsRedirection();
 
 app.MapControllers();
 

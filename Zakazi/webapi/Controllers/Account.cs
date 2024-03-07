@@ -31,9 +31,9 @@ namespace webapi.Controllers
         [ActionName("Register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
-            //test - create new identityuser with the name of the dto(register) 
+            //test - create new identityuser with the email of the dto(register) 
             //attempt to create user in db through usermanager
-            var user = new IdentityUser { UserName = registerDto.Name };
+            var user = new IdentityUser { Email = registerDto.Email };
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (result.Succeeded)
             {
@@ -50,8 +50,8 @@ namespace webapi.Controllers
             // TO DO: implement Log in with identity
             // return access token
             
-            // check pass for the specific username from logindto
-            var user = await _userManager.FindByNameAsync(loginDto.Username);
+            // check pass for the specific email from logindto
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user != null && await _userManager.CheckPasswordAsync(user, loginDto.Password))
             {
                 var token = GenerateJwtToken(user);

@@ -220,7 +220,7 @@
   .register-worker-container09 {
     display: flex;
     align-items: center;
-    flex-direction: row;
+    flex-direction: column;
     padding-bottom: var(--dl-space-space-fourunits);
     justify-content: center;
   }
@@ -403,5 +403,5 @@
     cursor: pointer;
     color: black;
   }
-  
+
   

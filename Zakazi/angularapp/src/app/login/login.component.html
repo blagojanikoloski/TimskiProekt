@@ -62,20 +62,30 @@
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-features-container featuresContainer">
                     <div class="login-features1">
                         <div class="login-container2">
-                            <div class="login-container3">
+                            <div class="login-container3" [ngClass]="submitted && loginForm.controls['email'].errors || invalidUser ? 'is-invalid' : ''">
                                 <span>E-Mail</span>
                                 <input type="email" id="email" name="email" placeholder="E-Mail..."
-                                    formControlName="email" required class="login-textinput input" />
+                                    formControlName="email" required class="login-textinput input form-control" 
+                                    [ngClass]="submitted && loginForm.controls['email'].errors || invalidUser ? 'is-invalid' : ''"
+                                    />
+                                <div class="invalid-feedback">{{ errorMessage }}</div>
+
                             </div>
-                            <div class="login-container4">
+                            <div class="login-container4" [ngClass]="submitted && loginForm.controls['password'].errors || invalidPass ? 'is-invalid' : ''">
                                 <span>Password</span>
                                 <input type="password" id="password" name="password" placeholder="Password..."
-                                    formControlName="password" required class="login-textinput1 input" />
+                                    formControlName="password" required class="login-textinput1 input form-control" 
+                                    [ngClass]="submitted && loginForm.controls['password'].errors || invalidPass ? 'is-invalid' : ''"
+                                    />
+                                <div class="invalid-feedback">{{ errorMessage }}</div>
                             </div>
                         </div>
                     </div>
                     <div class="login-container5">
                         <button type="submit" class="buttonFilled">Login</button>
+                        <a routerLink="/register" class="d-flex justify-content-center my-3">
+                            Don't have an Account? Register.
+                        </a>
                     </div>
                 </form>
             </div>
@@ -107,3 +117,4 @@
         </div>
     </div>
 </div>
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>

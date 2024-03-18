@@ -60,48 +60,78 @@
         </div>
     </div>
     <div class="register-worker-features">
-        <div class="register-worker-features-container featuresContainer">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-worker-features-container featuresContainer">
             <div class="register-worker-features1">
                 <div class="register-worker-container02">
-                    <div class="register-worker-container03">
-                        <span>Name</span>
-                        <input type="text" id="name" name="name" placeholder="Name..."
-                            class="register-worker-textinput input" />
+                    <div class="register-worker-container03" 
+                         [ngClass]="submitted && registerForm.controls['name'].errors ? 'is-invalid' : ''"
+                    >
+                        <label>Name</label>
+                        <input formControlName="name" type="text" id="name" name="name" placeholder="Name..."
+                        [ngClass]="submitted && registerForm.controls['name'].errors ? 'is-invalid' : ''"
+                            class="register-worker-textinput input form-control" />
+                        <div class="invalid-feedback">{{ errorMessage }}</div>
+
                     </div>
-                    <div class="register-worker-container04">
-                        <span>Surname</span>
-                        <input type="text" id="surname" name="surname" placeholder="Surname..."
-                            class="register-worker-textinput1 input" />
+                    <div class="register-worker-container04"
+                        [ngClass]="submitted && registerForm.controls['surname'].errors ? 'is-invalid' : ''"
+                    >
+                        <label>Surname</label>
+                        <input formControlName="surname" type="text" id="surname" name="surname" placeholder="Surname..."
+                            [ngClass]="submitted && registerForm.controls['surname'].errors ? 'is-invalid' : ''"
+                            class="register-worker-textinput1 input form-control" />
+                        <div class="invalid-feedback">{{ errorMessage }}</div>
+
                     </div>
-                    <div class="register-worker-container05">
-                        <span>E-Mail</span>
-                        <input type="text" id="email" name="email" placeholder="E-Mail..."
-                            class="register-worker-textinput2 input" />
+                    <div class="register-worker-container05"
+                        [ngClass]="submitted && registerForm.controls['email'].errors || invalidEmail ? 'is-invalid' : ''"
+                    >
+                        <label>E-Mail</label>
+                        <input formControlName="email" type="email" id="email" name="email" placeholder="E-Mail..."
+                            [ngClass]="submitted && registerForm.controls['email'].errors || invalidEmail ? 'is-invalid' : ''"
+                            class="register-worker-textinput2 input form-control" />
+                        <div class="invalid-feedback">{{ errorMessage }}</div>
+                        <p class="invalid-feedback" *ngIf="registerForm.controls['email'].errors?.['email']">Not a valid Email</p>
                     </div>
-                    <div class="register-worker-container06">
-                        <span>Phone Number</span>
-                        <input type="text" id="phonenumber" name="phonenumber" placeholder="Phone Number..."
-                            class="register-worker-textinput3 input" />
+                    <div class="register-worker-container06"
+                        [ngClass]="submitted && registerForm.controls['phoneNumber'].errors || invalidPhoneNumber ? 'is-invalid' : ''"
+                    >
+                        <label>Phone Number</label>
+                        <input formControlName="phoneNumber" type="text" id="phonenumber" name="phonenumber" placeholder="Phone Number..."
+                            [ngClass]="submitted && registerForm.controls['phoneNumber'].errors || invalidPhoneNumber ? 'is-invalid' : ''"
+                            class="register-worker-textinput3 input form-control" />
+                        <div class="invalid-feedback">{{ errorMessage }}</div>
                     </div>
-                    <div class="register-worker-container07">
-                        <span>Password</span>
-                        <input type="password" id="password" name="password" placeholder="Password..."
-                            class="register-worker-textinput4 input" />
+                    <div class="register-worker-container07"
+                        [ngClass]="submitted && registerForm.controls['password'].errors || invalidPass ? 'is-invalid' : ''"
+                    >
+                        <label>Password</label>
+                        <input formControlName="password" type="password" id="password" name="password" placeholder="Password..."
+                            [ngClass]="submitted && registerForm.controls['password'].errors || invalidPass ? 'is-invalid' : ''"
+                            class="register-worker-textinput4 input form-control" />
+                        <div class="invalid-feedback">{{ errorMessage }}</div>
+
                     </div>
-                    <div class="register-worker-container08">
-                        <span>Profession</span>
-                        <select class="register-worker-select">
-                            <option id="hairdresser" value="hairdresser">
-                                Hair Dresser
-                            </option>
-                        </select>
+                    <div class="register-worker-container08"
+                        [ngClass]="submitted && registerForm.controls['repeat'].errors || invalidPass ? 'is-invalid' : ''"
+                    >
+                        <label>Repeat Password</label>
+                        <input formControlName="repeat" type="password" id="repeat" name="repeat" placeholder="Repeat Password..."
+                        [ngClass]="submitted && registerForm.controls['repeat'].errors || invalidPass ? 'is-invalid' : ''"
+                        class="register-worker-textinput4 input form-control" />
+                        <div class="invalid-feedback">{{ errorMessage }}</div>
+
                     </div>
                 </div>
             </div>
             <div class="register-worker-container09">
-                <button (click)="onRegisterClick()" class="buttonFilled">Register</button>
+                <button type="submit" class="buttonFilled">Register</button>
+                <a routerLink="/login" class="d-flex justify-content-center my-3 ms-4"
+                >Already an Account? Log in.</a
+              >
             </div>
-        </div>
+            
+        </form>
     </div>
     <div class="register-worker-footer">
         <footer class="footerContainer register-worker-footer1">
@@ -132,3 +162,4 @@
         </footer>
     </div>
 </div>
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>

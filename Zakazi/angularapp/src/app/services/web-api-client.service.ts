@@ -25,18 +25,14 @@ export class WebApiClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "https://localhost:7200";
     }
 
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    register(body: RegisterDto | null | undefined): Observable<void> {
+    account_Register(registerDto: RegisterDto): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/Account/register";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(registerDto);
 
         let options_ : any = {
             body: content_,
@@ -44,34 +40,42 @@ export class WebApiClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRegister(response_);
+            return this.processAccount_Register(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processRegister(response_ as any);
+                    return this.processAccount_Register(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<FileResponse>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<FileResponse>;
         }));
     }
 
-    protected processRegister(response: HttpResponseBase): Observable<void> {
+    protected processAccount_Register(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -80,15 +84,11 @@ export class WebApiClient {
         return _observableOf(null as any);
     }
 
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    login(body: LoginDto | null | undefined): Observable<string> {
+    account_Login(loginDto: LoginDto): Observable<string> {
         let url_ = this.baseUrl + "/api/Account/login";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(loginDto);
 
         let options_ : any = {
             body: content_,
@@ -101,11 +101,11 @@ export class WebApiClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processLogin(response_);
+            return this.processAccount_Login(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processLogin(response_ as any);
+                    return this.processAccount_Login(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<string>;
                 }
@@ -114,7 +114,7 @@ export class WebApiClient {
         }));
     }
 
-    protected processLogin(response: HttpResponseBase): Observable<string> {
+    protected processAccount_Login(response: HttpResponseBase): Observable<string> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -137,10 +137,7 @@ export class WebApiClient {
         return _observableOf(null as any);
     }
 
-    /**
-     * @return Success
-     */
-    logout(): Observable<void> {
+    account_Logout(): Observable<FileResponse> {
         let url_ = this.baseUrl + "/api/Account/logout";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -148,34 +145,42 @@ export class WebApiClient {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
             })
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processLogout(response_);
+            return this.processAccount_Logout(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processLogout(response_ as any);
+                    return this.processAccount_Logout(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<FileResponse>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<FileResponse>;
         }));
     }
 
-    protected processLogout(response: HttpResponseBase): Observable<void> {
+    protected processAccount_Logout(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return _observableOf({ fileName: fileName, data: responseBlob as any, status: status, headers: _headers });
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -184,10 +189,7 @@ export class WebApiClient {
         return _observableOf(null as any);
     }
 
-    /**
-     * @return Success
-     */
-    posts(): Observable<Post[]> {
+    posts_GetAllPosts(): Observable<Post[]> {
         let url_ = this.baseUrl + "/api/Posts";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -200,11 +202,11 @@ export class WebApiClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processPosts(response_);
+            return this.processPosts_GetAllPosts(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processPosts(response_ as any);
+                    return this.processPosts_GetAllPosts(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<Post[]>;
                 }
@@ -213,7 +215,7 @@ export class WebApiClient {
         }));
     }
 
-    protected processPosts(response: HttpResponseBase): Observable<Post[]> {
+    protected processPosts_GetAllPosts(response: HttpResponseBase): Observable<Post[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -242,10 +244,7 @@ export class WebApiClient {
         return _observableOf(null as any);
     }
 
-    /**
-     * @return Success
-     */
-    requests(): Observable<Post[]> {
+    requests_GetAllRequests(): Observable<Post[]> {
         let url_ = this.baseUrl + "/api/Requests";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -258,11 +257,11 @@ export class WebApiClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRequests(response_);
+            return this.processRequests_GetAllRequests(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processRequests(response_ as any);
+                    return this.processRequests_GetAllRequests(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<Post[]>;
                 }
@@ -271,7 +270,7 @@ export class WebApiClient {
         }));
     }
 
-    protected processRequests(response: HttpResponseBase): Observable<Post[]> {
+    protected processRequests_GetAllRequests(response: HttpResponseBase): Observable<Post[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -301,9 +300,61 @@ export class WebApiClient {
     }
 }
 
+export class RegisterDto implements IRegisterDto {
+    email!: string;
+    password!: string;
+    name!: string;
+    surname!: string;
+    phoneNumber!: string;
+
+    constructor(data?: IRegisterDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.password = _data["password"];
+            this.name = _data["name"];
+            this.surname = _data["surname"];
+            this.phoneNumber = _data["phoneNumber"];
+        }
+    }
+
+    static fromJS(data: any): RegisterDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["password"] = this.password;
+        data["name"] = this.name;
+        data["surname"] = this.surname;
+        data["phoneNumber"] = this.phoneNumber;
+        return data;
+    }
+}
+
+export interface IRegisterDto {
+    email: string;
+    password: string;
+    name: string;
+    surname: string;
+    phoneNumber: string;
+}
+
 export class LoginDto implements ILoginDto {
-    email?: string | undefined;
-    password?: string | undefined;
+    email?: string;
+    password?: string;
 
     constructor(data?: ILoginDto) {
         if (data) {
@@ -337,12 +388,12 @@ export class LoginDto implements ILoginDto {
 }
 
 export interface ILoginDto {
-    email?: string | undefined;
-    password?: string | undefined;
+    email?: string;
+    password?: string;
 }
 
 export class Post implements IPost {
-    postId?: number | undefined;
+    postId?: number;
     workerId!: string;
     nameOfService!: string;
     price!: number;
@@ -389,7 +440,7 @@ export class Post implements IPost {
 }
 
 export interface IPost {
-    postId?: number | undefined;
+    postId?: number;
     workerId: string;
     nameOfService: string;
     price: number;
@@ -397,52 +448,11 @@ export interface IPost {
     availabilityTo: Date;
 }
 
-export class RegisterDto implements IRegisterDto {
-    email!: string;
-    password!: string;
-    name!: string;
-    surname!: string;
-
-    constructor(data?: IRegisterDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.password = _data["password"];
-            this.name = _data["name"];
-            this.surname = _data["surname"];
-        }
-    }
-
-    static fromJS(data: any): RegisterDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegisterDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["password"] = this.password;
-        data["name"] = this.name;
-        data["surname"] = this.surname;
-        return data;
-    }
-}
-
-export interface IRegisterDto {
-    email: string;
-    password: string;
-    name: string;
-    surname: string;
+export interface FileResponse {
+    data: Blob;
+    status: number;
+    fileName?: string;
+    headers?: { [name: string]: any };
 }
 
 export class SwaggerException extends Error {

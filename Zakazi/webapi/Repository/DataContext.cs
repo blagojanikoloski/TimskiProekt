@@ -7,19 +7,36 @@ using Microsoft.AspNetCore.Identity;
 
 namespace webapi.Repository
 {
-    public class DataContext : IdentityDbContext<IdentityUser>
+    public class DataContext : IdentityDbContext<ZakaziUser, Role, int,
+        IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>,
+        IdentityUserToken<int> >
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
-
-        public DbSet<ZakaziUser> ZakaziUsers { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Request> Requests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ZakaziUser>(entity =>
+            {
+                entity.HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.User)
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
+
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.HasMany(ur => ur.UserRoles)
+                .WithOne(u => u.Role)
+                .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
+            });
 
             modelBuilder.Entity<Post>(entity =>
             {

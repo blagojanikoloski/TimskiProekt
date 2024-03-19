@@ -80,6 +80,7 @@
                                 <div class="invalid-feedback">{{ errorMessage }}</div>
                             </div>
                         </div>
+                        <div [ngClass]="submitted && loginForm.valid ? 'text-danger text-center' : 'invisible'">{{ serverErrorMessage }}</div>
                     </div>
                     <div class="login-container5">
                         <button type="submit" class="buttonFilled">Login</button>

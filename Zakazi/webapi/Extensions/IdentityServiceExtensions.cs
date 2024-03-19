@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using webapi.Domain.Models;
 using webapi.Repository;
 
 namespace Time.Extensions
@@ -10,9 +11,13 @@ namespace Time.Extensions
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<DataContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentityCore<ZakaziUser>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+            })
+                .AddRoles<Role>()
+                .AddRoleManager<RoleManager<Role>>()
+                .AddEntityFrameworkStores<DataContext>();
 
             //services.AddScoped<ITokenService, TokenService>();
             services.AddAuthentication(options => {

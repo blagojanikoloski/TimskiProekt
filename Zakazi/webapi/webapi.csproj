@@ -29,8 +29,6 @@
     <Folder Include="Repository\Implementation\" />
     <Folder Include="Repository\Interface\" />
     <Folder Include="Repository\DataSeed\" />
-    <Folder Include="Service\Implementation\" />
-    <Folder Include="Service\Interface\" />
   </ItemGroup>
 
 </Project>

@@ -89,11 +89,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           switch (err.status) {
             case 400: {
-              this.invalidUser = true;
-              this.errorMessage = 'Email already exists';
-              break;
-            }
-            case 403: {
               this.invalidEmail = true;
               this.errorMessage = 'Email already exists';
               break;

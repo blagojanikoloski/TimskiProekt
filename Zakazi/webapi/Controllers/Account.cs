@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
 using webapi.Domain.DTOs;
 using webapi.Domain.Models;
+using webapi.Service.Interface;
 
 namespace webapi.Controllers
 {
@@ -15,15 +13,15 @@ namespace webapi.Controllers
     public class Account : ControllerBase
     {
         //DI that are essential user management and also user sign in (test)
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly IConfiguration _configuration;
+        private readonly UserManager<ZakaziUser> _userManager;
+        private readonly IMapper _mapper;
+        private readonly ITokenService _tokenService;
 
-        public Account(UserManager<IdentityUser> userManager,SignInManager<IdentityUser> signInManager,IConfiguration configuration)
+        public Account(UserManager<ZakaziUser> userManager, IMapper mapper, ITokenService tokenService)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
-            _configuration = configuration;
+            _mapper = mapper;
+            _tokenService = tokenService;
         }
 
 
@@ -33,13 +31,20 @@ namespace webapi.Controllers
         {
             //test - create new identityuser with the email of the dto(register) 
             //attempt to create user in db through usermanager
-            var user = new IdentityUser { Email = registerDto.Email };
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            var uniqueCheck = await _userManager.FindByEmailAsync(registerDto.Email);
+            if (uniqueCheck != null) return BadRequest("Email already taken");
+
+            var user = _mapper.Map<ZakaziUser>(registerDto);
+            user.Email = registerDto.Email;
+            user.UserName = registerDto.Email;
+            var result = await _userManager.CreateAsync(user,registerDto.Password);
+
             if (result.Succeeded)
             {
                 return Ok("User successfully registered");
             }
             return BadRequest(result.Errors);
+
         }
 
         [HttpPost("login")] // api/account/login 
@@ -49,12 +54,13 @@ namespace webapi.Controllers
         {
             // TO DO: implement Log in with identity
             // return access token
-            
+
             // check pass for the specific email from logindto
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
+
             if (user != null && await _userManager.CheckPasswordAsync(user, loginDto.Password))
             {
-                var token = GenerateJwtToken(user);
+                var token = _tokenService.GenerateJwtToken(user);
                 return Ok(token);
             }
             return Unauthorized();
@@ -76,25 +82,6 @@ namespace webapi.Controllers
             //});
 
             return Ok("User successfully logged out");
-        }
-
-        private string GenerateJwtToken(IdentityUser user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenSettings:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["TokenSettings:Issuer"],
-                audience: _configuration["TokenSettings:Audience"],
-                claims: new[]
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Email, user.Email)
-                },
-                expires: DateTime.Now.AddMinutes(30), 
-                signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 

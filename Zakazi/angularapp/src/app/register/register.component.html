@@ -120,9 +120,9 @@
                         [ngClass]="submitted && registerForm.controls['repeat'].errors || invalidPass ? 'is-invalid' : ''"
                         class="register-worker-textinput4 input form-control" />
                         <div class="invalid-feedback">{{ errorMessage }}</div>
-
                     </div>
                 </div>
+                <div [ngClass]="submitted && registerForm.valid ? 'text-danger text-center' : 'invisible'">{{ serverErrorMessage }}</div>
             </div>
             <div class="register-worker-container09">
                 <button type="submit" class="buttonFilled">Register</button>

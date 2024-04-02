@@ -1,2 +1,3 @@
 C:\Users\user\source\repos\TimskiProekt\Zakazi\angularapp\obj\Debug\angularapp.esproj.SuggestedBindingRedirects.cache
 C:\Users\user\source\repos\TimskiProekt\Zakazi\angularapp\obj\Debug\angularapp.esproj.CoreCompileInputs.cache
+C:\Users\Blagoja Nikoloski\Desktop\tp\TimskiProekt\Zakazi\angularapp\obj\Debug\angularapp.esproj.CoreCompileInputs.cache

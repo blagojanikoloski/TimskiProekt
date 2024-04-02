@@ -1,12 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Time.Extensions;
+using webapi.Domain.Services;
 using webapi.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IRequestService, RequestService>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 //nswag api calls generator for angularapp
 builder.Services.AddOpenApiDocument();

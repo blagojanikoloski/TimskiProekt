@@ -109,7 +109,7 @@
                         <input formControlName="password" type="password" id="password" name="password" placeholder="Password..."
                             [ngClass]="submitted && registerForm.controls['password'].errors || invalidPass ? 'is-invalid' : ''"
                             class="register-worker-textinput4 input form-control" />
-                        <div class="invalid-feedback">{{ errorMessage }}</div>
+                        <div class="invalid-feedback">{{ errorMessage }} {{ passwordMessage }}</div>
 
                     </div>
                     <div class="register-worker-container08"
@@ -119,7 +119,7 @@
                         <input formControlName="repeat" type="password" id="repeat" name="repeat" placeholder="Repeat Password..."
                         [ngClass]="submitted && registerForm.controls['repeat'].errors || invalidPass ? 'is-invalid' : ''"
                         class="register-worker-textinput4 input form-control" />
-                        <div class="invalid-feedback">{{ errorMessage }}</div>
+                        <div class="invalid-feedback">{{ errorMessage }} {{ passwordMessage }}</div>
                     </div>
                 </div>
                 <div [ngClass]="submitted && registerForm.valid ? 'text-danger text-center' : 'invisible'">{{ serverErrorMessage }}</div>

@@ -20,15 +20,15 @@ namespace webapi.Domain.Services
             return await _context.Requests.ToListAsync();
         }
 
-        public async Task<IEnumerable<Request>> GetRequestsByClientIdOrWorkerId(string id)
+        public async Task<IEnumerable<Request>> GetRequestsByBusinessId(int id)
         {
             try
             {
-                return await _context.Requests.Where(r => r.ClientId == id || r.WorkerId == id).ToListAsync();
+                return await _context.Requests.Where(r => r.BusinessId == id).ToListAsync();
             }
             catch (Exception ex)
             {
-                throw; 
+                throw;
             }
         }
 

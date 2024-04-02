@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using webapi.Domain.Services;
 
 namespace webapi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PostsController : ControllerBase
@@ -104,20 +106,20 @@ namespace webapi.Controllers
         }
 
 
-        [HttpGet("GetMyPosts/{id}")]
-        public async Task<ActionResult<IEnumerable<Post>>> GetMyPosts(string id)
-        {
-            try
-            {
-                var posts = await _postService.GetPostsByWorkerId(id);
-                return Ok(posts);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it appropriately
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving posts from the database.");
-            }
-        }
+        //[HttpGet("GetMyPosts/{id}")]
+        //public async Task<ActionResult<IEnumerable<Post>>> GetMyPosts(string id)
+        //{
+        //    try
+        //    {
+        //        var posts = await _postService.GetPostsByWorkerId(id);
+        //        return Ok(posts);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it appropriately
+        //        return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving posts from the database.");
+        //    }
+        //}
 
     }
 }

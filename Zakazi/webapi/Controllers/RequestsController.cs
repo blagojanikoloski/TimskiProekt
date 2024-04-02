@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using webapi.Domain.Models;
 using webapi.Domain.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace webapi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RequestsController : ControllerBase
@@ -23,6 +25,7 @@ namespace webapi.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpGet]
         [ActionName("GetAllRequests")]
         public async Task<ActionResult<IEnumerable<Request>>> GetAllRequests()
@@ -39,20 +42,20 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpGet("GetMyRequests/{id}")]
-        public async Task<ActionResult<IEnumerable<Request>>> GetMyRequests(string id)
-        {
-            try
-            {
-                var requests = await _requestService.GetRequestsByClientIdOrWorkerId(id);
-                return Ok(requests);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it appropriately
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving requests from the database.");
-            }
-        }
+        //[HttpGet("GetMyRequests/{id}")]
+        //public async Task<ActionResult<IEnumerable<Request>>> GetMyRequests(string id)
+        //{
+        //    try
+        //    {
+        //        var requests = await _requestService.GetRequestsByClientIdOrWorkerId(id);
+        //        return Ok(requests);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it appropriately
+        //        return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving requests from the database.");
+        //    }
+        //}
 
 
 

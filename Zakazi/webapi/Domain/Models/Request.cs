@@ -1,7 +1,9 @@
 ﻿namespace webapi.Domain.Models;
 
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using webapi.Domain.Enumerators;
 
 public class Request
@@ -15,12 +17,18 @@ public class Request
     public RequestStatus RequestStatus { get; set; }
 
     [Required]
-    public int PostId { get; set; }
+    public ICollection<Post> RequestedServices { get; set; } = new Collection<Post>();
 
     [Required]
-    public string WorkerId { get; set; }
+    public int BusinessId { get; set; }
+
+    [JsonIgnore]
+    public Business Business { get; set; }
 
     [Required]
-    public string ClientId { get; set; }
+    public int ClientId { get; set; }
+
+    [JsonIgnore]
+    public ZakaziUser Client { get; set; }
 
 }

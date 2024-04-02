@@ -8,7 +8,7 @@ namespace webapi.Domain.Services
     {
         Task<IEnumerable<Post>> GetAllPosts();
 
-        Task<IEnumerable<Post>> GetPostsByWorkerId(string id);
+        Task<IEnumerable<Post>> GetPostsByBusinessId(int id);
         Task<Post> GetPostById(int id);
         Task<Post> CreatePost(Post post);
         Task UpdatePost(Post post);

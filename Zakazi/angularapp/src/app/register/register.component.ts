@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { RegisterDto, WebApiClient } from '../services/web-api-client.service';
+import { uppercaseValidator, lowercaseValidator, digitOrSpecialCharValidator, passwordMatchValidator } from '../shared/pattern-validator';
 
 @Component({
   selector: 'app-register',
@@ -18,6 +19,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   invalidPass = false;
   invalidPhoneNumber = false;
   errorMessage = '';
+  passwordMessage = '';
   serverErrorMessage = '';
   isLoading = false;
   formSubscription!: Subscription;
@@ -41,8 +43,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
       surname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', Validators.required],
-      password: ['', [Validators.required]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8), // Minimum 8 characters
+        uppercaseValidator(), // Custom uppercase validator
+        lowercaseValidator(), // Custom lowercase validator
+        digitOrSpecialCharValidator(), // Custom digit or special character validator
+      ]],
       repeat: ['', Validators.required],
+      
+    },
+    {
+      validators: passwordMatchValidator('password', 'repeat'), // Custom password match validator
     });
   }
 
@@ -53,18 +65,26 @@ export class RegisterComponent implements OnInit, OnDestroy {
   async onSubmit() {
     this.submitted = true;
     this.errorMessage = '';
+    this.passwordMessage = '';
     this.serverErrorMessage = '';
-
+    
+    
+    
     if (this.registerForm.invalid) {
       this.errorMessage = 'Please enter all fields!';
-      return;
-    }
 
-    if (this.registerForm.value.password !== this.registerForm.value.repeat) {
-      this.errorMessage = 'Passwords do not match';
-      this.invalidPass = true;
+      if (this.registerForm.value.password !== this.registerForm.value.repeat) {
+        this.passwordMessage = 'Passwords do not match';
+        this.invalidPass = true;
+      }
+      if (this.registerForm.controls['password'].invalid) {
+        this.passwordMessage = 'Must have uppercase, lowercase, digit and special character, at least 8 characters long';
+        this.invalidPass = true;
+      }
+      
       return;
     }
+    
 
     this.invalidPass = false;
     this.invalidUser = false;

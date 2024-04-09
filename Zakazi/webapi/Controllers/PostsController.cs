@@ -105,7 +105,20 @@ namespace webapi.Controllers
             }
         }
 
-
+        [HttpGet("BetweenTimestamps")]
+        public async Task<ActionResult<IEnumerable<Post>>> GetPostsBetweenTimestamps(DateTime startTimestamp, DateTime endTimestamp)
+        {
+            try
+            {
+                var posts = await _postService.GetPostsBetweenTimestamps(startTimestamp, endTimestamp);
+                return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving posts between timestamps.");
+            }
+        }
         //[HttpGet("GetMyPosts/{id}")]
         //public async Task<ActionResult<IEnumerable<Post>>> GetMyPosts(string id)
         //{

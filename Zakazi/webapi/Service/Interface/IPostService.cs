@@ -13,5 +13,6 @@ namespace webapi.Domain.Services
         Task<Post> CreatePost(Post post);
         Task UpdatePost(Post post);
         Task DeletePost(int id);
+        Task<IEnumerable<Post>> GetPostsBetweenTimestamps(DateTime startTimestamp, DateTime endTimestamp);
     }
 }

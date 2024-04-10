@@ -7,7 +7,7 @@ namespace webapi.Domain.Services
     public interface IRequestService
     {
         Task<IEnumerable<Request>> GetAllRequests();
-        Task<IEnumerable<Request>> GetRequestsByClientIdOrWorkerId(string id);
+        Task<IEnumerable<Request>> GetRequestsByBusinessId(int id);
 
         Task<Request> CreateRequest(Request request);
         Task<Request> GetRequestById(int id);

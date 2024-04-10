@@ -2,13 +2,17 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 public class Post
 {
     public int PostId { get; set; }
 
     [Required]
-    public string WorkerId { get; set; }
+    public int BusinessId { get; set; }
+
+    [JsonIgnore]
+    public Business Business { get; set; }
 
     [Required]
     public string NameOfService { get; set; }

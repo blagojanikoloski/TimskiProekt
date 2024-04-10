@@ -20,7 +20,8 @@ public class ZakaziUser : IdentityUser<int>
 
     // Can be null for clients
     public string? Profession { get; set; }
-    public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public virtual ICollection<Business> Businesses { get; set; } = new List<Business>();
 
     // Password property is inherited from IdentityUser
 }

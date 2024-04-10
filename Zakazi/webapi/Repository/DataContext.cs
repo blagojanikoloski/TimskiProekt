@@ -16,6 +16,7 @@ namespace webapi.Repository
         }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Request> Requests { get; set; }
+        public DbSet<Business> Businesses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +29,8 @@ namespace webapi.Repository
                 .HasForeignKey(ur => ur.UserId)
                 .IsRequired();
 
+                entity.HasMany(ur => ur.Businesses)
+               .WithMany(u => u.Employees);
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -36,6 +39,17 @@ namespace webapi.Repository
                 .WithOne(u => u.Role)
                 .HasForeignKey(ur => ur.RoleId)
                 .IsRequired();
+            });
+
+            modelBuilder.Entity<Business>(entity =>
+            {
+                entity.HasMany(ur => ur.Posts)
+                .WithOne(u => u.Business)
+                .HasForeignKey(ur => ur.BusinessId);
+
+                entity.HasMany(ur => ur.Requests)
+               .WithOne(u => u.Business)
+               .HasForeignKey(ur => ur.BusinessId);
             });
 
             modelBuilder.Entity<Post>(entity =>

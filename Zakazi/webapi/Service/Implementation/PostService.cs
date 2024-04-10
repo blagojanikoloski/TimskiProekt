@@ -49,16 +49,21 @@ namespace webapi.Domain.Services
             }
         }
 
-        public async Task<IEnumerable<Post>> GetPostsByWorkerId(string id)
+        public async Task<IEnumerable<Post>> GetPostsByBusinessId(int id)
         {
             try
             {
-                return await _context.Posts.Where(r => r.WorkerId == id).ToListAsync();
+                return await _context.Posts.Where(r => r.BusinessId == id).ToListAsync();
             }
             catch (Exception ex)
             {
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<Post>> GetPostsBetweenTimestamps(DateTime startTimestamp, DateTime endTimestamp)
+        {
+            return _context.Posts.Where(p => p.AvailabilityFrom >= startTimestamp && p.AvailabilityTo <= endTimestamp).ToList();
         }
     }
 }

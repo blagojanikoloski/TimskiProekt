@@ -1,0 +1,21 @@
+<div id="post-form">
+  <h3>Add Service</h3>
+  <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="nameOfService">Name of Service:</label>
+      <input type="text" id="nameOfService" name="nameOfService" formControlName="nameOfService" required>
+    </div>
+    <div class="form-group">
+      <label for="price">Price:</label>
+      <input type="number" id="price" name="price" formControlName="price" step="0.01" required>
+    </div>
+    <div class="form-group">
+      <label for="availabilityFrom">Availability From:</label>
+      <input type="datetime-local" id="availabilityFrom" name="availabilityFrom" formControlName="availabilityFrom" required>
+    </div>
+    <div class="form-group">
+      <label for="availabilityTo">Availability To:</label>
+      <input type="datetime-local" id="availabilityTo" name="availabilityTo" formControlName="availabilityTo" required>
+    </div>
+  </form>
+</div>

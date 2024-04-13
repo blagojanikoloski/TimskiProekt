@@ -14,11 +14,13 @@ import { ProfileComponent } from './profile/profile.component';
 import { OffersComponent } from './offers/offers.component';
 import { EditOfferComponent } from './offers/edit-offer/edit-offer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BusinessFormComponent } from './business-form/business-form.component';
+import { PostFormComponent } from './post-form/post-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [AppComponent, HomePageComponent, LoginComponent, RegisterComponent, ProfileComponent, OffersComponent, EditOfferComponent],
+  declarations: [AppComponent, HomePageComponent, LoginComponent, RegisterComponent, ProfileComponent, OffersComponent, EditOfferComponent, BusinessFormComponent, PostFormComponent],
   imports: [BrowserModule, HttpClientModule, NgbModule, SharedModule, BrowserAnimationsModule, FormsModule,ReactiveFormsModule, ],
   providers: [
     WebApiClient,

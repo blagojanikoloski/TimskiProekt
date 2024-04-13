@@ -6,6 +6,8 @@ import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { OffersComponent } from './offers/offers.component';
 import { EditOfferComponent } from './offers/edit-offer/edit-offer.component';
+import { BusinessFormComponent } from './business-form/business-form.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -39,8 +41,8 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'edit',
-    component: EditOfferComponent,
+    path: 'business-form',
+    component: BusinessFormComponent,
   },
 ];
 

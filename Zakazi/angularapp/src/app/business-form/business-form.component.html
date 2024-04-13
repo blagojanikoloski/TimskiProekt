@@ -1,0 +1,13 @@
+<form [formGroup]="businessForm" (ngSubmit)="onSubmit()">
+  <div class="form-style">
+    <h2>Create Business</h2>
+    <div class="form-group">
+      <label for="businessName">Business Name:</label>
+      <input type="text" id="businessName" formControlName="businessName" required>
+    </div>
+
+    <app-post-form></app-post-form>
+
+    <button type="submit">Submit Business and Services</button>
+  </div>
+</form>

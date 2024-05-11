@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { WebApiClient } from '../services/web-api-client.service';
 
 @Component({
   selector: 'app-search-offer',
@@ -23,20 +22,27 @@ export class SearchOfferComponent {
   }
 
   onSearchClick() {
-    // Define start and end timestamps
-    const startTimestamp = new Date("2022-05-11T08:00:00.000Z");
-    const endTimestamp = new Date("2025-05-11T17:00:00.000Z");
+    // Extract start and end timestamps from searchParams
+    const startTimestamp = new Date(this.searchParams.startTimestamp);
+    const endTimestamp = new Date(this.searchParams.endTimestamp);
 
     // Format timestamps to the specified format
     const formattedStartTimestamp = startTimestamp.toISOString().replace('T', ' ').split('.')[0];
     const formattedEndTimestamp = endTimestamp.toISOString().replace('T', ' ').split('.')[0];
 
     // Call the API endpoint with formatted timestamps
-    this.http.get<string>(`https://localhost:7200/api/Posts/BetweenTimestamps?startTimestamp=${formattedStartTimestamp}&endTimestamp=${formattedEndTimestamp}`).subscribe(
+    this.http.get<any[]>(`https://localhost:7200/api/Posts/BetweenTimestamps?startTimestamp=${formattedStartTimestamp}&endTimestamp=${formattedEndTimestamp}`).subscribe(
       (response) => {
         // Handle the response
-        this.responseMessage = response;
+        this.responseMessage = JSON.stringify(response);
+
         console.log('Response:', response);
+
+        // Serialize the response objects to JSON strings
+        const serializedResponse = JSON.stringify(response);
+
+        // Navigate to "offers" view with serialized search result as parameter
+        this.router.navigate(['offers'], { queryParams: { searchResult: serializedResponse } });
       },
       (error) => {
         // Handle errors

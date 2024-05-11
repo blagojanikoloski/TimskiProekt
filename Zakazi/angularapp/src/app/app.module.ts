@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { OffersComponent } from './offers/offers.component';
+import { SearchOfferComponent } from './search-offer/search-offer.component';
 import { EditOfferComponent } from './offers/edit-offer/edit-offer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BusinessFormComponent } from './business-form/business-form.component';
@@ -20,7 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [AppComponent, HomePageComponent, LoginComponent, RegisterComponent, ProfileComponent, OffersComponent, EditOfferComponent, BusinessFormComponent, PostFormComponent],
+  declarations: [AppComponent, HomePageComponent, LoginComponent, RegisterComponent, ProfileComponent, OffersComponent, SearchOfferComponent, EditOfferComponent, BusinessFormComponent, PostFormComponent],
   imports: [BrowserModule, HttpClientModule, NgbModule, SharedModule, BrowserAnimationsModule, FormsModule,ReactiveFormsModule, ],
   providers: [
     WebApiClient,

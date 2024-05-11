@@ -23,8 +23,16 @@ export class SearchOfferComponent {
   }
 
   onSearchClick() {
-    // Call the API endpoint
-    this.http.get<string>('https://localhost:7200/api/Posts/Dummy').subscribe(
+    // Define start and end timestamps
+    const startTimestamp = new Date("2022-05-11T08:00:00.000Z");
+    const endTimestamp = new Date("2025-05-11T17:00:00.000Z");
+
+    // Format timestamps to the specified format
+    const formattedStartTimestamp = startTimestamp.toISOString().replace('T', ' ').split('.')[0];
+    const formattedEndTimestamp = endTimestamp.toISOString().replace('T', ' ').split('.')[0];
+
+    // Call the API endpoint with formatted timestamps
+    this.http.get<string>(`https://localhost:7200/api/Posts/BetweenTimestamps?startTimestamp=${formattedStartTimestamp}&endTimestamp=${formattedEndTimestamp}`).subscribe(
       (response) => {
         // Handle the response
         this.responseMessage = response;
@@ -36,6 +44,7 @@ export class SearchOfferComponent {
       }
     );
   }
+
 
   isAdmin: boolean = false;
 }

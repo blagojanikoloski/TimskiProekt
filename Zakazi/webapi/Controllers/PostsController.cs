@@ -9,7 +9,7 @@ using webapi.Domain.Services;
 
 namespace webapi.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class PostsController : ControllerBase
@@ -133,6 +133,12 @@ namespace webapi.Controllers
         //        return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving posts from the database.");
         //    }
         //}
+        [HttpGet("dummy")]
+        [ActionName("Dummy")]
+        public ActionResult<string> DummyMethod()
+        {
+            return Ok("123");
+        }
 
     }
 }

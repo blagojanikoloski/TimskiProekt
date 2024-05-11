@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { WebApiClient } from '../services/web-api-client.service';
 
 @Component({
   selector: 'app-search-offer',
@@ -9,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SearchOfferComponent {
   searchParams: any = {};
+  responseMessage: string = '';
 
   constructor(private router: Router, private http: HttpClient) { }
 
@@ -21,13 +23,18 @@ export class SearchOfferComponent {
   }
 
   onSearchClick() {
-    console.log(this.searchParams);
-    this.http.post<any>('your-backend-search-api-url', this.searchParams).subscribe(response => {
-      // Handle response from backend if needed
-    }, error => {
-      console.error('Error searching:', error);
-      // Handle error if needed
-    });
+    // Call the API endpoint
+    this.http.get<string>('https://localhost:7200/api/Posts/Dummy').subscribe(
+      (response) => {
+        // Handle the response
+        this.responseMessage = response;
+        console.log('Response:', response);
+      },
+      (error) => {
+        // Handle errors
+        console.error('Error occurred:', error);
+      }
+    );
   }
 
   isAdmin: boolean = false;

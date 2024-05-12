@@ -42,6 +42,13 @@ namespace webapi.Domain.Services
             }
         }
 
+        public async Task<IEnumerable<Business>> GetBusinessesByOwnerIdAsync(int ownerId)
+        {
+            return await _context.Businesses
+                .Where(b => b.OwnerId == ownerId)
+                .ToListAsync();
+        }
+
         // Implement more methods as needed for managing businesses
     }
 }

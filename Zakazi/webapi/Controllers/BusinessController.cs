@@ -30,5 +30,19 @@ namespace webapi.Controllers
             }
         }
 
+        [HttpGet("owner/{ownerId}/businesses")]
+        public async Task<ActionResult<IEnumerable<Business>>> GetBusinessesByOwnerId(int ownerId)
+        {
+            try
+            {
+                var businesses = await _businessService.GetBusinessesByOwnerIdAsync(ownerId);
+                return Ok(businesses);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
     }
 }

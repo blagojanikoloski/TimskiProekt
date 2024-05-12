@@ -7,6 +7,8 @@ namespace webapi.Domain.Services
     {
         Task<Business> GetBusinessById(int businessId);
         Task<Business> CreateBusinessAsync(int userId, string businessName);
+
+        Task<IEnumerable<Business>> GetBusinessesByOwnerIdAsync(int ownerId);
         // Add more methods as needed for managing businesses
     }
 }

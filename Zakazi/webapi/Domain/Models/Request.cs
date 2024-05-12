@@ -25,6 +25,12 @@ public class Request
     [Required]
     public int ClientId { get; set; }
 
+    [Required]
+    public DateTimeOffset From { get; set; } = DateTimeOffset.UtcNow;
+
+    [Required]
+    public DateTimeOffset To { get; set; } = DateTimeOffset.UtcNow;
+
 
 
 }

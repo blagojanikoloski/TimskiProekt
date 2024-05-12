@@ -56,6 +56,19 @@ namespace webapi.Controllers
         //    }
         //}
 
+        [HttpGet("client/{clientId}/requests")]
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequestsByClientId(int clientId)
+        {
+            try
+            {
+                var requests = await _requestService.GetRequestsByClientId(clientId);
+                return Ok(requests);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
 
 
@@ -68,7 +81,7 @@ namespace webapi.Controllers
 
 
 
-        
+
 
 
         [HttpGet("{id}")]
@@ -149,6 +162,9 @@ namespace webapi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error creating the request.");
             }
         }
+
+        
+
 
     }
 }

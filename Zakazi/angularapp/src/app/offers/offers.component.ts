@@ -51,15 +51,20 @@ export class OffersComponent implements OnInit {
       const token = this.jwtHelper.decodeToken(user);
       const userId: number = +token.nameid; // Parse nameid to number
 
-      // Inside your component class
+
+      const startTimestamp = localStorage.getItem('startTimestamp') ?? '';
+      const endTimestamp = localStorage.getItem('endTimestamp') ?? '';
+
       const appointmentData = {
-        timestamp: new Date().toISOString(), // Assuming timestamp is a string representation of DateTime
+        timestamp: new Date().toISOString(), 
         requestStatus: 0, // Assuming RequestStatus is an enum
         postId: offer.postId,
         businessId: offer.businessId,
-        clientId: userId
+        clientId: userId,
+        from: new Date(startTimestamp).toISOString(),
+        to: new Date(endTimestamp).toISOString()
       };
-
+      
       console.log(appointmentData);
 
       // Make HTTP POST request to the backend API

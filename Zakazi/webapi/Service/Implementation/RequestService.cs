@@ -67,5 +67,10 @@ namespace webapi.Domain.Services
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<Request>> GetRequestsByClientId(int clientId)
+        {
+            return await _context.Requests.Where(r => r.ClientId == clientId).ToListAsync();
+        }
     }
 }

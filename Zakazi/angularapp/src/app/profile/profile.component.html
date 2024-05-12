@@ -73,144 +73,60 @@
             </div>
             <div class="my-profile-client-features1">
                 <div class="my-profile-client-container03">
-                    <div class="my-profile-client-container04">
-                        <div class="my-profile-client-container05">
-                            <span class="my-profile-client-text">Hair dresser</span>
-                            <span class="my-profile-client-text01">10$/hr</span>
-                        </div>
-                        <h1 class="my-profile-client-text02">I will cut your hair</h1>
-                        <span class="my-profile-client-text03">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                            non volutpat turpis. Mauris luctus rutrum mi ut rhoncus.
-                            Integer in dignissim tortor. Lorem ipsum dolor sit amet,
-                            consectetur adipiscing ...
-                        </span>
-                        <div class="my-profile-client-container06">
-                            <div class="my-profile-client-container07">
-                                <span class="my-profile-client-text04">
-                                    01/01/2024 6:00:00
-                                </span>
-                                <span class="my-profile-client-text05">-</span>
-                                <span class="my-profile-client-text06">
-                                    01/01/2024 9:00:00
-                                </span>
-                            </div>
-                            <div class="my-profile-client-container08">
-                                <button class="buttonFilled">
-                                    <span>
-                                        <span>Cancel</span>
-                                        <br />
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="my-profile-client-container09">
-                            <div class="my-profile-client-profile">
-                                <img alt="profile"
-                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fHBvcnRyYWl0fGVufDB8fHx8MTYyNjM3ODk3Mg&amp;ixlib=rb-1.2.1&amp;w=200"
-                                    class="my-profile-client-image" />
-                                <span class="my-profile-client-text10">Jane Doe</span>
-                            </div>
-                            <div class="my-profile-client-container10">
-                                <span class="my-profile-client-text11">
-                                    Status:&nbsp; &nbsp;
-                                </span>
-                                <span class="my-profile-client-text12">Pending</span>
-                            </div>
-                        </div>
+
+
+                  <div *ngFor="let request of requestOptions" class="my-profile-client-container04">
+                    <div class="my-profile-client-container05">
+                      <span class="my-profile-client-text">Hair dresser</span>
+                      <span class="my-profile-client-text01">10$/hr</span>
                     </div>
-                    <div class="my-profile-client-container11">
-                        <div class="my-profile-client-container12">
-                            <span class="my-profile-client-text13">Hair dresser</span>
-                            <span class="my-profile-client-text14">10$/hr</span>
-                        </div>
-                        <h1 class="my-profile-client-text15">I will cut your hair</h1>
-                        <span class="my-profile-client-text16">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                            non volutpat turpis. Mauris luctus rutrum mi ut rhoncus.
-                            Integer in dignissim tortor. Lorem ipsum dolor sit amet,
-                            consectetur adipiscing ...
+                    <h1 class="my-profile-client-text02">I will cut your hair</h1>
+                    <span class="my-profile-client-text03">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                      non volutpat turpis. Mauris luctus rutrum mi ut rhoncus.
+                      Integer in dignissim tortor. Lorem ipsum dolor sit amet,
+                      consectetur adipiscing ...
+                    </span>
+                    <div class="my-profile-client-container06">
+                      <div class="my-profile-client-container07">
+                        <span class="my-profile-client-text04">
+                          01/01/2024 6:00:00
                         </span>
-                        <div class="my-profile-client-container13">
-                            <div class="my-profile-client-container14">
-                                <span class="my-profile-client-text17">
-                                    01/01/2024 6:00:00
-                                </span>
-                                <span class="my-profile-client-text18">-</span>
-                                <span class="my-profile-client-text19">
-                                    01/01/2024 9:00:00
-                                </span>
-                            </div>
-                            <div class="my-profile-client-container15">
-                                <button class="buttonFilled">
-                                    <span>
-                                        <span>Cancel</span>
-                                        <br />
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="my-profile-client-container16">
-                            <div class="my-profile-client-profile1">
-                                <img alt="profile"
-                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fHBvcnRyYWl0fGVufDB8fHx8MTYyNjM3ODk3Mg&amp;ixlib=rb-1.2.1&amp;w=200"
-                                    class="my-profile-client-image1" />
-                                <span class="my-profile-client-text23">Jane Doe</span>
-                            </div>
-                            <div class="my-profile-client-container17">
-                                <span class="my-profile-client-text24">
-                                    Status:&nbsp; &nbsp;
-                                </span>
-                                <span class="my-profile-client-text25">Pending</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="my-profile-client-container18">
-                        <div class="my-profile-client-container19">
-                            <span class="my-profile-client-text26">Hair dresser</span>
-                            <span class="my-profile-client-text27">10$/hr</span>
-                        </div>
-                        <h1 class="my-profile-client-text28">I will cut your hair</h1>
-                        <span class="my-profile-client-text29">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                            non volutpat turpis. Mauris luctus rutrum mi ut rhoncus.
-                            Integer in dignissim tortor. Lorem ipsum dolor sit amet,
-                            consectetur adipiscing ...
+                        <span class="my-profile-client-text05">-</span>
+                        <span class="my-profile-client-text06">
+                          01/01/2024 9:00:00
                         </span>
-                        <div class="my-profile-client-container20">
-                            <div class="my-profile-client-container21">
-                                <span class="my-profile-client-text30">
-                                    01/01/2024 6:00:00
-                                </span>
-                                <span class="my-profile-client-text31">-</span>
-                                <span class="my-profile-client-text32">
-                                    01/01/2024 9:00:00
-                                </span>
-                            </div>
-                            <div class="my-profile-client-container22">
-                                <button class="buttonFilled">
-                                    <span>
-                                        <span>Cancel</span>
-                                        <br />
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="my-profile-client-container23">
-                            <div class="my-profile-client-profile2">
-                                <img alt="profile"
-                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fHBvcnRyYWl0fGVufDB8fHx8MTYyNjM3ODk3Mg&amp;ixlib=rb-1.2.1&amp;w=200"
-                                    class="my-profile-client-image2" />
-                                <span class="my-profile-client-text36">Jane Doe</span>
-                            </div>
-                            <div class="my-profile-client-container24">
-                                <span class="my-profile-client-text37">
-                                    Status:&nbsp; &nbsp;
-                                </span>
-                                <span class="my-profile-client-text38">Pending</span>
-                            </div>
-                        </div>
+                      </div>
+                      <div class="my-profile-client-container08">
+                        <button class="buttonFilled" (click)="onCancelOfferClick()">
+                          <span>
+                            <span>Cancel</span>
+                            <br />
+                          </span>
+                        </button>
+                      </div>
                     </div>
+                    <div class="my-profile-client-container09">
+                      <div class="my-profile-client-profile">
+                        <img alt="profile"
+                             src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fHBvcnRyYWl0fGVufDB8fHx8MTYyNjM3ODk3Mg&amp;ixlib=rb-1.2.1&amp;w=200"
+                             class="my-profile-client-image" />
+                        <span class="my-profile-client-text10">Jane Doe</span>
+                      </div>
+                      <div class="my-profile-client-container10">
+                        <span class="my-profile-client-text11">
+                          Status:&nbsp; &nbsp;
+                        </span>
+                        <span class="my-profile-client-text12">Pending</span>
+                      </div>
+                    </div>
+                  </div>
+
+
+                    
+
+
+                   
                 </div>
             </div>
         </div>

@@ -8,7 +8,6 @@
   }
   .list-offers-card-blog-post-card {
     width: 100%;
-    display: flex;
     overflow: hidden;
     max-width: var(--dl-size-size-maxwidth);
     box-shadow: 5px 5px 10px 0px rgba(18, 18, 18, 0.1);
@@ -438,4 +437,3 @@
     cursor: pointer;
     color: black;
   }
-  

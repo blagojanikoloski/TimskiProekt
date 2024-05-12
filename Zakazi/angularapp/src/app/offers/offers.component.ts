@@ -4,11 +4,15 @@ import { ActivatedRoute } from '@angular/router';
 // Define the interface for Offer
 interface Offer {
   postId: number;
-  businessId: number;
+  businessName: string; 
   nameOfService: string;
   price: number;
   availabilityFrom: string;
-  // Add other properties if needed
+  availabilityTo: string; 
+  name: string; 
+  surname: string; 
+  email: string; 
+  phoneNumber: string;
 }
 
 @Component({

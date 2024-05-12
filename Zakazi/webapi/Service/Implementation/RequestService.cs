@@ -72,5 +72,16 @@ namespace webapi.Domain.Services
         {
             return await _context.Requests.Where(r => r.ClientId == clientId).ToListAsync();
         }
+
+        public async Task<IEnumerable<Request>> GetRequestsByWorkerId(int workerId)
+        {
+            var requests = await (from req in _context.Requests
+                                  join bus in _context.Businesses on req.BusinessId equals bus.BusinessId
+                                  where bus.OwnerId == workerId
+                                  select req).ToListAsync();
+
+            return requests;
+        }
+
     }
 }

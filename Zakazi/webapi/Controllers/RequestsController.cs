@@ -50,20 +50,6 @@ namespace webapi.Controllers
             }
         }
 
-        //[HttpGet("GetMyRequests/{id}")]
-        //public async Task<ActionResult<IEnumerable<Request>>> GetMyRequests(string id)
-        //{
-        //    try
-        //    {
-        //        var requests = await _requestService.GetRequestsByClientIdOrWorkerId(id);
-        //        return Ok(requests);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it appropriately
-        //        return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving requests from the database.");
-        //    }
-        //}
 
          // Import the namespace where RequestStatus enum is defined
 
@@ -81,6 +67,7 @@ namespace webapi.Controllers
                         var user = await _userService.GetUserById(request.ClientId.ToString());
                         var business = await _businessService.GetBusinessById(request.BusinessId);
                         var post = await _postService.GetPostById(request.PostId);
+                        var owner = await _userService.GetUserById(business.OwnerId.ToString());
 
                         // Convert RequestStatus enum to string
                         string requestStatusString = Enum.GetName(typeof(RequestStatus), request.RequestStatus);
@@ -96,8 +83,8 @@ namespace webapi.Controllers
                             ClientId = request.ClientId,
                             From = request.From.ToString("yyyy-MM-dd HH:mm:ss"),
                             To = request.To.ToString("yyyy-MM-dd HH:mm:ss"),
-                            Name = user.Name,
-                            Surname = user.Surname,
+                            Name = owner.Name,
+                            Surname = owner.Surname,
                             BusinessName = business.BusinessName,
                             NameOfService = post.NameOfService,
                             Price = post.Price,
@@ -113,23 +100,55 @@ namespace webapi.Controllers
                 }
             }
 
+        [HttpGet("worker/{workerId}/requests")]
+        public async Task<ActionResult<IEnumerable<MyProfileCardDto>>> GetRequestsByWorkerId(int workerId)
+        {
+            try
+            {
+                var requests = await _requestService.GetRequestsByWorkerId(workerId);
+                var dtos = new List<MyProfileCardDto>();
+
+                foreach (var request in requests)
+                {
+                    // Fetch user information using the client ID
+                    var user = await _userService.GetUserById(request.ClientId.ToString());
+                    var business = await _businessService.GetBusinessById(request.BusinessId);
+                    var post = await _postService.GetPostById(request.PostId);
+                    var owner = await _userService.GetUserById(business.OwnerId.ToString());
+
+                    // Convert RequestStatus enum to string
+                    string requestStatusString = Enum.GetName(typeof(RequestStatus), request.RequestStatus);
+
+                    // Create a DTO and append user information
+                    var dto = new MyProfileCardDto
+                    {
+                        RequestId = request.RequestId,
+                        Timestamp = request.Timestamp,
+                        RequestStatus = request.RequestStatus,
+                        PostId = request.PostId,
+                        BusinessId = request.BusinessId,
+                        ClientId = request.ClientId,
+                        From = request.From.ToString("yyyy-MM-dd HH:mm:ss"),
+                        To = request.To.ToString("yyyy-MM-dd HH:mm:ss"),
+                        Name = user.Name,
+                        Surname = user.Surname,
+                        BusinessName = business.BusinessName,
+                        NameOfService = post.NameOfService,
+                        Price = post.Price,
+                        RequestStatusInString = requestStatusString // Assign the string representation of RequestStatus
+                    };
+                    dtos.Add(dto);
+                }
+                return Ok(dtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    [HttpGet("{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Request>> GetRequestById(int id)
         {
             try
@@ -168,20 +187,6 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRequest(int id)
-        {
-            try
-            {
-                await _requestService.DeleteRequest(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it appropriately
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting the request.");
-            }
-        }
 
         [HttpPost("request")]
         public async Task<ActionResult<Request>> CreateRequest([FromBody] Request request)
@@ -208,7 +213,28 @@ namespace webapi.Controllers
             }
         }
 
-        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRequest(int id)
+        {
+            try
+            {
+                var request = await _requestService.GetRequestById(id);
+                if (request == null)
+                {
+                    return NotFound();
+                }
+
+                await _requestService.DeleteRequest(id);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting the request.");
+            }
+        }
+
 
 
     }

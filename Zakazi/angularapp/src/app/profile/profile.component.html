@@ -75,7 +75,7 @@
                 <div class="my-profile-client-container03">
 
 
-                  <div *ngFor="let request of requestOptions" class="my-profile-client-container04">
+                  <div *ngFor="let request of requestOptionsClientPending" class="my-profile-client-container04">
                     <div class="my-profile-client-container05">
                       <span class="my-profile-client-text">{{request.businessName}}</span>
                       <span class="my-profile-client-text01">{{request.price}}$/hr</span>
@@ -93,7 +93,7 @@
                         </span>
                       </div>
                       <div class="my-profile-client-container08">
-                        <button class="buttonFilled" (click)="onCancelOfferClick()">
+                        <button class="buttonFilled" (click)="onCancelOfferClick(request.requestId)">
                           <span>
                             <span>Cancel</span>
                             <br />
@@ -133,79 +133,56 @@
                     Pending requests
                 </h1>
             </div>
+
+
             <div class="my-profile-worker-features1">
                 <div class="my-profile-worker-container03">
-                    <div class="my-profile-worker-container04">
-                        <span class="my-profile-worker-text">Hair Dresser</span>
-                        <span class="my-profile-worker-text01">
-                            I will cut you hair
+
+
+                  <ng-container *ngFor="let request of requestOptionsWorker">
+                    <div *ngIf="request.requestStatus === 0" class="my-profile-worker-container04">
+                      <span class="my-profile-worker-text">{{request.businessName}}</span>
+                      <span class="my-profile-worker-text01">
+                        {{request.nameOfService}}
+                      </span>
+
+                      <div class="my-profile-worker-container05">
+                        <div class="my-profile-worker-profile">
+                          <img alt="profile"
+                               src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                               image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                               class="my-profile-worker-image" />
+                          <span class="my-profile-worker-text03">{{request.name}}  {{request.surname}}</span>
+                        </div>
+                        <span class="my-profile-worker-text04">{{request.price}}$/hr</span>
+                      </div>
+                      <div class="my-profile-worker-container06">
+                        <span class="my-profile-worker-text05">
+                          {{request.from}}
                         </span>
-                        <span class="my-profile-worker-text02">
-                            Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                            Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                            rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                            sit amet, consectetur adipiscing elit.
+                        <span class="my-profile-worker-text06">-</span>
+                        <span class="my-profile-worker-text07">
+                          {{request.to}}
                         </span>
-                        <div class="my-profile-worker-container05">
-                            <div class="my-profile-worker-profile">
-                                <img alt="profile"
-                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                    class="my-profile-worker-image" />
-                                <span class="my-profile-worker-text03">Jon Doe</span>
-                            </div>
-                            <span class="my-profile-worker-text04">10$/hr</span>
-                        </div>
-                        <div class="my-profile-worker-container06">
-                            <span class="my-profile-worker-text05">
-                                01/01/2024 6:00:00
-                            </span>
-                            <span class="my-profile-worker-text06">-</span>
-                            <span class="my-profile-worker-text07">
-                                01/01/2024 9:00:00
-                            </span>
-                        </div>
-                        <div class="my-profile-worker-container07">
-                            <button class="buttonFilled">Accept</button>
-                            <button class="buttonFilled">Decline</button>
-                        </div>
+                      </div>
+                      <div class="my-profile-worker-container07">
+                        <button class="buttonFilled">Accept</button>
+                        <button class="buttonFilled">Decline</button>
+                      </div>
                     </div>
-                    <div class="my-profile-worker-container08">
-                        <span class="my-profile-worker-text08">Hair Dresser</span>
-                        <span class="my-profile-worker-text09">
-                            I will cut you hair
-                        </span>
-                        <span class="my-profile-worker-text10">
-                            Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                            Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                            rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                            sit amet, consectetur adipiscing elit.
-                        </span>
-                        <div class="my-profile-worker-container09">
-                            <div class="my-profile-worker-profile1">
-                                <img alt="profile"
-                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                    class="my-profile-worker-image1" />
-                                <span class="my-profile-worker-text11">Jon Doe</span>
-                            </div>
-                            <span class="my-profile-worker-text12">10$/hr</span>
-                        </div>
-                        <div class="my-profile-worker-container10">
-                            <span class="my-profile-worker-text13">
-                                01/01/2024 6:00:00
-                            </span>
-                            <span class="my-profile-worker-text14">-</span>
-                            <span class="my-profile-worker-text15">
-                                01/01/2024 9:00:00
-                            </span>
-                        </div>
-                        <div class="my-profile-worker-container11">
-                            <button class="buttonFilled">Accept</button>
-                            <button class="buttonFilled">Decline</button>
-                        </div>
-                    </div>
-                </div>
+                  </ng-container>
+
+
+
+
+
+
+
+
+
+
+
+</div>
             </div>
         </div>
     </div>

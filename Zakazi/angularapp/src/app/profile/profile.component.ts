@@ -9,14 +9,16 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent {
-  requestOptions: any[] = []; // Initialize requestOptions as an empty array
+  requestOptionsClientPending: any[] = [];
+  requestOptionsWorker: any[] = [];
   jwtHelper: JwtHelperService;
   constructor(private http: HttpClient, private router: Router) {
     this.jwtHelper = new JwtHelperService();
   }
 
   ngOnInit(): void {
-    this.fetchAllRequests();
+    this.fetchAllRequestsClientPending();
+    this.fetchAllRequestsWorker();
   }
 
   onEditOfferClick() {
@@ -27,11 +29,11 @@ export class ProfileComponent {
     // Implement delete offer functionality if needed
   }
 
-  onCancelOfferClick() {
-    this.http.post<any>(`https://localhost:7200/api/Request/cancel`, {}).subscribe(
+  onCancelOfferClick(requestId: number) {
+    this.http.delete<any>(`https://localhost:7200/api/Requests/${requestId}`, {}).subscribe(
       (response) => {
         console.log('Request cancelled successfully:', response);
-        this.router.navigate(['/home']); // Redirect to home upon successful cancellation
+        this.fetchAllRequestsClientPending();
       },
       (error) => {
         console.error('Error cancelling request:', error);
@@ -41,7 +43,7 @@ export class ProfileComponent {
 
   isAdmin: boolean = false;
 
-  fetchAllRequests(): void {
+  fetchAllRequestsClientPending(): void {
     const userString = localStorage.getItem('user');
     if (userString) {
       const user = JSON.parse(userString);
@@ -51,7 +53,26 @@ export class ProfileComponent {
 
       this.http.get<any[]>(`https://localhost:7200/api/Requests/client/${userId}/requests`).subscribe(
         (requests: any[]) => {
-          this.requestOptions = requests; // Assuming requestOptions is an array of objects representing requests
+          this.requestOptionsClientPending = requests; // Assuming requestOptions is an array of objects representing requests
+        },
+        error => {
+          console.error('Error fetching requests:', error);
+        }
+      );
+    }
+  }
+
+  fetchAllRequestsWorker(): void {
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      const user = JSON.parse(userString);
+      const token = this.jwtHelper.decodeToken(user);
+      const userId: number = +token.nameid;
+      console.log(userId);
+
+      this.http.get<any[]>(`https://localhost:7200/api/Requests/worker/${userId}/requests`).subscribe(
+        (requests: any[]) => {
+          this.requestOptionsWorker = requests; // Assuming requestOptions is an array of objects representing requests
         },
         error => {
           console.error('Error fetching requests:', error);

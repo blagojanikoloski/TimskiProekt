@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System.ComponentModel.DataAnnotations;
 using webapi.Domain.Enumerators;
 
 namespace webapi.Domain.DTOs
@@ -25,9 +26,24 @@ namespace webapi.Domain.DTOs
         public int ClientId { get; set; }
 
         [Required]
-        public DateTimeOffset From { get; set; } = DateTimeOffset.UtcNow;
+        public string From { get; set; } 
 
         [Required]
-        public DateTimeOffset To { get; set; } = DateTimeOffset.UtcNow;
+        public string To { get; set; }
+        [Required]
+        public string Name {  get; set; }
+        [Required]
+        public string Surname { get; set; }
+        [Required]
+        public string BusinessName {  get; set; }
+
+        [Required]
+        public string NameOfService { get; set; }
+        [Required]
+        public double Price { get; set; }
+        [Required]
+        public string RequestStatusInString {  get; set; }
+
+
     }
 }

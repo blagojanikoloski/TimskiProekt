@@ -7,6 +7,9 @@ using webapi.Domain.Models;
 using webapi.Domain.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using webapi.Domain.DTOs;
+using System.ComponentModel.DataAnnotations;
+using webapi.Domain.Enumerators;
 
 
 namespace webapi.Controllers
@@ -16,13 +19,19 @@ namespace webapi.Controllers
     [ApiController]
     public class RequestsController : ControllerBase
     {
+        private readonly IZakaziUserService _userService;
         private readonly IRequestService _requestService;
         private readonly ILogger<RequestsController> _logger;
+        private readonly IBusinessService _businessService;
+        private readonly IPostService _postService;
 
-        public RequestsController(IRequestService requestService, ILogger<RequestsController> logger)
+        public RequestsController(IRequestService requestService, ILogger<RequestsController> logger, IZakaziUserService userService, IBusinessService businessService, IPostService postService)
         {
             _requestService = requestService;
             _logger = logger;
+            _userService = userService;
+            _businessService = businessService;
+            _postService = postService;
         }
 
         [HttpGet]
@@ -56,19 +65,53 @@ namespace webapi.Controllers
         //    }
         //}
 
+         // Import the namespace where RequestStatus enum is defined
+
         [HttpGet("client/{clientId}/requests")]
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequestsByClientId(int clientId)
-        {
-            try
+            public async Task<ActionResult<IEnumerable<MyProfileCardDto>>> GetRequestsByClientId(int clientId)
             {
-                var requests = await _requestService.GetRequestsByClientId(clientId);
-                return Ok(requests);
+                try
+                {
+                    var requests = await _requestService.GetRequestsByClientId(clientId);
+                    var dtos = new List<MyProfileCardDto>();
+
+                    foreach (var request in requests)
+                    {
+                        // Fetch user information using the client ID
+                        var user = await _userService.GetUserById(request.ClientId.ToString());
+                        var business = await _businessService.GetBusinessById(request.BusinessId);
+                        var post = await _postService.GetPostById(request.PostId);
+
+                        // Convert RequestStatus enum to string
+                        string requestStatusString = Enum.GetName(typeof(RequestStatus), request.RequestStatus);
+
+                        // Create a DTO and append user information
+                        var dto = new MyProfileCardDto
+                        {
+                            RequestId = request.RequestId,
+                            Timestamp = request.Timestamp,
+                            RequestStatus = request.RequestStatus,
+                            PostId = request.PostId,
+                            BusinessId = request.BusinessId,
+                            ClientId = request.ClientId,
+                            From = request.From.ToString("yyyy-MM-dd HH:mm:ss"),
+                            To = request.To.ToString("yyyy-MM-dd HH:mm:ss"),
+                            Name = user.Name,
+                            Surname = user.Surname,
+                            BusinessName = business.BusinessName,
+                            NameOfService = post.NameOfService,
+                            Price = post.Price,
+                            RequestStatusInString = requestStatusString // Assign the string representation of RequestStatus
+                        };
+                        dtos.Add(dto);
+                    }
+                    return Ok(dtos);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"Internal server error: {ex.Message}");
+                }
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
 
 
 
@@ -84,7 +127,9 @@ namespace webapi.Controllers
 
 
 
-        [HttpGet("{id}")]
+
+
+    [HttpGet("{id}")]
         public async Task<ActionResult<Request>> GetRequestById(int id)
         {
             try

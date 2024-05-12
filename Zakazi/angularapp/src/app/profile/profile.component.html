@@ -77,24 +77,19 @@
 
                   <div *ngFor="let request of requestOptions" class="my-profile-client-container04">
                     <div class="my-profile-client-container05">
-                      <span class="my-profile-client-text">Hair dresser</span>
-                      <span class="my-profile-client-text01">10$/hr</span>
+                      <span class="my-profile-client-text">{{request.businessName}}</span>
+                      <span class="my-profile-client-text01">{{request.price}}$/hr</span>
                     </div>
-                    <h1 class="my-profile-client-text02">I will cut your hair</h1>
-                    <span class="my-profile-client-text03">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                      non volutpat turpis. Mauris luctus rutrum mi ut rhoncus.
-                      Integer in dignissim tortor. Lorem ipsum dolor sit amet,
-                      consectetur adipiscing ...
-                    </span>
+                    <h1 class="my-profile-client-text02">{{request.nameOfService}}</h1>
+
                     <div class="my-profile-client-container06">
                       <div class="my-profile-client-container07">
                         <span class="my-profile-client-text04">
-                          01/01/2024 6:00:00
+                          {{request.from}}
                         </span>
                         <span class="my-profile-client-text05">-</span>
                         <span class="my-profile-client-text06">
-                          01/01/2024 9:00:00
+                          {{request.to}}
                         </span>
                       </div>
                       <div class="my-profile-client-container08">
@@ -111,13 +106,13 @@
                         <img alt="profile"
                              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fHBvcnRyYWl0fGVufDB8fHx8MTYyNjM3ODk3Mg&amp;ixlib=rb-1.2.1&amp;w=200"
                              class="my-profile-client-image" />
-                        <span class="my-profile-client-text10">Jane Doe</span>
+                        <span class="my-profile-client-text10">{{request.name}}  {{request.surname}}</span>
                       </div>
                       <div class="my-profile-client-container10">
                         <span class="my-profile-client-text11">
                           Status:&nbsp; &nbsp;
                         </span>
-                        <span class="my-profile-client-text12">Pending</span>
+                        <span class="my-profile-client-text12">{{request.requestStatusInString}}</span>
                       </div>
                     </div>
                   </div>

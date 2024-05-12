@@ -17,18 +17,20 @@ public class Request
     public RequestStatus RequestStatus { get; set; }
 
     [Required]
-    public ICollection<Post> RequestedServices { get; set; } = new Collection<Post>();
+    public int PostId {  get; set; }
 
     [Required]
     public int BusinessId { get; set; }
 
-    [JsonIgnore]
-    public Business Business { get; set; }
-
     [Required]
     public int ClientId { get; set; }
 
-    [JsonIgnore]
-    public ZakaziUser Client { get; set; }
+    [Required]
+    public DateTimeOffset From { get; set; } = DateTimeOffset.UtcNow;
+
+    [Required]
+    public DateTimeOffset To { get; set; } = DateTimeOffset.UtcNow;
+
+
 
 }

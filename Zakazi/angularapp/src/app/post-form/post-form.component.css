@@ -41,3 +41,31 @@
       #post-form .form-group input[type="datetime-local"]:focus {
         border-color: #5cb85c;
       }
+
+    #post-form .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+
+      #post-form .form-group select:focus {
+        border-color: #5cb85c;
+      }
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #5cb85c;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+  button[type="submit"]:hover {
+    background-color: #4cae4c;
+  }

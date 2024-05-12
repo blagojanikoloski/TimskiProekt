@@ -63,7 +63,7 @@ namespace webapi.Domain.Services
 
         public async Task<IEnumerable<Post>> GetPostsBetweenTimestamps(DateTime startTimestamp, DateTime endTimestamp)
         {
-            return _context.Posts.Where(p => p.AvailabilityFrom >= startTimestamp && p.AvailabilityTo <= endTimestamp).ToList();
+            return _context.Posts.Where(p => p.AvailabilityFrom <= startTimestamp && p.AvailabilityTo >= endTimestamp).ToList();
         }
     }
 }

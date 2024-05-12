@@ -34,9 +34,17 @@ namespace webapi.Domain.Services
 
         public async Task<Request> CreateRequest(Request request)
         {
-            _context.Requests.Add(request);
-            await _context.SaveChangesAsync();
-            return request;
+            try
+            {
+                _context.Requests.Add(request);
+                await _context.SaveChangesAsync();
+                return request;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                throw new Exception("Error creating the request.", ex);
+            }
         }
 
         public async Task<Request> GetRequestById(int id)
@@ -59,5 +67,21 @@ namespace webapi.Domain.Services
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<Request>> GetRequestsByClientId(int clientId)
+        {
+            return await _context.Requests.Where(r => r.ClientId == clientId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Request>> GetRequestsByWorkerId(int workerId)
+        {
+            var requests = await (from req in _context.Requests
+                                  join bus in _context.Businesses on req.BusinessId equals bus.BusinessId
+                                  where bus.OwnerId == workerId
+                                  select req).ToListAsync();
+
+            return requests;
+        }
+
     }
 }

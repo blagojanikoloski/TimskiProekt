@@ -139,7 +139,8 @@ namespace webapi.Controllers
                         Name = user?.Name,
                         Surname = user?.Surname,
                         Email = user?.Email,
-                        PhoneNumber = user?.PhoneNumber
+                        PhoneNumber = user?.PhoneNumber,
+                        BusinessId = post.BusinessId
                     };
 
                     toReturn.Add(offerDto);

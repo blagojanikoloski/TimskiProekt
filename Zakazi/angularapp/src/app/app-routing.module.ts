@@ -8,6 +8,7 @@ import { OffersComponent } from './offers/offers.component';
 import { EditOfferComponent } from './offers/edit-offer/edit-offer.component';
 import { BusinessFormComponent } from './business-form/business-form.component';
 import { SearchOfferComponent } from './search-offer/search-offer.component';
+import { PostFormComponent } from './post-form/post-form.component';
 
 
 const routes: Routes = [
@@ -44,6 +45,10 @@ const routes: Routes = [
   {
     path: 'business-form',
     component: BusinessFormComponent,
+  },
+  {
+    path: 'post-form',
+    component: PostFormComponent,
   },
   {
     path: 'search-offer', 

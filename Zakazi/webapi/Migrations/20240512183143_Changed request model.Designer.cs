@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using webapi.Repository;
 
@@ -11,9 +12,11 @@ using webapi.Repository;
 namespace webapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240512183143_Changed request model")]
+    partial class Changedrequestmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,9 +197,6 @@ namespace webapi.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("From")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
@@ -207,9 +207,6 @@ namespace webapi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetimeoffset")
                         .HasDefaultValueSql("SYSUTCDATETIME()");
-
-                    b.Property<DateTimeOffset>("To")
-                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("RequestId");
 

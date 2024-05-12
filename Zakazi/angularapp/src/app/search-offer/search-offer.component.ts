@@ -30,6 +30,10 @@ export class SearchOfferComponent {
     const formattedStartTimestamp = startTimestamp.toISOString().replace('T', ' ').split('.')[0];
     const formattedEndTimestamp = endTimestamp.toISOString().replace('T', ' ').split('.')[0];
 
+
+    // Store timestamps in localStorage
+    localStorage.setItem('startTimestamp', formattedStartTimestamp);
+    localStorage.setItem('endTimestamp', formattedEndTimestamp);
     // Call the API endpoint with formatted timestamps
     this.http.get<any[]>(`https://localhost:7200/api/Posts/BetweenTimestamps?startTimestamp=${formattedStartTimestamp}&endTimestamp=${formattedEndTimestamp}`).subscribe(
       (response) => {

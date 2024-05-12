@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using webapi.Repository;
 
@@ -11,9 +12,11 @@ using webapi.Repository;
 namespace webapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240512152626_Removed business property from post(we have id)")]
+    partial class Removedbusinesspropertyfrompostwehaveid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,9 +176,14 @@ namespace webapi.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<int?>("RequestId")
+                        .HasColumnType("int");
+
                     b.HasKey("PostId");
 
                     b.HasIndex("BusinessId");
+
+                    b.HasIndex("RequestId");
 
                     b.ToTable("Posts");
                 });
@@ -194,12 +202,6 @@ namespace webapi.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("From")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
                     b.Property<int>("RequestStatus")
                         .HasColumnType("int");
 
@@ -208,12 +210,11 @@ namespace webapi.Migrations
                         .HasColumnType("datetimeoffset")
                         .HasDefaultValueSql("SYSUTCDATETIME()");
 
-                    b.Property<DateTimeOffset>("To")
-                        .HasColumnType("datetimeoffset");
-
                     b.HasKey("RequestId");
 
                     b.HasIndex("BusinessId");
+
+                    b.HasIndex("ClientId");
 
                     b.ToTable("Requests");
                 });
@@ -402,15 +403,29 @@ namespace webapi.Migrations
                         .HasForeignKey("BusinessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("webapi.Domain.Models.Request", null)
+                        .WithMany("RequestedServices")
+                        .HasForeignKey("RequestId");
                 });
 
             modelBuilder.Entity("webapi.Domain.Models.Request", b =>
                 {
-                    b.HasOne("webapi.Domain.Models.Business", null)
+                    b.HasOne("webapi.Domain.Models.Business", "Business")
                         .WithMany("Requests")
                         .HasForeignKey("BusinessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("webapi.Domain.Models.ZakaziUser", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Business");
+
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("webapi.Domain.Models.UserRole", b =>
@@ -437,6 +452,11 @@ namespace webapi.Migrations
                     b.Navigation("Posts");
 
                     b.Navigation("Requests");
+                });
+
+            modelBuilder.Entity("webapi.Domain.Models.Request", b =>
+                {
+                    b.Navigation("RequestedServices");
                 });
 
             modelBuilder.Entity("webapi.Domain.Models.Role", b =>

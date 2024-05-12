@@ -43,13 +43,7 @@ namespace webapi.Repository
 
             modelBuilder.Entity<Business>(entity =>
             {
-                entity.HasMany(ur => ur.Posts)
-                .WithOne(u => u.Business)
-                .HasForeignKey(ur => ur.BusinessId);
 
-                entity.HasMany(ur => ur.Requests)
-               .WithOne(u => u.Business)
-               .HasForeignKey(ur => ur.BusinessId);
             });
 
             modelBuilder.Entity<Post>(entity =>

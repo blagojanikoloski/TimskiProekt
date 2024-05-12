@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BusinessService } from '../services/business';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-business-form',
@@ -9,18 +10,24 @@ import { BusinessService } from '../services/business';
 })
 export class BusinessFormComponent {
   businessForm = this.fb.group({
-    businessName: ['', Validators.required],  
+    businessName: ['', Validators.required],
     ownerId: [null, Validators.required],
   });
 
-  constructor(private fb: FormBuilder, private businessService: BusinessService) { }
+  jwtHelper: JwtHelperService; // Declare jwtHelper property
+
+  constructor(private fb: FormBuilder, private businessService: BusinessService) {
+    this.jwtHelper = new JwtHelperService(); // Initialize jwtHelper
+  }
 
   onSubmit() {
-    if (this.businessForm.valid) {
-      this.businessService.createBusiness(this.businessForm.value).subscribe({
-        next: (response) => console.log('Business created', response),
-        error: (error) => console.error('Error creating business', error)
-      });
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      const user = JSON.parse(userString);
+      const token = this.jwtHelper.decodeToken(user); // Decode the token
+      console.log(token);
+    } else {
+      console.error('User data not found in local storage.');
     }
   }
 }

@@ -41,6 +41,37 @@ export class ProfileComponent {
     );
   }
 
+
+  acceptRequest(requestId: number) {
+    this.http.put(`https://localhost:7200/api/Requests/accept/${requestId}`, {}).subscribe(
+      () => {
+        console.log('Request accepted successfully.');
+        this.fetchAllRequestsWorker();
+        // You can add any additional logic here, such as updating UI or reloading data.
+      },
+      (error) => {
+        console.error('Error accepting request:', error);
+        // Handle error
+      }
+    );
+  }
+
+  declineRequest(requestId: number) {
+    this.http.put(`https://localhost:7200/api/Requests/decline/${requestId}`, {}).subscribe(
+      () => {
+        console.log('Request declined successfully.');
+        this.fetchAllRequestsWorker();
+        // You can add any additional logic here, such as updating UI or reloading data.
+      },
+      (error) => {
+        console.error('Error declining request:', error);
+        // Handle error
+      }
+    );
+  }
+
+
+
   isAdmin: boolean = false;
 
   fetchAllRequestsClientPending(): void {
@@ -79,5 +110,12 @@ export class ProfileComponent {
         }
       );
     }
+  }
+
+
+  isRequestExpired(request: any): boolean {
+    const currentTime = new Date();
+    const requestToTime = new Date(request.to);
+    return requestToTime < currentTime;
   }
 }

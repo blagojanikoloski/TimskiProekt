@@ -166,8 +166,8 @@
                         </span>
                       </div>
                       <div class="my-profile-worker-container07">
-                        <button class="buttonFilled">Accept</button>
-                        <button class="buttonFilled">Decline</button>
+                        <button class="buttonFilled" (click)="acceptRequest(request.requestId)">Accept</button>
+                        <button class="buttonFilled" (click)="declineRequest(request.requestId)">Decline</button>
                       </div>
                     </div>
                   </ng-container>
@@ -194,78 +194,43 @@
                 </h1>
             </div>
             <div class="my-profile-worker-features3">
-                <div class="my-profile-worker-container13">
-                    <div class="my-profile-worker-container14">
-                        <span class="my-profile-worker-text16">Hair Dresser</span>
-                        <span class="my-profile-worker-text17">
-                            I will cut you hair
-                        </span>
-                        <span class="my-profile-worker-text18">
-                            Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                            Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                            rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                            sit amet, consectetur adipiscing elit.
-                        </span>
-                        <div class="my-profile-worker-container15">
-                            <div class="my-profile-worker-profile2">
-                                <img alt="profile"
-                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
-                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                    class="my-profile-worker-image2" />
-                                <span class="my-profile-worker-text19">Jon Doe</span>
-                            </div>
-                            <span class="my-profile-worker-text20">10$/hr</span>
-                        </div>
-                        <div class="my-profile-worker-container16">
-                            <span class="my-profile-worker-text21">
-                                01/01/2024 6:00:00
-                            </span>
-                            <span class="my-profile-worker-text22">-</span>
-                            <span class="my-profile-worker-text23">
-                                01/01/2024 9:00:00
-                            </span>
-                        </div>
-                        <div class="my-profile-worker-container17">
-                            <button (click)="onDeleteOfferClick()" class="buttonFilled">Delete Offer</button>
-                            <button (click)="onEditOfferClick()" class="buttonFilled">Edit Offer</button>
-                        </div>
+              <div class="my-profile-worker-container13">
+
+
+                <ng-container *ngFor="let request of requestOptionsWorker">
+                  <div *ngIf="request.requestStatus === 1 && !isRequestExpired(request)" class="my-profile-worker-container14">
+                    <span class="my-profile-worker-text16">{{request.businessName}}</span>
+                    <span class="my-profile-worker-text17">
+                      {{request.nameOfService}}
+                    </span>
+                    <div class="my-profile-worker-container15">
+                      <div class="my-profile-worker-profile2">
+                        <img alt="profile"
+                             src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
+                             image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                             class="my-profile-worker-image2" />
+                        <span class="my-profile-worker-text19">{{request.name}}  {{request.surname}}</span>
+                      </div>
+                      <span class="my-profile-worker-text20">{{request.price}}$/hr</span>
                     </div>
-                    <div class="my-profile-worker-container18">
-                        <span class="my-profile-worker-text24">Hair Dresser</span>
-                        <span class="my-profile-worker-text25">
-                            I will cut you hair
-                        </span>
-                        <span class="my-profile-worker-text26">
-                            Lorem ipsum dolor sit amet, consectetur, adipiscing elit.
-                            Sed non volutpat turpis. ​ Mauris luctus rutrum mi ut
-                            rhoncus. Integer in dignissim tortor. Lorem ​​ ipsum dolor
-                            sit amet, consectetur adipiscing elit.
-                        </span>
-                        <div class="my-profile-worker-container19">
-                            <div class="my-profile-worker-profile3">
-                                <img alt="profile"
-                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
-                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                    class="my-profile-worker-image3" />
-                                <span class="my-profile-worker-text27">Jon Doe</span>
-                            </div>
-                            <span class="my-profile-worker-text28">10$/hr</span>
-                        </div>
-                        <div class="my-profile-worker-container20">
-                            <span class="my-profile-worker-text29">
-                                01/01/2024 6:00:00
-                            </span>
-                            <span class="my-profile-worker-text30">-</span>
-                            <span class="my-profile-worker-text31">
-                                01/01/2024 9:00:00
-                            </span>
-                        </div>
-                        <div class="my-profile-worker-container21">
-                            <button (click)="onDeleteOfferClick()" class="buttonFilled">Delete Offer</button>
-                            <button (click)="onEditOfferClick()" class="buttonFilled">Edit Offer</button>
-                        </div>
+                    <div class="my-profile-worker-container16">
+                      <span class="my-profile-worker-text21">
+                        {{request.from}}
+                      </span>
+                      <span class="my-profile-worker-text22">-</span>
+                      <span class="my-profile-worker-text23">
+                        {{request.to}}
+                      </span>
                     </div>
-                </div>
+                    <div class="my-profile-worker-container17">
+                      <button (click)="declineRequest(request.requestId)" class="buttonFilled">Delete Offer</button>
+                      <button (click)="onEditOfferClick()" class="buttonFilled">Edit Offer</button>
+                    </div>
+                  </div>
+                  </ng-container>
+
+
+              </div>
             </div>
         </div>
     </div>
@@ -277,108 +242,39 @@
                 </h1>
             </div>
             <div class="my-profile-worker-features5">
-                <div class="my-profile-worker-container23">
-                    <div class="my-profile-worker-container24">
-                        <span class="my-profile-worker-text32">Hair Dresser</span>
-                        <span class="my-profile-worker-text33">
-                            I will cut you hair
-                        </span>
-                        <div class="my-profile-worker-container25">
-                            <div class="my-profile-worker-profile4">
-                                <img alt="profile"
-                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
-                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                    class="my-profile-worker-image4" />
-                                <span class="my-profile-worker-text34">Jon Doe</span>
-                            </div>
-                            <span class="my-profile-worker-text35">10$/hr</span>
-                        </div>
-                        <div class="my-profile-worker-container26">
-                            <span class="my-profile-worker-text36">
-                                01/01/2024 6:00:00
-                            </span>
-                            <span class="my-profile-worker-text37">-</span>
-                            <span class="my-profile-worker-text38">
-                                01/01/2024 9:00:00
-                            </span>
-                        </div>
+              <div class="my-profile-worker-container23">
+
+                <ng-container *ngFor="let request of requestOptionsWorker">
+                  <div *ngIf="request.requestStatus === 1 && isRequestExpired(request)" class="my-profile-worker-container24">
+                    <span class="my-profile-worker-text32">{{request.businessName}}</span>
+                    <span class="my-profile-worker-text33">
+                      {{request.nameOfService}}
+                    </span>
+                    <div class="my-profile-worker-container25">
+                      <div class="my-profile-worker-profile4">
+                        <img alt="profile"
+                             src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
+                             image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                             class="my-profile-worker-image4" />
+                        <span class="my-profile-worker-text34">{{request.name}}  {{request.surname}}</span>
+                      </div>
+                      <span class="my-profile-worker-text35">{{request.price}}$/hr</span>
                     </div>
-                    <div class="my-profile-worker-container27">
-                        <span class="my-profile-worker-text39">Hair Dresser</span>
-                        <span class="my-profile-worker-text40">
-                            I will cut you hair
-                        </span>
-                        <div class="my-profile-worker-container28">
-                            <div class="my-profile-worker-profile5">
-                                <img alt="profile"
-                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
-                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                    class="my-profile-worker-image5" />
-                                <span class="my-profile-worker-text41">Jon Doe</span>
-                            </div>
-                            <span class="my-profile-worker-text42">10$/hr</span>
-                        </div>
-                        <div class="my-profile-worker-container29">
-                            <span class="my-profile-worker-text43">
-                                01/01/2024 6:00:00
-                            </span>
-                            <span class="my-profile-worker-text44">-</span>
-                            <span class="my-profile-worker-text45">
-                                01/01/2024 9:00:00
-                            </span>
-                        </div>
+                    <div class="my-profile-worker-container26">
+                      <span class="my-profile-worker-text36">
+                        {{request.from}}
+                      </span>
+                      <span class="my-profile-worker-text37">-</span>
+                      <span class="my-profile-worker-text38">
+                        {{request.to}}
+                      </span>
                     </div>
-                    <div class="my-profile-worker-container30">
-                        <span class="my-profile-worker-text46">Hair Dresser</span>
-                        <span class="my-profile-worker-text47">
-                            I will cut you hair
-                        </span>
-                        <div class="my-profile-worker-container31">
-                            <div class="my-profile-worker-profile6">
-                                <img alt="profile"
-                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
-                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                    class="my-profile-worker-image6" />
-                                <span class="my-profile-worker-text48">Jon Doe</span>
-                            </div>
-                            <span class="my-profile-worker-text49">10$/hr</span>
-                        </div>
-                        <div class="my-profile-worker-container32">
-                            <span class="my-profile-worker-text50">
-                                01/01/2024 6:00:00
-                            </span>
-                            <span class="my-profile-worker-text51">-</span>
-                            <span class="my-profile-worker-text52">
-                                01/01/2024 9:00:00
-                            </span>
-                        </div>
-                    </div>
-                    <div class="my-profile-worker-container33">
-                        <span class="my-profile-worker-text53">Hair Dresser</span>
-                        <span class="my-profile-worker-text54">
-                            I will cut you hair
-                        </span>
-                        <div class="my-profile-worker-container34">
-                            <div class="my-profile-worker-profile7">
-                                <img alt="profile"
-                                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
-                                    image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                    class="my-profile-worker-image7" />
-                                <span class="my-profile-worker-text55">Jon Doe</span>
-                            </div>
-                            <span class="my-profile-worker-text56">10$/hr</span>
-                        </div>
-                        <div class="my-profile-worker-container35">
-                            <span class="my-profile-worker-text57">
-                                01/01/2024 6:00:00
-                            </span>
-                            <span class="my-profile-worker-text58">-</span>
-                            <span class="my-profile-worker-text59">
-                                01/01/2024 9:00:00
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                  </div>
+                  </ng-container>
+
+
+
+              </div>
             </div>
         </div>
     </div>

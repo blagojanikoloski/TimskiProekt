@@ -237,5 +237,53 @@ namespace webapi.Controllers
 
 
 
+
+        [HttpPut("accept/{id}")]
+        public async Task<IActionResult> AcceptRequest(int id)
+        {
+            try
+            {
+                var request = await _requestService.GetRequestById(id);
+                if (request == null)
+                {
+                    return NotFound();
+                }
+
+                request.RequestStatus = RequestStatus.ACCEPTED;
+                await _requestService.UpdateRequest(request);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error accepting the request.");
+            }
+        }
+
+        [HttpPut("decline/{id}")]
+        public async Task<IActionResult> DeclineRequest(int id)
+        {
+            try
+            {
+                var request = await _requestService.GetRequestById(id);
+                if (request == null)
+                {
+                    return NotFound();
+                }
+
+                request.RequestStatus = RequestStatus.REJECTED;
+                await _requestService.UpdateRequest(request);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error declining the request.");
+            }
+        }
+
+
     }
 }

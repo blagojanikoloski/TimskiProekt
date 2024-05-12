@@ -11,6 +11,9 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IBusinessService, BusinessService>();
+builder.Services.AddScoped<IZakaziUserService, ZakaziUserService>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 //nswag api calls generator for angularapp
 builder.Services.AddOpenApiDocument();

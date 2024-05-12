@@ -11,9 +11,6 @@ public class Post
     [Required]
     public int BusinessId { get; set; }
 
-    [JsonIgnore]
-    public Business Business { get; set; }
-
     [Required]
     public string NameOfService { get; set; }
 

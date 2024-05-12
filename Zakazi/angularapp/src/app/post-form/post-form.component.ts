@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-form',
@@ -14,7 +15,7 @@ export class PostFormComponent implements OnInit {
 
   jwtHelper: JwtHelperService;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
     this.jwtHelper = new JwtHelperService();
   }
 
@@ -32,9 +33,28 @@ export class PostFormComponent implements OnInit {
 
   onSubmit(): void {
     if (this.postForm.valid) {
-      console.log('Form submitted:', this.postForm.value);
+      const formData = {
+        nameOfService: this.postForm.get('nameOfService')!.value,
+        price: this.postForm.get('price')!.value,
+        availabilityFrom: this.postForm.get('availabilityFrom')!.value,
+        availabilityTo: this.postForm.get('availabilityTo')!.value,
+        businessId: this.postForm.get('businessId')!.value
+      };
+
+      this.http.post('https://localhost:7200/api/posts', formData).subscribe(
+        (response) => {
+          console.log('Post created successfully:', response);
+          // Optionally, you can reset the form after successful submission
+          this.postForm.reset();
+          this.router.navigate(['/home']);
+        },
+        (error) => {
+          console.error('Error creating post:', error);
+        }
+      );
     }
   }
+
 
   fetchBusinesses(): void {
     const userString = localStorage.getItem('user');

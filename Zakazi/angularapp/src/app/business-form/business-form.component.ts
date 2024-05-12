@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { BusinessService } from '../services/business';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-business-form',
@@ -16,7 +17,7 @@ export class BusinessFormComponent {
 
   jwtHelper: JwtHelperService; // Declare jwtHelper property
 
-  constructor(private fb: FormBuilder, private businessService: BusinessService, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private businessService: BusinessService, private http: HttpClient, private router: Router) {
     this.jwtHelper = new JwtHelperService(); // Initialize jwtHelper
   }
 
@@ -36,6 +37,7 @@ export class BusinessFormComponent {
             (response) => {
               console.log('Business created successfully:', response);
               // Optionally, you can redirect to another page or perform other actions upon successful creation
+              this.router.navigate(['/home']);
             },
             (error) => {
               console.error('Error creating business:', error);

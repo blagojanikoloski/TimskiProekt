@@ -7,6 +7,7 @@ namespace webapi.Domain.Models
     public class Business
     {
         public int BusinessId { get; set; }
+        public string BusinessName { get; set; }
         public int OwnerId { get; set; }
         public ICollection<ZakaziUser> Employees { get; set; } = new Collection<ZakaziUser>();
         public virtual ICollection<Post> Posts { get; set; } = new Collection<Post>();

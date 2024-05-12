@@ -1,24 +1,30 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using webapi.Domain.DTOs;
 using webapi.Domain.Models;
 using webapi.Domain.Services;
 
 namespace webapi.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class PostsController : ControllerBase
     {
         private readonly IPostService _postService;
+        private readonly IBusinessService _businessService;
+        private readonly IZakaziUserService _userService;
 
-        public PostsController(IPostService postService)
+        public PostsController(IPostService postService, IBusinessService businessService, IZakaziUserService ZakaziUserService)
         {
             _postService = postService;
+            _businessService = businessService;
+            _userService = ZakaziUserService;
         }
 
         [HttpGet]
@@ -106,12 +112,40 @@ namespace webapi.Controllers
         }
 
         [HttpGet("BetweenTimestamps")]
-        public async Task<ActionResult<IEnumerable<Post>>> GetPostsBetweenTimestamps(DateTime startTimestamp, DateTime endTimestamp)
+        public async Task<ActionResult<IEnumerable<OfferDto>>> GetPostsBetweenTimestamps(DateTime startTimestamp, DateTime endTimestamp)
         {
             try
             {
+                var toReturn = new List<OfferDto>();
                 var posts = await _postService.GetPostsBetweenTimestamps(startTimestamp, endTimestamp);
-                return Ok(posts);
+
+                foreach (var post in posts)
+                {
+                    // Fetch business information
+                    var business = await _businessService.GetBusinessById(post.BusinessId);
+
+                    // Fetch user information from the business
+                    var user = await _userService.GetUserById(business.OwnerId.ToString());
+
+                    // Create an OfferDto for each Post and fill in the missing elements
+                    var offerDto = new OfferDto
+                    {
+                        PostId = post.PostId,
+                        BusinessName = business?.BusinessName,
+                        NameOfService = post.NameOfService,
+                        Price = post.Price,
+                        AvailabilityFrom = post.AvailabilityFrom,
+                        AvailabilityTo = post.AvailabilityTo,
+                        Name = user?.Name,
+                        Surname = user?.Surname,
+                        Email = user?.Email,
+                        PhoneNumber = user?.PhoneNumber
+                    };
+
+                    toReturn.Add(offerDto);
+                }
+
+                return Ok(toReturn);
             }
             catch (Exception ex)
             {
@@ -119,6 +153,11 @@ namespace webapi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving posts between timestamps.");
             }
         }
+
+
+
+
+
         //[HttpGet("GetMyPosts/{id}")]
         //public async Task<ActionResult<IEnumerable<Post>>> GetMyPosts(string id)
         //{
@@ -133,6 +172,12 @@ namespace webapi.Controllers
         //        return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving posts from the database.");
         //    }
         //}
+        [HttpGet("dummy")]
+        [ActionName("Dummy")]
+        public ActionResult<string> DummyMethod()
+        {
+            return Ok("123");
+        }
 
     }
 }

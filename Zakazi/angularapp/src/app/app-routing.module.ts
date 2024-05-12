@@ -7,6 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { OffersComponent } from './offers/offers.component';
 import { EditOfferComponent } from './offers/edit-offer/edit-offer.component';
 import { BusinessFormComponent } from './business-form/business-form.component';
+import { SearchOfferComponent } from './search-offer/search-offer.component';
 
 
 const routes: Routes = [
@@ -43,6 +44,10 @@ const routes: Routes = [
   {
     path: 'business-form',
     component: BusinessFormComponent,
+  },
+  {
+    path: 'search-offer', 
+    component: SearchOfferComponent, 
   },
 ];
 

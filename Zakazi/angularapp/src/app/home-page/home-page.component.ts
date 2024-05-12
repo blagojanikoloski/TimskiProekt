@@ -15,6 +15,6 @@ export class HomePageComponent {
     this.router.navigate(['/register']);
   }
   onAppointmentClick() {
-    this.router.navigate(['/offers']);
+    this.router.navigate(['/search-offer']);
   }
 }

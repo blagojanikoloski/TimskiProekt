@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace webapi.Controllers
 {
-    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class RequestsController : ControllerBase
@@ -25,7 +25,6 @@ namespace webapi.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = "ADMIN")]
         [HttpGet]
         [ActionName("GetAllRequests")]
         public async Task<ActionResult<IEnumerable<Request>>> GetAllRequests()
@@ -69,27 +68,7 @@ namespace webapi.Controllers
 
 
 
-        [HttpPost]
-        public async Task<ActionResult<Request>> CreateRequest(Request request)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                var createdRequest = await _requestService.CreateRequest(request);
-                return CreatedAtAction(nameof(GetRequestById), new { id = createdRequest.RequestId }, createdRequest);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception details
-                _logger.LogError(ex, "Error creating the request: {ErrorMessage}", ex.Message);
-
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error creating the request.");
-            }
-        }
+        
 
 
         [HttpGet("{id}")]
@@ -145,5 +124,31 @@ namespace webapi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting the request.");
             }
         }
+
+        [HttpPost("request")]
+        public async Task<ActionResult<Request>> CreateRequest([FromBody] Request request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest("Request data is null.");
+                }
+
+                // You may want to perform additional validation here if necessary
+
+                // Call the service method to create the request
+                var createdRequest = await _requestService.CreateRequest(request);
+
+                // Return the created request with a 201 Created status
+                return CreatedAtAction(nameof(GetRequestById), new { id = createdRequest.RequestId }, createdRequest);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error creating the request.");
+            }
+        }
+
     }
 }

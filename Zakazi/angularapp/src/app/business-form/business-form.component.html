@@ -1,12 +1,21 @@
 <form [formGroup]="businessForm" (ngSubmit)="onSubmit()">
   <div class="form-style">
     <h2>Create Business</h2>
+
+    <div class="form-group">
+      <label for="businessType">Business Type:</label>
+      <select id="businessType" formControlName="businessType">
+        <option value="hair dresser">Hair Dresser</option>
+      </select>
+    </div>
+
+
     <div class="form-group">
       <label for="businessName">Business Name:</label>
       <input type="text" id="businessName" formControlName="businessName" required>
     </div>
 
-    
+
 
     <button type="submit">Submit Business</button>
   </div>

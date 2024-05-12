@@ -34,5 +34,8 @@ namespace webapi.Domain.DTOs
 
         [Required]
         public string PhoneNumber { get; set; }
+
+        [Required]
+        public int BusinessId {  get; set; }
     }
 }

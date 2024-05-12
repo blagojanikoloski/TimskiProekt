@@ -34,9 +34,17 @@ namespace webapi.Domain.Services
 
         public async Task<Request> CreateRequest(Request request)
         {
-            _context.Requests.Add(request);
-            await _context.SaveChangesAsync();
-            return request;
+            try
+            {
+                _context.Requests.Add(request);
+                await _context.SaveChangesAsync();
+                return request;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                throw new Exception("Error creating the request.", ex);
+            }
         }
 
         public async Task<Request> GetRequestById(int id)

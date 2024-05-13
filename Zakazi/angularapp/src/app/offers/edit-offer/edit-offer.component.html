@@ -60,28 +60,37 @@
     <div class="edit-offer-features">
         <div class="edit-offer-features-container featuresContainer">
             <div class="edit-offer-features1">
-                <div class="edit-offer-container02">
-                    <div class="edit-offer-container03">
-                        <span>Name of Service</span>
-                        <input type="text" id="nameofservice" name="nameofservice"
-                            placeholder="Name of Service..." class="edit-offer-textinput input" />
-                    </div>
-                    <div class="edit-offer-container04">
-                        <span>Price per hour:</span>
-                        <input type="number" id="price" name="price" placeholder="Price..."
-                            class="edit-offer-textinput1 input" />
-                    </div>
-                    <div class="edit-offer-container05">
-                        <span>Availability from:</span>
-                        <input type="datetime-local" id="from" name="from" placeholder="From..."
-                            class="edit-offer-textinput2 input" />
-                    </div>
-                    <div class="edit-offer-container06">
-                        <span>Availability to:</span>
-                        <input type="datetime-local" id="to" name="to" placeholder="To..."
-                            class="edit-offer-textinput3 input" />
-                    </div>
+              <div class="edit-offer-container02">
+                <div class="edit-offer-container03">
+                  <span>Name of Service</span>
+                  <input type="text" id="nameofservice" name="nameofservice"
+                         placeholder="Name of Service..." class="edit-offer-textinput input" />
                 </div>
+                <div class="edit-offer-container04">
+                  <span>Price per hour:</span>
+                  <input type="number" id="price" name="price" placeholder="Price..."
+                         class="edit-offer-textinput1 input" />
+                </div>
+                <div class="edit-offer-container05">
+                  <span>Availability from:</span>
+                  <input type="datetime-local" id="from" name="from" placeholder="From..."
+                         class="edit-offer-textinput2 input" />
+                </div>
+                <div class="edit-offer-container06">
+                  <span>Availability to:</span>
+                  <input type="datetime-local" id="to" name="to" placeholder="To..."
+                         class="edit-offer-textinput3 input" />
+                </div>
+                <div class="edit-offer-container06">
+                  <span>Business:</span>
+                  <select id="businessSelect" class="edit-offer-dropdown input" formControlName="businessId">
+                    <!-- Iterate over businessOptions array and generate options -->
+                    <option *ngFor="let business of businessOptions" [value]="business.businessId">{{ business.businessName }}</option>
+                  </select>
+                </div>
+
+
+              </div>
             </div>
             <div class="edit-offer-container07">
                 <button class="buttonFilled">Post</button>

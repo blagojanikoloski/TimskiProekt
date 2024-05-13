@@ -23,8 +23,8 @@ export class ProfileComponent {
     this.fetchAllPostsWorker();
   }
 
-  onEditOfferClick() {
-    this.router.navigate(["offers/edit"]);
+  editOffer(id : number) {
+    this.router.navigate(["offers/edit", id]);
   }
 
   onDeleteOfferClick() {

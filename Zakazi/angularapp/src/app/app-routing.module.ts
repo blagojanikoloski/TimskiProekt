@@ -42,6 +42,7 @@ const routes: Routes = [
       },
     ]
   },
+  { path: 'offers/edit/:postId', component: EditOfferComponent },
   {
     path: 'business-form',
     component: BusinessFormComponent,

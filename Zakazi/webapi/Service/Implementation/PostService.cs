@@ -65,5 +65,11 @@ namespace webapi.Domain.Services
         {
             return _context.Posts.Where(p => p.AvailabilityFrom <= startTimestamp && p.AvailabilityTo >= endTimestamp).ToList();
         }
+
+        public async Task<List<Post>> GetPostsByUserId(int userId)
+        {
+            return await _context.Posts.Where(p => p.UserId == userId).ToListAsync();
+        }
+
     }
 }

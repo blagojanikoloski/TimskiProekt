@@ -224,7 +224,7 @@
                     </div>
                     <div class="my-profile-worker-container17">
                       <button (click)="declineRequest(request.requestId)" class="buttonFilled">Delete Offer</button>
-                      <button (click)="onEditOfferClick()" class="buttonFilled">Edit Offer</button>
+                      
                     </div>
                   </div>
                   </ng-container>
@@ -234,6 +234,69 @@
             </div>
         </div>
     </div>
+
+
+
+
+    <div *ngIf="isAdmin" class="my-profile-worker-features2">
+      <div class="my-profile-worker-features-container1 featuresContainer">
+        <div class="my-profile-worker-container12">
+          <h1 class="my-profile-worker-hero-heading2 heading1">
+            My Offers
+          </h1>
+        </div>
+        <div class="my-profile-worker-features3">
+          <div class="my-profile-worker-container13">
+
+
+            <ng-container *ngFor="let post of postOptionsWorker">
+              <div class="my-profile-worker-container14">
+                <span class="my-profile-worker-text16">{{post.businessName}}</span>
+                <span class="my-profile-worker-text17">
+                  {{post.nameOfService}}
+                </span>
+                <div class="my-profile-worker-container15">
+                  <div class="my-profile-worker-profile2">
+                    <img alt="profile"
+                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;w=200"
+                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
+                         class="my-profile-worker-image2" />
+                    <span class="my-profile-worker-text19">{{post.name}}  {{post.surname}}</span>
+                  </div>
+                  <span class="my-profile-worker-text20">{{post.price}}$/hr</span>
+                </div>
+                <div class="my-profile-worker-container16">
+                  <span class="my-profile-worker-text21">
+                    {{post.availabilityFrom}}
+                  </span>
+                  <span class="my-profile-worker-text22">-</span>
+                  <span class="my-profile-worker-text23">
+                    {{post.availabilityTo}}
+                  </span>
+                </div>
+                <div class="my-profile-worker-container17">
+                  <button (click)="deleteOffer(post.postId)" class="buttonFilled">Delete Offer</button>
+                  <button (click)="editOffer(post.postId)" class="buttonFilled">Edit Offer</button>
+                </div>
+              </div>
+            </ng-container>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
     <div *ngIf="isAdmin" class="my-profile-worker-features4">
         <div class="my-profile-worker-features-container2 featuresContainer">
             <div class="my-profile-worker-container22">

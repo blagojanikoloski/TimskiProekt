@@ -15,5 +15,6 @@ namespace webapi.Domain.Services
         Task<Request> GetRequestById(int id);
         Task UpdateRequest(Request request);
         Task DeleteRequest(int id);
+        Task DeleteRequestsByPostId(int postId);
     }
 }

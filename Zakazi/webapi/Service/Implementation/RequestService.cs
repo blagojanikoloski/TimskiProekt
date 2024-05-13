@@ -83,5 +83,18 @@ namespace webapi.Domain.Services
             return requests;
         }
 
+        public async Task DeleteRequestsByPostId(int postId)
+        {
+            // Find requests with the given PostId
+            var requestsToDelete = await _context.Requests.Where(r => r.PostId == postId).ToListAsync();
+
+            if (requestsToDelete != null && requestsToDelete.Any())
+            {
+                // Remove the requests
+                _context.Requests.RemoveRange(requestsToDelete);
+                await _context.SaveChangesAsync();
+            }
+        }
+
     }
 }

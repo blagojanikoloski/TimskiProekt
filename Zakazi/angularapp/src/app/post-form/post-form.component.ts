@@ -32,13 +32,21 @@ export class PostFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      const user = JSON.parse(userString);
+      const token = this.jwtHelper.decodeToken(user);
+      const userId: number = +token.nameid;
+    
     if (this.postForm.valid) {
       const formData = {
         nameOfService: this.postForm.get('nameOfService')!.value,
         price: this.postForm.get('price')!.value,
         availabilityFrom: this.postForm.get('availabilityFrom')!.value,
         availabilityTo: this.postForm.get('availabilityTo')!.value,
-        businessId: this.postForm.get('businessId')!.value
+        businessId: this.postForm.get('businessId')!.value,
+        userId: userId
       };
 
       this.http.post('https://localhost:7200/api/posts', formData).subscribe(
@@ -52,6 +60,7 @@ export class PostFormComponent implements OnInit {
           console.error('Error creating post:', error);
         }
       );
+      }
     }
   }
 

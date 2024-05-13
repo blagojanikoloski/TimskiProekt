@@ -12,6 +12,9 @@ public class Post
     public int BusinessId { get; set; }
 
     [Required]
+    public int UserId { get; set; } 
+
+    [Required]
     public string NameOfService { get; set; }
 
     [Required]

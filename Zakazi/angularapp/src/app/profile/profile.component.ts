@@ -11,6 +11,7 @@ import { HttpClient } from '@angular/common/http';
 export class ProfileComponent {
   requestOptionsClientPending: any[] = [];
   requestOptionsWorker: any[] = [];
+  postOptionsWorker: any[] = [];
   jwtHelper: JwtHelperService;
   constructor(private http: HttpClient, private router: Router) {
     this.jwtHelper = new JwtHelperService();
@@ -19,6 +20,7 @@ export class ProfileComponent {
   ngOnInit(): void {
     this.fetchAllRequestsClientPending();
     this.fetchAllRequestsWorker();
+    this.fetchAllPostsWorker();
   }
 
   onEditOfferClick() {
@@ -34,6 +36,19 @@ export class ProfileComponent {
       (response) => {
         console.log('Request cancelled successfully:', response);
         this.fetchAllRequestsClientPending();
+      },
+      (error) => {
+        console.error('Error cancelling request:', error);
+      }
+    );
+  }
+
+  deleteOffer(id: number) {
+    this.http.delete<any>(`https://localhost:7200/api/Posts/${id}`, {}).subscribe(
+      (response) => {
+        console.log('Request cancelled successfully:', response);
+        this.fetchAllPostsWorker();
+        this.fetchAllRequestsWorker();
       },
       (error) => {
         console.error('Error cancelling request:', error);
@@ -80,7 +95,7 @@ export class ProfileComponent {
       const user = JSON.parse(userString);
       const token = this.jwtHelper.decodeToken(user);
       const userId: number = +token.nameid;
-      console.log(userId);
+      
 
       this.http.get<any[]>(`https://localhost:7200/api/Requests/client/${userId}/requests`).subscribe(
         (requests: any[]) => {
@@ -99,11 +114,31 @@ export class ProfileComponent {
       const user = JSON.parse(userString);
       const token = this.jwtHelper.decodeToken(user);
       const userId: number = +token.nameid;
-      console.log(userId);
+      
 
       this.http.get<any[]>(`https://localhost:7200/api/Requests/worker/${userId}/requests`).subscribe(
         (requests: any[]) => {
           this.requestOptionsWorker = requests; // Assuming requestOptions is an array of objects representing requests
+        },
+        error => {
+          console.error('Error fetching requests:', error);
+        }
+      );
+    }
+  }
+
+  fetchAllPostsWorker(): void {
+    const userString = localStorage.getItem('user');
+    if (userString) {
+      const user = JSON.parse(userString);
+      const token = this.jwtHelper.decodeToken(user);
+      const userId: number = +token.nameid;
+      
+
+      this.http.get<any[]>(`https://localhost:7200/api/Posts/GetMyPosts/${userId}`).subscribe(
+        (posts: any[]) => {
+          this.postOptionsWorker = posts; // Assuming requestOptions is an array of objects representing requests
+          console.log('Posts:' + this.postOptionsWorker);
         },
         error => {
           console.error('Error fetching requests:', error);

@@ -15,10 +15,8 @@ export class BusinessFormComponent {
     businessName: ['', Validators.required],
   });
 
-  jwtHelper: JwtHelperService; // Declare jwtHelper property
 
-  constructor(private fb: FormBuilder, private businessService: BusinessService, private http: HttpClient, private router: Router) {
-    this.jwtHelper = new JwtHelperService(); // Initialize jwtHelper
+  constructor(private fb: FormBuilder, private businessService: BusinessService, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
   }
 
   onSubmit() {

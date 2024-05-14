@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using webapi.Domain.Services;
 using webapi.Repository;
 using webapi.Service.Implementation;
 using webapi.Service.Interface;
@@ -17,6 +18,11 @@ namespace Time.Extensions
             // template to register service
             //services.AddScoped<IService, Service>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IRequestService, RequestService>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IBusinessService, BusinessService>();
+            services.AddScoped<IZakaziUserService, ZakaziUserService>();
+            services.AddScoped<IPostService, PostService>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

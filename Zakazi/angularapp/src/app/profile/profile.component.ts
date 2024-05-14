@@ -12,9 +12,7 @@ export class ProfileComponent {
   requestOptionsClientPending: any[] = [];
   requestOptionsWorker: any[] = [];
   postOptionsWorker: any[] = [];
-  jwtHelper: JwtHelperService;
-  constructor(private http: HttpClient, private router: Router) {
-    this.jwtHelper = new JwtHelperService();
+  constructor(private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
   }
 
   ngOnInit(): void {

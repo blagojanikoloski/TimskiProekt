@@ -26,9 +26,7 @@ interface Offer {
 export class OffersComponent implements OnInit {
   searchResult: Offer[] = []; // Initialize searchResult as an empty array of Offer objects
 
-  jwtHelper: JwtHelperService; // Declare jwtHelper property
-  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {
-    this.jwtHelper = new JwtHelperService();
+  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
   }
 
   ngOnInit(): void {

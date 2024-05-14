@@ -18,11 +18,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BusinessFormComponent } from './business-form/business-form.component';
 import { PostFormComponent } from './post-form/post-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { JwtModule } from '@auth0/angular-jwt';
 
+export function tokenGetter() {
+  const token = localStorage.getItem('user');
+  return token ? JSON.parse(token) : 'User Not Logged In';
+}
 
 @NgModule({
   declarations: [AppComponent, HomePageComponent, LoginComponent, RegisterComponent, ProfileComponent, OffersComponent, SearchOfferComponent, EditOfferComponent, BusinessFormComponent, PostFormComponent],
-  imports: [BrowserModule, HttpClientModule, NgbModule, SharedModule, BrowserAnimationsModule, FormsModule,ReactiveFormsModule, ],
+  imports: [BrowserModule, HttpClientModule, NgbModule, SharedModule, BrowserAnimationsModule, FormsModule,ReactiveFormsModule, 
+    JwtModule.forRoot({
+    config: {
+      tokenGetter: tokenGetter,
+      disallowedRoutes: [],
+    },
+  }),],
   providers: [
     WebApiClient,
     { provide: API_BASE_URL, useValue: environment.apiUrl },

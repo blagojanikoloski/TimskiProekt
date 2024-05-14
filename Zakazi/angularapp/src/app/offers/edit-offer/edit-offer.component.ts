@@ -11,10 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class EditOfferComponent {
   businessOptions: { businessId: number, businessName: string }[] = [];
   postId!: number;
-  jwtHelper: JwtHelperService;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router, private route: ActivatedRoute) {
-    this.jwtHelper = new JwtHelperService();
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router, private route: ActivatedRoute, private jwtHelper: JwtHelperService) {
   }
 
   ngOnInit(): void {

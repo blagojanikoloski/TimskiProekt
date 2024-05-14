@@ -13,10 +13,7 @@ export class PostFormComponent implements OnInit {
   postForm!: FormGroup;
   businessOptions: { businessId: number, businessName: string }[] = []; // Define businessOptions as an array of objects
 
-  jwtHelper: JwtHelperService;
-
-  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
-    this.jwtHelper = new JwtHelperService();
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
   }
 
   ngOnInit(): void {

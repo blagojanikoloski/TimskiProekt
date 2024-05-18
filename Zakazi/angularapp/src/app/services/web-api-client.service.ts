@@ -760,7 +760,7 @@ export class WebApiClient {
         return _observableOf(null as any);
     }
 
-    requests_GetRequestsByClientId(clientId: number): Observable<MyProfileCardDto[]> {
+    requests_GetRequestsByClientId(clientId: number): Observable<RequestDto[]> {
         let url_ = this.baseUrl + "/api/Requests/client/{clientId}/requests";
         if (clientId === undefined || clientId === null)
             throw new Error("The parameter 'clientId' must be defined.");
@@ -783,14 +783,14 @@ export class WebApiClient {
                 try {
                     return this.processRequests_GetRequestsByClientId(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<MyProfileCardDto[]>;
+                    return _observableThrow(e) as any as Observable<RequestDto[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<MyProfileCardDto[]>;
+                return _observableThrow(response_) as any as Observable<RequestDto[]>;
         }));
     }
 
-    protected processRequests_GetRequestsByClientId(response: HttpResponseBase): Observable<MyProfileCardDto[]> {
+    protected processRequests_GetRequestsByClientId(response: HttpResponseBase): Observable<RequestDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -804,7 +804,7 @@ export class WebApiClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(MyProfileCardDto.fromJS(item));
+                    result200!.push(RequestDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -819,11 +819,8 @@ export class WebApiClient {
         return _observableOf(null as any);
     }
 
-    requests_GetRequestsByWorkerId(workerId: number): Observable<MyProfileCardDto[]> {
-        let url_ = this.baseUrl + "/api/Requests/worker/{workerId}/requests";
-        if (workerId === undefined || workerId === null)
-            throw new Error("The parameter 'workerId' must be defined.");
-        url_ = url_.replace("{workerId}", encodeURIComponent("" + workerId));
+    requests_GetCurrentUserRequests(): Observable<RequestDto[]> {
+        let url_ = this.baseUrl + "/api/Requests/currentUser/requests";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -836,20 +833,20 @@ export class WebApiClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRequests_GetRequestsByWorkerId(response_);
+            return this.processRequests_GetCurrentUserRequests(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processRequests_GetRequestsByWorkerId(response_ as any);
+                    return this.processRequests_GetCurrentUserRequests(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<MyProfileCardDto[]>;
+                    return _observableThrow(e) as any as Observable<RequestDto[]>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<MyProfileCardDto[]>;
+                return _observableThrow(response_) as any as Observable<RequestDto[]>;
         }));
     }
 
-    protected processRequests_GetRequestsByWorkerId(response: HttpResponseBase): Observable<MyProfileCardDto[]> {
+    protected processRequests_GetCurrentUserRequests(response: HttpResponseBase): Observable<RequestDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -863,7 +860,7 @@ export class WebApiClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(MyProfileCardDto.fromJS(item));
+                    result200!.push(RequestDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -1779,11 +1776,12 @@ export class Request implements IRequest {
     requestId?: number;
     timestamp!: Date;
     requestStatus!: RequestStatus;
-    postId!: number;
     businessId!: number;
+    business?: Business;
     clientId!: number;
     from!: Date;
     to!: Date;
+    posts?: Post[];
 
     constructor(data?: IRequest) {
         if (data) {
@@ -1799,11 +1797,16 @@ export class Request implements IRequest {
             this.requestId = _data["requestId"];
             this.timestamp = _data["timestamp"] ? new Date(_data["timestamp"].toString()) : <any>undefined;
             this.requestStatus = _data["requestStatus"];
-            this.postId = _data["postId"];
             this.businessId = _data["businessId"];
+            this.business = _data["business"] ? Business.fromJS(_data["business"]) : <any>undefined;
             this.clientId = _data["clientId"];
             this.from = _data["from"] ? new Date(_data["from"].toString()) : <any>undefined;
             this.to = _data["to"] ? new Date(_data["to"].toString()) : <any>undefined;
+            if (Array.isArray(_data["posts"])) {
+                this.posts = [] as any;
+                for (let item of _data["posts"])
+                    this.posts!.push(Post.fromJS(item));
+            }
         }
     }
 
@@ -1819,11 +1822,16 @@ export class Request implements IRequest {
         data["requestId"] = this.requestId;
         data["timestamp"] = this.timestamp ? this.timestamp.toISOString() : <any>undefined;
         data["requestStatus"] = this.requestStatus;
-        data["postId"] = this.postId;
         data["businessId"] = this.businessId;
+        data["business"] = this.business ? this.business.toJSON() : <any>undefined;
         data["clientId"] = this.clientId;
         data["from"] = this.from ? this.from.toISOString() : <any>undefined;
         data["to"] = this.to ? this.to.toISOString() : <any>undefined;
+        if (Array.isArray(this.posts)) {
+            data["posts"] = [];
+            for (let item of this.posts)
+                data["posts"].push(item.toJSON());
+        }
         return data;
     }
 }
@@ -1832,11 +1840,12 @@ export interface IRequest {
     requestId?: number;
     timestamp: Date;
     requestStatus: RequestStatus;
-    postId: number;
     businessId: number;
+    business?: Business;
     clientId: number;
     from: Date;
     to: Date;
+    posts?: Post[];
 }
 
 export enum RequestStatus {
@@ -1921,23 +1930,19 @@ export interface IOfferDto {
     businessId: number;
 }
 
-export class MyProfileCardDto implements IMyProfileCardDto {
-    requestId!: number;
-    timestamp!: Date;
-    requestStatus!: RequestStatus;
-    postId!: number;
-    businessId!: number;
-    clientId!: number;
-    from!: string;
-    to!: string;
-    name!: string;
-    surname!: string;
-    businessName!: string;
-    nameOfService!: string;
-    price!: number;
-    requestStatusInString!: string;
+export class RequestDto implements IRequestDto {
+    requestId?: number;
+    timestamp?: Date;
+    requestStatus?: RequestStatus;
+    posts?: Post[];
+    from?: Date;
+    to?: Date;
+    businessName?: string;
+    clientFirstName?: string;
+    clientLastName?: string;
+    price?: number;
 
-    constructor(data?: IMyProfileCardDto) {
+    constructor(data?: IRequestDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1951,23 +1956,23 @@ export class MyProfileCardDto implements IMyProfileCardDto {
             this.requestId = _data["requestId"];
             this.timestamp = _data["timestamp"] ? new Date(_data["timestamp"].toString()) : <any>undefined;
             this.requestStatus = _data["requestStatus"];
-            this.postId = _data["postId"];
-            this.businessId = _data["businessId"];
-            this.clientId = _data["clientId"];
-            this.from = _data["from"];
-            this.to = _data["to"];
-            this.name = _data["name"];
-            this.surname = _data["surname"];
+            if (Array.isArray(_data["posts"])) {
+                this.posts = [] as any;
+                for (let item of _data["posts"])
+                    this.posts!.push(Post.fromJS(item));
+            }
+            this.from = _data["from"] ? new Date(_data["from"].toString()) : <any>undefined;
+            this.to = _data["to"] ? new Date(_data["to"].toString()) : <any>undefined;
             this.businessName = _data["businessName"];
-            this.nameOfService = _data["nameOfService"];
+            this.clientFirstName = _data["clientFirstName"];
+            this.clientLastName = _data["clientLastName"];
             this.price = _data["price"];
-            this.requestStatusInString = _data["requestStatusInString"];
         }
     }
 
-    static fromJS(data: any): MyProfileCardDto {
+    static fromJS(data: any): RequestDto {
         data = typeof data === 'object' ? data : {};
-        let result = new MyProfileCardDto();
+        let result = new RequestDto();
         result.init(data);
         return result;
     }
@@ -1977,36 +1982,32 @@ export class MyProfileCardDto implements IMyProfileCardDto {
         data["requestId"] = this.requestId;
         data["timestamp"] = this.timestamp ? this.timestamp.toISOString() : <any>undefined;
         data["requestStatus"] = this.requestStatus;
-        data["postId"] = this.postId;
-        data["businessId"] = this.businessId;
-        data["clientId"] = this.clientId;
-        data["from"] = this.from;
-        data["to"] = this.to;
-        data["name"] = this.name;
-        data["surname"] = this.surname;
+        if (Array.isArray(this.posts)) {
+            data["posts"] = [];
+            for (let item of this.posts)
+                data["posts"].push(item.toJSON());
+        }
+        data["from"] = this.from ? this.from.toISOString() : <any>undefined;
+        data["to"] = this.to ? this.to.toISOString() : <any>undefined;
         data["businessName"] = this.businessName;
-        data["nameOfService"] = this.nameOfService;
+        data["clientFirstName"] = this.clientFirstName;
+        data["clientLastName"] = this.clientLastName;
         data["price"] = this.price;
-        data["requestStatusInString"] = this.requestStatusInString;
         return data;
     }
 }
 
-export interface IMyProfileCardDto {
-    requestId: number;
-    timestamp: Date;
-    requestStatus: RequestStatus;
-    postId: number;
-    businessId: number;
-    clientId: number;
-    from: string;
-    to: string;
-    name: string;
-    surname: string;
-    businessName: string;
-    nameOfService: string;
-    price: number;
-    requestStatusInString: string;
+export interface IRequestDto {
+    requestId?: number;
+    timestamp?: Date;
+    requestStatus?: RequestStatus;
+    posts?: Post[];
+    from?: Date;
+    to?: Date;
+    businessName?: string;
+    clientFirstName?: string;
+    clientLastName?: string;
+    price?: number;
 }
 
 export interface FileResponse {

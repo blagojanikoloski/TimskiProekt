@@ -106,7 +106,7 @@ namespace webapi.Controllers
             try
             {
                 // Call the RequestService to delete requests with the given PostId
-                await _requestService.DeleteRequestsByPostId(id);
+                //await _requestService.DeleteRequestsByPostId(id);
 
                 // Then delete the post
                 await _postService.DeletePost(id);

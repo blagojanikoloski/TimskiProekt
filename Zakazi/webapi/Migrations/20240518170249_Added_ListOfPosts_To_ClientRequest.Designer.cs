@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using webapi.Repository;
 
@@ -11,9 +12,11 @@ using webapi.Repository;
 namespace webapi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240518170249_Added_ListOfPosts_To_ClientRequest")]
+    partial class Added_ListOfPosts_To_ClientRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace webapi.Migrations
 
                     b.HasIndex("EmployeesId");
 
-                    b.ToTable("BusinessZakaziUser", (string)null);
+                    b.ToTable("BusinessZakaziUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -142,7 +145,7 @@ namespace webapi.Migrations
 
                     b.HasKey("BusinessId");
 
-                    b.ToTable("Businesses", (string)null);
+                    b.ToTable("Businesses");
                 });
 
             modelBuilder.Entity("webapi.Domain.Models.Post", b =>
@@ -180,7 +183,7 @@ namespace webapi.Migrations
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("webapi.Domain.Models.Request", b =>
@@ -215,7 +218,7 @@ namespace webapi.Migrations
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("Requests", (string)null);
+                    b.ToTable("Requests");
                 });
 
             modelBuilder.Entity("webapi.Domain.Models.Role", b =>
@@ -356,7 +359,7 @@ namespace webapi.Migrations
 
                     b.HasIndex("RequestId");
 
-                    b.ToTable("PostRequests", (string)null);
+                    b.ToTable("PostRequests");
                 });
 
             modelBuilder.Entity("BusinessZakaziUser", b =>

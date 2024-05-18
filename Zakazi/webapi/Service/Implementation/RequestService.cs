@@ -1,18 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using webapi.Domain.DTOs;
 using webapi.Domain.Models;
 using webapi.Repository;
+using webapi.Repository.Interface;
 
 namespace webapi.Domain.Services
 {
     public class RequestService : IRequestService
     {
         private readonly DataContext _context;
+        private readonly IRequestRepository _requestRepository;
+        private readonly IMapper _mapper;
 
-        public RequestService(DataContext context)
+        public RequestService(DataContext context, IRequestRepository requestRepository, IMapper mapper)
         {
             _context = context;
+            _requestRepository = requestRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Request>> GetAllRequests()
@@ -68,9 +76,26 @@ namespace webapi.Domain.Services
             }
         }
 
-        public async Task<IEnumerable<Request>> GetRequestsByClientId(int clientId)
+        //public async Task<IEnumerable<Request>> GetRequestsByClientId(int clientId)
+        //{
+        //    return await _context.Requests.Where(r => r.ClientId == clientId).ToListAsync();
+        //}
+
+        public async Task<IEnumerable<RequestDto>> GetRequestsByClient(ZakaziUser client)
         {
-            return await _context.Requests.Where(r => r.ClientId == clientId).ToListAsync();
+
+            var requests = await _requestRepository.GetRequestsByClientId(client.Id);
+            var requestsDto = new List<RequestDto>();
+            _mapper.Map(requests, requestsDto);
+
+            // denormalize model if loop gets too big
+            foreach (var request in requestsDto)
+            {
+                request.ClientFirstName = client.Name;
+                request.ClientLastName =  client.Surname;
+            }
+
+            return requestsDto;
         }
 
         public async Task<IEnumerable<Request>> GetRequestsByWorkerId(int workerId)
@@ -83,18 +108,18 @@ namespace webapi.Domain.Services
             return requests;
         }
 
-        public async Task DeleteRequestsByPostId(int postId)
-        {
-            // Find requests with the given PostId
-            var requestsToDelete = await _context.Requests.Where(r => r.PostId == postId).ToListAsync();
+        //public async Task DeleteRequestsByPostId(int postId)
+        //{
+        //    // Find requests with the given PostId
+        //    var requestsToDelete = await _context.Requests.Where(r => r.PostId == postId).ToListAsync();
 
-            if (requestsToDelete != null && requestsToDelete.Any())
-            {
-                // Remove the requests
-                _context.Requests.RemoveRange(requestsToDelete);
-                await _context.SaveChangesAsync();
-            }
-        }
+        //    if (requestsToDelete != null && requestsToDelete.Any())
+        //    {
+        //        // Remove the requests
+        //        _context.Requests.RemoveRange(requestsToDelete);
+        //        await _context.SaveChangesAsync();
+        //    }
+        //}
 
     }
 }

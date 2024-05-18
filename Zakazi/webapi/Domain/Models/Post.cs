@@ -1,6 +1,7 @@
 ﻿namespace webapi.Domain.Models;
 
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -25,4 +26,8 @@ public class Post
 
     [Required]
     public DateTimeOffset AvailabilityTo { get; set; } = DateTimeOffset.UtcNow;
+
+    // prevents dependency loop 
+    [JsonIgnore]
+    public ICollection<Request> Requests { get; set; } = new Collection<Request>();
 }

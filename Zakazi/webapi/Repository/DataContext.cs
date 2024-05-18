@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Diagnostics;
 using webapi.Domain.Models;
 using Microsoft.AspNetCore.Identity;
+using webapi.Domain.Relations;
 
 
 namespace webapi.Repository
@@ -63,6 +64,11 @@ namespace webapi.Repository
                     .HasColumnType("datetimeoffset")
                     .HasDefaultValueSql("SYSUTCDATETIME()");
             });
+
+            modelBuilder.Entity<Request>()
+                .HasMany(e => e.Posts)
+                .WithMany(e => e.Requests)
+                .UsingEntity<PostRequests>();
         }
     }
 }

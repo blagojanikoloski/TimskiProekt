@@ -9,9 +9,12 @@ namespace Time.Helpers
         public AutoMapperProfiles()
         {
             //mapping exaple with null values ignored
-            CreateMap<RegisterDto, ZakaziUser>();
             //CreateMap<UserDto, User>()
             //    .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            CreateMap<RegisterDto, ZakaziUser>();
+            CreateMap<Request, RequestDto>()
+                .ForMember(dest => dest.BusinessName, opt => opt.MapFrom(src => src.Business.BusinessName))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Posts.Sum(post => post.Price)));
         }
     }
 }

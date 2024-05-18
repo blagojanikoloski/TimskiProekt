@@ -17,10 +17,9 @@ public class Request
     public RequestStatus RequestStatus { get; set; }
 
     [Required]
-    public int PostId {  get; set; }
-
-    [Required]
     public int BusinessId { get; set; }
+
+    public Business Business { get; set; }
 
     [Required]
     public int ClientId { get; set; }
@@ -31,6 +30,7 @@ public class Request
     [Required]
     public DateTimeOffset To { get; set; } = DateTimeOffset.UtcNow;
 
+    public ICollection<Post> Posts { get; set; } = new Collection<Post>();
 
 
 }

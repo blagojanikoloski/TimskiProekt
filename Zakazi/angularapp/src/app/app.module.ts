@@ -12,6 +12,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { OffersComponent } from './offers/offers.component';
+import { MyBusinessesComponent } from './my-businesses/my-businesses.component';
+import { BusinessServicesComponent } from './business-services/business-services.component';
 import { SearchOfferComponent } from './search-offer/search-offer.component';
 import { EditOfferComponent } from './offers/edit-offer/edit-offer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,7 +28,7 @@ export function tokenGetter() {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomePageComponent, LoginComponent, RegisterComponent, ProfileComponent, OffersComponent, SearchOfferComponent, EditOfferComponent, BusinessFormComponent, PostFormComponent],
+  declarations: [AppComponent, HomePageComponent, LoginComponent, RegisterComponent, ProfileComponent, OffersComponent, MyBusinessesComponent, BusinessServicesComponent , SearchOfferComponent, EditOfferComponent, BusinessFormComponent, PostFormComponent],
   imports: [BrowserModule, HttpClientModule, NgbModule, SharedModule, BrowserAnimationsModule, FormsModule,ReactiveFormsModule, 
     JwtModule.forRoot({
     config: {

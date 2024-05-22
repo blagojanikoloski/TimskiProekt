@@ -8,7 +8,10 @@ import { OffersComponent } from './offers/offers.component';
 import { EditOfferComponent } from './offers/edit-offer/edit-offer.component';
 import { BusinessFormComponent } from './business-form/business-form.component';
 import { SearchOfferComponent } from './search-offer/search-offer.component';
+import { MyBusinessesComponent } from './my-businesses/my-businesses.component';
+import { BusinessServicesComponent } from './business-services/business-services.component';
 import { PostFormComponent } from './post-form/post-form.component';
+import { BusinessService } from './services/business';
 
 
 const routes: Routes = [
@@ -54,6 +57,14 @@ const routes: Routes = [
   {
     path: 'search-offer', 
     component: SearchOfferComponent, 
+  },
+  {
+    path: 'my-businesses',
+    component: MyBusinessesComponent,
+  },
+  {
+    path: 'business-services',
+    component: BusinessServicesComponent,
   },
 ];
 

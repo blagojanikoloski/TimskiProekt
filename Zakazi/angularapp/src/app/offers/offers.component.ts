@@ -27,7 +27,7 @@ export class OffersComponent implements OnInit {
   allBusinesses: any;
   businessServices: any[] = [];
   isPopupOpen: boolean = false;
-  selectedPostIds: string[] = [];
+  selectedPostIds: number[] = [];
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
   }
@@ -74,7 +74,7 @@ export class OffersComponent implements OnInit {
   }
 
 
-  toggleSelection(postId: string) {
+  toggleSelection(postId: number) {
     const index = this.selectedPostIds.indexOf(postId);
     if (index === -1) {
       // If postId is not in the array, add it
@@ -85,54 +85,51 @@ export class OffersComponent implements OnInit {
     }
   }
 
-  bookAppointment(selectedPostIds: string[]) {
-    console.log(selectedPostIds);
-    // Here, you can use the selectedPostIds array to book the appointment
-    // Example: Send selectedPostIds to your backend for processing
+  bookAppointment() {
+    // Fetch user information from localStorage
+    const userString = localStorage.getItem('user');
+    if (!userString) {
+      console.error('User information not found.');
+      return;
+    }
+
+    const user = JSON.parse(userString);
+    const token = this.jwtHelper.decodeToken(user);
+    const userId: number = +token.nameid; // Parse nameid to number
+
+    // Fetch start and end timestamps from localStorage
+    const startTimestamp = localStorage.getItem('startTimestamp') ?? '';
+    const endTimestamp = localStorage.getItem('endTimestamp') ?? '';
+
+    // Create appointment data object
+    const appointmentData = {
+      timestamp: new Date().toISOString(),
+      requestStatus: 0, // Assuming RequestStatus is an enum
+      postIds: this.selectedPostIds,
+      businessId: this.allBusinesses[0].businessId, // Assuming allBusinesses is populated with data
+      clientId: userId,
+      from: new Date(startTimestamp).toISOString(),
+      to: new Date(endTimestamp).toISOString(),
+      // You may need to include other data here from your component
+      // For example, business name, service name, price, etc.
+    };
+
+    console.log(appointmentData);
+
+    // Make HTTP POST request to the backend API
+    this.http.post<any>('https://localhost:7200/api/Requests/request', appointmentData)
+      .subscribe(
+        response => {
+          console.log('Appointment booked successfully:', response);
+          this.router.navigate(['/home']);
+          // Handle success - e.g., show a success message to the user
+        },
+        error => {
+          console.error('Error booking appointment:', error);
+          // Handle error - e.g., show an error message to the user
+        }
+      );
   }
-
-  //bookAppointment(offer: Offer) {
-
-  //  const userString = localStorage.getItem('user');
-  //  if (userString) {
-  //    const user = JSON.parse(userString);
-  //    const token = this.jwtHelper.decodeToken(user);
-  //    const userId: number = +token.nameid; // Parse nameid to number
-
-
-  //    const startTimestamp = localStorage.getItem('startTimestamp') ?? '';
-  //    const endTimestamp = localStorage.getItem('endTimestamp') ?? '';
-
-  //    const appointmentData = {
-  //      timestamp: new Date().toISOString(), 
-  //      requestStatus: 0, // Assuming RequestStatus is an enum
-  //      postId: offer.postId,
-  //      businessId: offer.businessId,
-  //      clientId: userId,
-  //      from: new Date(startTimestamp).toISOString(),
-  //      to: new Date(endTimestamp).toISOString()
-  //    };
-
-  //    console.log(appointmentData);
-
-  //    // Make HTTP POST request to the backend API
-  //    this.http.post<any>('https://localhost:7200/api/Requests/request', appointmentData)
-  //      .subscribe(
-  //        response => {
-  //          console.log('Appointment booked successfully:', response);
-  //          this.router.navigate(['/home']);
-  //          // Handle success - e.g., show a success message to the user
-  //        },
-  //        error => {
-  //          console.error('Error booking appointment:', error);
-  //          // Handle error - e.g., show an error message to the user
-  //        }
-  //      );
-  //  } else {
-  //    console.error('User ID not found. Cannot book appointment.');
-  //    // Handle scenario where user ID is not available
-  //  }
-  // }
 
     
 

@@ -220,16 +220,43 @@ namespace webapi.Controllers
 
 
         [HttpPost("request")]
-        public async Task<ActionResult<Request>> CreateRequest([FromBody] Request request)
+        public async Task<ActionResult<Request>> CreateRequest([FromBody] RequestCreationDto requestDto)
         {
             try
             {
-                if (request == null)
+                if (requestDto == null)
                 {
                     return BadRequest("Request data is null.");
                 }
 
-                // You may want to perform additional validation here if necessary
+                // Fetch posts individually by IDs
+                var posts = new List<Post>();
+                foreach (var postId in requestDto.PostIds)
+                {
+                    var post = await _postService.GetPostById(postId);
+                    if (post != null)
+                    {
+                        posts.Add(post);
+                    }
+                    else
+                    {
+                        // Handle the case where a post with the given ID is not found
+                        return NotFound($"Post with ID {postId} not found.");
+                    }
+                }
+
+                // Create the request object
+                var request = new Request
+                {
+                    // Assign other properties of the request
+                    Timestamp = DateTimeOffset.Now,
+                    RequestStatus = RequestStatus.PENDING,
+                    BusinessId = requestDto.BusinessId,
+                    ClientId = requestDto.ClientId,
+                    From = requestDto.From,
+                    To = requestDto.To,
+                    Posts = posts // Assign fetched posts to the request
+                };
 
                 // Call the service method to create the request
                 var createdRequest = await _requestService.CreateRequest(request);
@@ -243,6 +270,8 @@ namespace webapi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error creating the request.");
             }
         }
+
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRequest(int id)

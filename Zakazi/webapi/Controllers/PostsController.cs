@@ -189,5 +189,21 @@ namespace webapi.Controllers
         }
 
 
+        [HttpDelete("ByBusiness/{businessId}")]
+        public async Task<IActionResult> DeletePostsByBusinessId(int businessId)
+        {
+            try
+            {
+                await _postService.DeletePostsByBusinessId(businessId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting posts by business ID.");
+            }
+        }
+
+
     }
 }

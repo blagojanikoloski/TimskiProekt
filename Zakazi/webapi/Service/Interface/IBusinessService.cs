@@ -9,6 +9,8 @@ namespace webapi.Domain.Services
         Task<Business> CreateBusinessAsync(int userId, string businessName);
 
         Task<IEnumerable<Business>> GetBusinessesByOwnerIdAsync(int ownerId);
+        IEnumerable<Business> GetAllBusinesses();
+        Task<Business> DeleteBusinessAsync(int businessId);
         // Add more methods as needed for managing businesses
     }
 }

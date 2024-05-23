@@ -60,39 +60,135 @@
     <div class="list-offers-features">
         <div class="featuresContainer">
             <div class="list-offers-features1">
-                <div class="list-offers-container2">
+              <div class="list-offers-container2">
 
 
-                    <div class="list-offers-card-container" *ngFor="let offer of searchResult">
-                      <div class="list-offers-card-blog-post-card">
-                        <div class="list-offers-card-container1">
-                          <span class="list-offers-card-text">{{offer.businessName}}</span>
-                          <span class="list-offers-card-text1">
-                            {{offer.nameOfService}}
-                          </span>
+                <div class="list-offers-card-container" *ngFor="let offer of allBusinesses">
+                  <div class="list-offers-card-blog-post-card">
+                    <div class="list-offers-card-container1">
+                      <span class="list-offers-card-text">{{offer.businessName}}</span>
+                      <span class="list-offers-card-text1">
+                        {{offer.nameOfService}}
+                      </span>
 
-                          <div class="list-offers-card-container2">
-                            <div class="list-offers-card-profile">
-                              <img alt="profile"
-                                   src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                   image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                                   class="list-offers-card-image" />
-                              <span class="list-offers-card-text3">{{offer.name}}  {{offer.surname}}</span>
-                            </div>
-                            <span class="list-offers-card-text4">{{offer.price}}$/hr</span>
-                          </div>
-                        </div>
-                        <div class="list-offers-card-container3">
-                          <button class="buttonFilled" (click)="bookAppointment(offer)">
-                            <span>Book appointment</span>
-                          </button>
-                        </div>
+                      <div class="list-offers-card-container2">
+
+
                       </div>
                     </div>
-
-
-                    
+                    <div class="list-offers-card-container3">
+                      <button class="buttonFilled" (click)="getServices(offer.businessId)">
+                        <span>View Services</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
+
+
+
+
+
+
+
+
+
+                <div class="popup" *ngIf="businessServices.length > 0 && isPopupOpen">
+                  <div class="popup-content">
+                    <span class="close" (click)="closePopup()">&times;</span>
+                    <h2>Services</h2>
+                    <ul>
+                      <li *ngFor="let service of businessServices">
+                        <input type="checkbox" id="{{service.postId}}" name="serviceCheckbox" (change)="toggleSelection(service.postId)">
+                        <label for="{{service.postId}}">
+                          <strong>Name:</strong> {{ service.nameOfService }} - <strong>Price:</strong> {{ service.price }}
+                        </label>
+                      </li>
+                    </ul>
+                    <button (click)="bookAppointment(selectedPostIds)">Book Appointment</button>
+                  </div>
+                </div>
+
+
+
+
+                <style>
+                  .popup {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+                  }
+
+                  .popup-content {
+                    position: relative;
+                    background-color: white;
+                    padding: 20px;
+                    border: 2px solid #333; /* border color */
+                    border-radius: 5px; /* rounded corners */
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* drop shadow */
+                  }
+
+                  .close {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    cursor: pointer;
+                    font-size: 20px;
+                    color: #333; /* close button color */
+                  }
+
+                    .close:hover {
+                      color: red; /* change color on hover */
+                    }
+
+                  h2 {
+                    color: #333; /* heading color */
+                  }
+
+                  ul {
+                    list-style-type: none;
+                  }
+                </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </div>
             </div>
         </div>
     </div>

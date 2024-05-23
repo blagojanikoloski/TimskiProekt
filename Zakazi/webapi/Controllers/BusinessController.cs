@@ -10,10 +10,12 @@ namespace webapi.Controllers
     public class BusinessController : ControllerBase
     {
         private readonly IBusinessService _businessService;
+        private readonly IPostService _postService;
 
-        public BusinessController(IBusinessService businessService)
+        public BusinessController(IBusinessService businessService, IPostService postService)
         {
             _businessService = businessService;
+            _postService = postService;
         }
 
         [HttpPost("business")]
@@ -43,6 +45,43 @@ namespace webapi.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("businesses")]
+        public async Task<ActionResult<IEnumerable<Business>>> GetAllBusinesses()
+        {
+            try
+            {
+                var businesses =  _businessService.GetAllBusinesses();
+                return Ok(businesses);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+        [HttpDelete("{businessId}")]
+        public async Task<ActionResult> DeleteBusiness(int businessId)
+        {
+            try
+            {
+                // Delete all posts associated with the business
+                await _postService.DeletePostsByBusinessId(businessId);
+
+                // Then delete the business
+                var deletedBusiness = await _businessService.DeleteBusinessAsync(businessId);
+                if (deletedBusiness == null)
+                    return NotFound($"Business with id {businessId} not found");
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
 
     }
 }

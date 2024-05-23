@@ -83,6 +83,61 @@ namespace webapi.Controllers
 
             return Ok("User successfully logged out");
         }
+
+
+        [HttpPut("edit-profile/{userId}")]
+        [ActionName("EditProfile")]
+        public async Task<ActionResult> EditProfile(int userId, EditProfileDto profileDto)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            // Update user properties
+            user.Name = profileDto.Name;
+            user.Surname = profileDto.Surname;
+            user.Email = profileDto.Email;
+            user.PhoneNumber = profileDto.PhoneNumber;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok(new { message = "Profile updated successfully" });
+            }
+
+            return BadRequest(result.Errors);
+        }
+
+
+
+
+        [HttpGet("profile/{userId}")]
+        public async Task<ActionResult<EditProfileDto>> GetProfile(int userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var userDto = new EditProfileDto
+            {
+                Name = user.Name,
+                Surname = user.Surname,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
+            };
+
+            return Ok(userDto);
+        }
+
+
+
     }
 
 

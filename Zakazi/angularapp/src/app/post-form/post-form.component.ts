@@ -21,8 +21,6 @@ export class PostFormComponent implements OnInit {
       businessId: [null],
       nameOfService: ['', Validators.required],
       price: [0, Validators.required],
-      availabilityFrom: [null, Validators.required],
-      availabilityTo: [null, Validators.required],
     });
 
     this.fetchBusinesses();
@@ -40,8 +38,6 @@ export class PostFormComponent implements OnInit {
       const formData = {
         nameOfService: this.postForm.get('nameOfService')!.value,
         price: this.postForm.get('price')!.value,
-        availabilityFrom: this.postForm.get('availabilityFrom')!.value,
-        availabilityTo: this.postForm.get('availabilityTo')!.value,
         businessId: this.postForm.get('businessId')!.value,
         userId: userId
       };

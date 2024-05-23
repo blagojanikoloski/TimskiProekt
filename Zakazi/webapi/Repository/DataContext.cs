@@ -49,13 +49,7 @@ namespace webapi.Repository
 
             modelBuilder.Entity<Post>(entity =>
             {
-                entity.Property(e => e.AvailabilityFrom)
-                    .HasColumnType("datetimeoffset")
-                    .HasDefaultValueSql("SYSUTCDATETIME()");
 
-                entity.Property(e => e.AvailabilityTo)
-                    .HasColumnType("datetimeoffset")
-                    .HasDefaultValueSql("SYSUTCDATETIME()");
             });
 
             modelBuilder.Entity<Request>(entity =>

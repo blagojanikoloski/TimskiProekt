@@ -85,7 +85,7 @@ namespace webapi.Controllers
         {
             if (id != post.PostId)
             {
-                return BadRequest();
+                return BadRequest("Post ID mismatch");
             }
 
             try
@@ -99,6 +99,7 @@ namespace webapi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error updating the post.");
             }
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePost(int id)
@@ -121,50 +122,6 @@ namespace webapi.Controllers
         }
 
 
-
-        [HttpGet("BetweenTimestamps")]
-        public async Task<ActionResult<IEnumerable<OfferDto>>> GetPostsBetweenTimestamps(DateTime startTimestamp, DateTime endTimestamp)
-        {
-            try
-            {
-                var toReturn = new List<OfferDto>();
-                var posts = await _postService.GetPostsBetweenTimestamps(startTimestamp, endTimestamp);
-
-                foreach (var post in posts)
-                {
-                    // Fetch business information
-                    var business = await _businessService.GetBusinessById(post.BusinessId);
-
-                    // Fetch user information from the business
-                    var user = await _userService.GetUserById(business.OwnerId.ToString());
-
-                    // Create an OfferDto for each Post and fill in the missing elements
-                    var offerDto = new OfferDto
-                    {
-                        PostId = post.PostId,
-                        BusinessName = business?.BusinessName,
-                        NameOfService = post.NameOfService,
-                        Price = post.Price,
-                        AvailabilityFrom = post.AvailabilityFrom,
-                        AvailabilityTo = post.AvailabilityTo,
-                        Name = user?.Name,
-                        Surname = user?.Surname,
-                        Email = user?.Email,
-                        PhoneNumber = user?.PhoneNumber,
-                        BusinessId = post.BusinessId
-                    };
-
-                    toReturn.Add(offerDto);
-                }
-
-                return Ok(toReturn);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it appropriately
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving posts between timestamps.");
-            }
-        }
 
 
 
@@ -193,8 +150,6 @@ namespace webapi.Controllers
                         BusinessName = business?.BusinessName,
                         NameOfService = post.NameOfService,
                         Price = post.Price,
-                        AvailabilityFrom = post.AvailabilityFrom,
-                        AvailabilityTo = post.AvailabilityTo,
                         Name = user?.Name,
                         Surname = user?.Surname,
                         Email = user?.Email,
@@ -210,6 +165,26 @@ namespace webapi.Controllers
             {
                 // Log the exception or handle it appropriately
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving posts from the database.");
+            }
+        }
+
+
+        [HttpGet("ByBusiness/{businessId}")]
+        public async Task<ActionResult<IEnumerable<Post>>> GetPostsByBusinessId(int businessId)
+        {
+            try
+            {
+                var posts = await _postService.GetPostsByBusinessId(businessId);
+                if (posts == null)
+                {
+                    return NotFound();
+                }
+                return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving posts by business ID.");
             }
         }
 

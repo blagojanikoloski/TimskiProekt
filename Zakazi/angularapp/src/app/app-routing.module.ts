@@ -63,7 +63,7 @@ const routes: Routes = [
     component: MyBusinessesComponent,
   },
   {
-    path: 'business-services',
+    path: 'business-services/:id',
     component: BusinessServicesComponent,
   },
 ];

@@ -361,9 +361,9 @@
 .business-service-card-container1 {
   display: flex;
   padding: var(--dl-space-space-twounits);
-  align-items: flex-start;
+  align-items: center;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .business-service-card-text {
@@ -386,7 +386,7 @@
 }
 
 .business-service-card-container2 {
-  width: 100%;
+
   display: flex;
   align-items: center;
   padding-top: var(--dl-space-space-unit);

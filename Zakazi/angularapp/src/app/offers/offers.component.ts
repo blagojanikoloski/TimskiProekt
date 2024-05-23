@@ -28,6 +28,8 @@ export class OffersComponent implements OnInit {
   businessServices: any[] = [];
   isPopupOpen: boolean = false;
   selectedPostIds: number[] = [];
+  businessId!: number;
+
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
   }
@@ -44,9 +46,10 @@ export class OffersComponent implements OnInit {
     });
   }
 
+
   getServices(businessId: number) {
     console.log(businessId);
-
+    this.businessId = businessId;
 
     this.http.get<any>(`https://localhost:7200/api/Posts/ByBusiness/${businessId}`)
       .subscribe(
@@ -106,7 +109,7 @@ export class OffersComponent implements OnInit {
       timestamp: new Date().toISOString(),
       requestStatus: 0, // Assuming RequestStatus is an enum
       postIds: this.selectedPostIds,
-      businessId: this.allBusinesses[0].businessId, // Assuming allBusinesses is populated with data
+      businessId: this.businessId, // Assuming allBusinesses is populated with data
       clientId: userId,
       from: new Date(startTimestamp).toISOString(),
       to: new Date(endTimestamp).toISOString(),

@@ -69,6 +69,12 @@
           </span>
         </button>
 
+
+
+
+
+
+
         <style>
           /* Centering the form */
           #editProfileForm {
@@ -79,15 +85,54 @@
             z-index: 9999; /* Ensure it's above everything */
             border: 2px solid #333; /* Adding a border */
             padding: 20px; /* Adding padding for better visibility */
-            background-color: #fff; /* Setting background color */
-            /* display: none; */ /* Comment out this line for troubleshooting */
+            background-color: #e0f2f1; /* Setting light blue background color */
           }
 
             /* Adjusting form elements */
             #editProfileForm form {
-              width: 300px; /* Adjust width as needed */
+              width: 400px; /* Adjust width as needed */
             }
+
+          .form-group {
+            margin-bottom: 10px; /* Add gap between form groups */
+          }
+
+          label {
+            display: block; /* Ensure labels are on their own line */
+            margin-bottom: 5px; /* Add gap between labels and inputs */
+          }
+
+          input[type="text"],
+          input[type="email"],
+          input[type="tel"] {
+            width: 100%; /* Make inputs fill the width of the form */
+            padding: 8px; /* Add padding for better appearance */
+            border: 1px solid #ccc; /* Add border for input fields */
+            border-radius: 5px; /* Add border radius for input fields */
+            box-sizing: border-box; /* Include padding and border in the width */
+          }
+
+          .editButton,
+          .cancelButton {
+            padding: 10px 20px; /* Add padding to buttons */
+            border: none; /* Remove button border */
+            border-radius: 5px; /* Add border radius to buttons */
+            cursor: pointer; /* Add pointer cursor to buttons */
+            display: inline-block; /* Ensure buttons are displayed inline */
+          }
+
+          .editButton {
+            background-color: #008cba; /* Set button background color */
+            color: #fff; /* Set button text color */
+            margin-right: 10px; /* Add margin between Save Changes and Cancel buttons */
+          }
+
+          .cancelButton {
+            background-color: #f44336; /* Set button background color */
+            color: #fff; /* Set button text color */
+          }
         </style>
+
 
         <div id="editProfileForm" *ngIf="isEditing">
           <h3>Edit Profile</h3>
@@ -108,8 +153,9 @@
               <label for="phoneNumber">Phone Number:</label>
               <input type="tel" id="phoneNumber" name="phoneNumber" required formControlName="phoneNumber">
             </div>
-            <button type="submit">Save Changes</button>
-            <button type="button" (click)="cancelEditing()">Cancel</button>
+            <button type="submit" class="editButton">Save Changes</button>
+            <button type="button" class="cancelButton" (click)="cancelEditing()">Cancel</button>
+
           </form>
         </div>
 

@@ -82,6 +82,18 @@
       <div class="business-services-features1">
         <div class="business-services-container2">
 
+
+
+
+
+
+
+
+
+
+
+
+
           <!-- Edit Form Section -->
           <style>
             /* Centering the form */
@@ -93,13 +105,52 @@
               z-index: 9999; /* Ensure it's above everything */
               border: 2px solid #333; /* Adding a border */
               padding: 20px; /* Adding padding for better visibility */
-              background-color: #fff; /* Setting background color */
+              background-color: #e0f2f1; /* Setting light blue background color */
             }
 
               /* Adjusting form elements */
               #edit-form form {
                 width: 300px; /* Adjust width as needed */
               }
+
+            .form-group {
+              margin-bottom: 10px; /* Add gap between form groups */
+            }
+
+            label {
+              display: block; /* Ensure labels are on their own line */
+              margin-bottom: 5px; /* Add gap between labels and inputs */
+            }
+
+            input[type="text"],
+            input[type="number"],
+            select {
+              width: 100%; /* Make inputs fill the width of the form */
+              padding: 8px; /* Add padding for better appearance */
+              border: 1px solid #ccc; /* Add border for input fields */
+              border-radius: 5px; /* Add border radius for input fields */
+              box-sizing: border-box; /* Include padding and border in the width */
+            }
+
+            .editButton,
+            .cancelButton {
+              padding: 10px 20px; /* Add padding to buttons */
+              margin-top: 10px; /* Add gap between buttons and form inputs */
+              border: none; /* Remove button border */
+              border-radius: 5px; /* Add border radius to buttons */
+              cursor: pointer; /* Add pointer cursor to buttons */
+            }
+
+            .editButton {
+              background-color: #008cba; /* Set edit button background color */
+              color: #fff; /* Set button text color */
+              margin-right: 10px; /* Add margin between buttons */
+            }
+
+            .cancelButton {
+              background-color: #f44336; /* Set cancel button background color */
+              color: #fff; /* Set button text color */
+            }
           </style>
 
           <div *ngIf="isEditing" id="edit-form">
@@ -119,10 +170,11 @@
                   <option *ngFor="let business of businessOptions" [ngValue]="business.businessId">{{ business.businessName }}</option>
                 </select>
               </div>
-              <button type="submit">Save Changes</button>
-              <button type="button" (click)="cancelEditing()">Cancel</button>
+              <button type="submit" class="editButton">Save Changes</button>
+              <button type="button" class="cancelButton" (click)="cancelEditing()">Cancel</button>
             </form>
           </div>
+
 
 
           <!-- Posts Section -->

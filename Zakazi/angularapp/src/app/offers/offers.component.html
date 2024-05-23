@@ -92,26 +92,8 @@
 
 
 
-                <div class="popup" *ngIf="businessServices.length > 0 && isPopupOpen">
-                  <div class="popup-content">
-                    <span class="close" (click)="closePopup()">&times;</span>
-                    <h2>Services</h2>
-                    <ul>
-                      <li *ngFor="let service of businessServices">
-                        <input type="checkbox" id="{{service.postId}}" name="serviceCheckbox" (change)="toggleSelection(service.postId)">
-                        <label for="{{service.postId}}">
-                          <strong>Name:</strong> {{ service.nameOfService }} - <strong>Price:</strong> {{ service.price }}
-                        </label>
-                      </li>
-                    </ul>
-                    <button (click)="bookAppointment()">Book Appointment</button>
-                  </div>
-                </div>
-
-
-
-
                 <style>
+                  /* Popup container */
                   .popup {
                     display: flex;
                     justify-content: center;
@@ -121,39 +103,83 @@
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+                    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+                    z-index: 9999; /* Ensure it's above everything */
                   }
 
+                  /* Popup content */
                   .popup-content {
                     position: relative;
-                    background-color: white;
-                    padding: 20px;
-                    border: 2px solid #333; /* border color */
-                    border-radius: 5px; /* rounded corners */
-                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* drop shadow */
+                    background-color: #e0f2f1; /* Light blue background */
+                    padding: 40px; /* Increased padding for better visibility */
+                    border: 2px solid #333; /* Border color */
+                    border-radius: 10px; /* Rounded corners */
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); /* Increased shadow for depth */
+                    width: 70%; /* Set width to 70% of viewport */
+                    max-width: 800px; /* Set maximum width */
                   }
 
-                  .close {
+                  /* Close button */
+                  .popup-close {
                     position: absolute;
                     top: 10px;
                     right: 10px;
                     cursor: pointer;
-                    font-size: 20px;
-                    color: #333; /* close button color */
+                    font-size: 24px; /* Increased font size */
+                    color: #333; /* Close button color */
                   }
 
-                    .close:hover {
-                      color: red; /* change color on hover */
+                    .popup-close:hover {
+                      color: red; /* Change color on hover */
                     }
 
-                  h2 {
-                    color: #333; /* heading color */
+                  /* Heading */
+                  .popup-heading {
+                    color: #333; /* Heading color */
+                    margin-bottom: 20px; /* Add spacing below heading */
                   }
 
-                  ul {
+                  /* List */
+                  .popup-list {
                     list-style-type: none;
+                    padding: 0; /* Remove default padding */
                   }
+
+                    .popup-list li {
+                      margin-bottom: 10px; /* Add spacing between list items */
+                    }
+
+                  /* Book Appointment button */
+                  .popup-button {
+                    padding: 10px 20px; /* Add padding to button */
+                    background-color: #008cba; /* Set button background color */
+                    color: #fff; /* Set button text color */
+                    border: none; /* Remove button border */
+                    border-radius: 5px; /* Add border radius to button */
+                    cursor: pointer; /* Add pointer cursor */
+                  }
+
+                    .popup-button:hover {
+                      background-color: #005f75; /* Darken button color on hover */
+                    }
                 </style>
+
+                <div class="popup" *ngIf="businessServices.length > 0 && isPopupOpen">
+                  <div class="popup-content">
+                    <span class="popup-close" (click)="closePopup()">&times;</span>
+                    <h2 class="popup-heading">Services</h2>
+                    <ul class="popup-list">
+                      <li *ngFor="let service of businessServices">
+                        <input type="checkbox" id="{{service.postId}}" name="serviceCheckbox" (change)="toggleSelection(service.postId)">
+                        <label for="{{service.postId}}">
+                          <strong>Name:</strong> {{ service.nameOfService }} - <strong>Price:</strong> {{ service.price }}
+                        </label>
+                      </li>
+                    </ul>
+                    <button class="popup-button" (click)="bookAppointment()">Book Appointment</button>
+                  </div>
+                </div>
+
 
 
 

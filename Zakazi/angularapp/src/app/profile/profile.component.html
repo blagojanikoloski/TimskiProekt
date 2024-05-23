@@ -52,24 +52,76 @@
   </div>
 
 
-  <div *ngIf="!isAdmin" class="my-profile-client-hero">
-    <div class="my-profile-client-hero1 heroContainer">
-      <div class="my-profile-client-container01">
-        <h1 class="my-profile-client-hero-heading heading1">
-          My Profile
-        </h1>
-      </div>
-    </div>
-  </div>
 
-  <div *ngIf="isAdmin" class="my-profile-client-hero">
+
+  <div class="my-profile-client-hero">
     <div class="my-profile-client-hero1 heroContainer">
       <div class="my-profile-client-container01">
         <h1 class="my-profile-client-hero-heading heading1">
           My Profile
         </h1>
 
-        <button class="buttonFilled" onclick="location.href='/my-businesses'">
+        <button class="buttonFilled" (click)="toggleEdit()">
+          <!-- Ensure this is correctly bound -->
+          <span>
+            <span>Edit Profile</span>
+            <br />
+          </span>
+        </button>
+
+        <style>
+          /* Centering the form */
+          #editProfileForm {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999; /* Ensure it's above everything */
+            border: 2px solid #333; /* Adding a border */
+            padding: 20px; /* Adding padding for better visibility */
+            background-color: #fff; /* Setting background color */
+            /* display: none; */ /* Comment out this line for troubleshooting */
+          }
+
+            /* Adjusting form elements */
+            #editProfileForm form {
+              width: 300px; /* Adjust width as needed */
+            }
+        </style>
+
+        <div id="editProfileForm" *ngIf="isEditing">
+          <h3>Edit Profile</h3>
+          <form id="editForm" (submit)="submitEdit()" [formGroup]="editForm">
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" id="name" name="name" required formControlName="name">
+            </div>
+            <div class="form-group">
+              <label for="surname">Surname:</label>
+              <input type="text" id="surname" name="surname" required formControlName="surname">
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" required formControlName="email">
+            </div>
+            <div class="form-group">
+              <label for="phoneNumber">Phone Number:</label>
+              <input type="tel" id="phoneNumber" name="phoneNumber" required formControlName="phoneNumber">
+            </div>
+            <button type="submit">Save Changes</button>
+            <button type="button" (click)="cancelEditing()">Cancel</button>
+          </form>
+        </div>
+
+
+
+
+
+
+
+
+
+        <button *ngIf="isAdmin" class="buttonFilled" onclick="location.href='/my-businesses'">
           <span>
             <span>View My Businesses</span>
             <br />

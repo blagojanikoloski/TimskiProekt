@@ -25,8 +25,8 @@ export class ProfileComponent {
   }
 
   ngOnInit(): void {
-    //this.fetchAllRequestsClientPending();
-    //this.fetchAllRequestsWorker();
+    this.fetchAllRequestsClientPending();
+    this.fetchAllRequestsWorker();
     //this.fetchAllPostsWorker();
     this.getProfileData();
     this.editForm = this.fb.group({

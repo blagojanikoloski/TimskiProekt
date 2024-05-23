@@ -25,7 +25,7 @@ namespace Time.Extensions
             services.AddScoped<IBusinessService, BusinessService>();
             services.AddScoped<IZakaziUserService, ZakaziUserService>();
             services.AddScoped<IPostService, PostService>();
-
+            services.AddScoped<IPostRequestService, PostRequestService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // template to register service

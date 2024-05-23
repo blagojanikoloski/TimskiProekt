@@ -13,6 +13,8 @@ using webapi.Domain.Enumerators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using webapi.Service.Interface;
+using webapi.Repository;
 
 
 namespace webapi.Controllers
@@ -28,9 +30,11 @@ namespace webapi.Controllers
         private readonly IBusinessService _businessService;
         private readonly IPostService _postService;
         private readonly UserManager<ZakaziUser> _userManager;
+        private readonly IPostRequestService _postRequestService;
+        private readonly DataContext _context;
 
 
-        public RequestsController(IRequestService requestService, ILogger<RequestsController> logger, IZakaziUserService userService, IBusinessService businessService, IPostService postService, UserManager<ZakaziUser> userManager)
+        public RequestsController(IRequestService requestService, ILogger<RequestsController> logger, IZakaziUserService userService, IBusinessService businessService, IPostService postService, UserManager<ZakaziUser> userManager, IPostRequestService postRequestService, DataContext context)
         {
             _requestService = requestService;
             _logger = logger;
@@ -38,6 +42,8 @@ namespace webapi.Controllers
             _businessService = businessService;
             _postService = postService;
             _userManager = userManager;
+            _postRequestService = postRequestService;
+            _context = context;
         }
 
         [HttpGet]
@@ -59,17 +65,17 @@ namespace webapi.Controllers
 
         // Import the namespace where RequestStatus enum is defined
 
-        [HttpGet("client/{clientId}/requests")]
-        public async Task<ActionResult<IEnumerable<RequestDto>>> GetRequestsByClientId(int clientId)
-        {
+        //[HttpGet("client/{clientId}/requests")]
+        //public async Task<ActionResult<IEnumerable<RequestDto>>> GetRequestsByClientId(int clientId)
+        //{
 
-            var client = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == clientId);
-            if (client == null)
-            {
-                return Unauthorized();
-            }
-            return Ok(await _requestService.GetRequestsByClient(client));
-        }
+        //    var client = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == clientId);
+        //    if (client == null)
+        //    {
+        //        return Unauthorized();
+        //    }
+        //    return Ok(await _requestService.GetRequestsByClient(client));
+        //}
 
         [Authorize]
         [HttpGet("currentUser/requests")]
@@ -84,99 +90,124 @@ namespace webapi.Controllers
             return Ok(await _requestService.GetRequestsByClient(client));
         }
 
-        //[HttpGet("client/{clientId}/requests")]
-        //public async Task<ActionResult<IEnumerable<MyProfileCardDto>>> GetRequestsByClientId(int clientId)
-        //{
-        //    try
-        //    {
-        //        var requests = await _requestService.GetRequestsByClientId(clientId);
-        //        var dtos = new List<MyProfileCardDto>();
+        [HttpGet("client/{clientId}/requests")]
+        public async Task<ActionResult<IEnumerable<MyProfileCardDto>>> GetRequestsByClientId(int clientId)
+        {
+            try
+            {
+                var requests = await _requestService.GetRequestsByClientId(clientId);
+                var dtos = new List<MyProfileCardDto>();
 
-        //        foreach (var request in requests)
-        //        {
-        //            // Fetch user information using the client ID
-        //            var user = await _userService.GetUserById(request.ClientId.ToString());
-        //            var business = await _businessService.GetBusinessById(request.BusinessId);
-        //            var post = await _postService.GetPostById(request.PostId);
-        //            var owner = await _userService.GetUserById(business.OwnerId.ToString());
+                foreach (var request in requests)
+                {
+                    // Fetch user information using the client ID
+                    var user = await _userService.GetUserById(request.ClientId.ToString());
+                    var business = await _businessService.GetBusinessById(request.BusinessId);
+                    var owner = await _userService.GetUserById(business.OwnerId.ToString());
 
-        //            // Convert RequestStatus enum to string
-        //            string requestStatusString = Enum.GetName(typeof(RequestStatus), request.RequestStatus);
+                    // Convert RequestStatus enum to string
+                    string requestStatusString = Enum.GetName(typeof(RequestStatus), request.RequestStatus);
 
-        //            // Create a DTO and append user information
-        //            var dto = new MyProfileCardDto
-        //            {
-        //                RequestId = request.RequestId,
-        //                Timestamp = request.Timestamp,
-        //                RequestStatus = request.RequestStatus,
-        //                PostId = request.PostId,
-        //                BusinessId = request.BusinessId,
-        //                ClientId = request.ClientId,
-        //                From = request.From.ToString("yyyy-MM-dd HH:mm:ss"),
-        //                To = request.To.ToString("yyyy-MM-dd HH:mm:ss"),
-        //                Name = owner.Name,
-        //                Surname = owner.Surname,
-        //                BusinessName = business.BusinessName,
-        //                NameOfService = post.NameOfService,
-        //                Price = post.Price,
-        //                RequestStatusInString = requestStatusString // Assign the string representation of RequestStatus
-        //            };
-        //            dtos.Add(dto);
-        //        }
-        //        return Ok(dtos);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
+                    // Fetch posts associated with the request
+                    var posts = await _context.Requests
+                        .Where(r => r.RequestId == request.RequestId)
+                        .SelectMany(r => r.Posts)
+                        .ToListAsync();
 
-        //[HttpGet("worker/{workerId}/requests")]
-        //public async Task<ActionResult<IEnumerable<MyProfileCardDto>>> GetRequestsByWorkerId(int workerId)
-        //{
-        //    try
-        //    {
-        //        var requests = await _requestService.GetRequestsByWorkerId(workerId);
-        //        var dtos = new List<MyProfileCardDto>();
+                    // Create a DTO for the request and append user and post information
+                    var dto = new MyProfileCardDto
+                    {
+                        RequestId = request.RequestId,
+                        Timestamp = request.Timestamp,
+                        RequestStatus = request.RequestStatus,
+                        BusinessId = request.BusinessId,
+                        ClientId = request.ClientId,
+                        From = request.From.ToString("yyyy-MM-dd HH:mm:ss"),
+                        To = request.To.ToString("yyyy-MM-dd HH:mm:ss"),
+                        Name = owner.Name,
+                        Surname = owner.Surname,
+                        BusinessName = business.BusinessName,
+                        RequestStatusInString = requestStatusString, // Assign the string representation of RequestStatus
+                        Posts = posts.Select(post => new PostDto
+                        {
+                            PostId = post.PostId,
+                            NameOfService = post.NameOfService,
+                            Price = (decimal)post.Price
+                            // Add other properties as needed
+                        }).ToList()
+                    };
 
-        //        foreach (var request in requests)
-        //        {
-        //            // Fetch user information using the client ID
-        //            var user = await _userService.GetUserById(request.ClientId.ToString());
-        //            var business = await _businessService.GetBusinessById(request.BusinessId);
-        //            var post = await _postService.GetPostById(request.PostId);
-        //            var owner = await _userService.GetUserById(business.OwnerId.ToString());
+                    dtos.Add(dto);
+                }
 
-        //            // Convert RequestStatus enum to string
-        //            string requestStatusString = Enum.GetName(typeof(RequestStatus), request.RequestStatus);
+                return Ok(dtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
-        //            // Create a DTO and append user information
-        //            var dto = new MyProfileCardDto
-        //            {
-        //                RequestId = request.RequestId,
-        //                Timestamp = request.Timestamp,
-        //                RequestStatus = request.RequestStatus,
-        //                PostId = request.PostId,
-        //                BusinessId = request.BusinessId,
-        //                ClientId = request.ClientId,
-        //                From = request.From.ToString("yyyy-MM-dd HH:mm:ss"),
-        //                To = request.To.ToString("yyyy-MM-dd HH:mm:ss"),
-        //                Name = user.Name,
-        //                Surname = user.Surname,
-        //                BusinessName = business.BusinessName,
-        //                NameOfService = post.NameOfService,
-        //                Price = post.Price,
-        //                RequestStatusInString = requestStatusString // Assign the string representation of RequestStatus
-        //            };
-        //            dtos.Add(dto);
-        //        }
-        //        return Ok(dtos);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
+
+
+
+        [HttpGet("worker/{workerId}/requests")]
+        public async Task<ActionResult<IEnumerable<MyProfileCardDto>>> GetRequestsByWorkerId(int workerId)
+        {
+            try
+            {
+                var requests = await _requestService.GetRequestsByWorkerId(workerId);
+                var dtos = new List<MyProfileCardDto>();
+
+                foreach (var request in requests)
+                {
+                    // Fetch user information using the client ID
+                    var user = await _userService.GetUserById(request.ClientId.ToString());
+                    var business = await _businessService.GetBusinessById(request.BusinessId);
+                    var owner = await _userService.GetUserById(business.OwnerId.ToString());
+
+                    // Convert RequestStatus enum to string
+                    string requestStatusString = Enum.GetName(typeof(RequestStatus), request.RequestStatus);
+
+                    // Fetch posts associated with the request
+                    var posts = await _context.Requests
+                        .Where(r => r.RequestId == request.RequestId)
+                        .SelectMany(r => r.Posts)
+                        .ToListAsync();
+
+                    // Create a DTO for the request and append user and post information
+                    var dto = new MyProfileCardDto
+                    {
+                        RequestId = request.RequestId,
+                        Timestamp = request.Timestamp,
+                        RequestStatus = request.RequestStatus,
+                        BusinessId = request.BusinessId,
+                        ClientId = request.ClientId,
+                        From = request.From.ToString("yyyy-MM-dd HH:mm:ss"),
+                        To = request.To.ToString("yyyy-MM-dd HH:mm:ss"),
+                        Name = user.Name,
+                        Surname = user.Surname,
+                        BusinessName = business.BusinessName,
+                        RequestStatusInString = requestStatusString, // Assign the string representation of RequestStatus
+                        Posts = posts.Select(post => new PostDto
+                        {
+                            PostId = post.PostId,
+                            NameOfService = post.NameOfService,
+                            Price = (decimal)post.Price
+                            // Add other properties as needed
+                        }).ToList()
+                    };
+
+                    dtos.Add(dto);
+                }
+
+                return Ok(dtos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
 
         [HttpGet("{id}")]

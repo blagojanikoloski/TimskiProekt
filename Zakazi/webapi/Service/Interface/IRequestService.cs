@@ -10,7 +10,7 @@ namespace webapi.Domain.Services
         Task<IEnumerable<Request>> GetAllRequests();
         Task<IEnumerable<Request>> GetRequestsByBusinessId(int id);
 
-        //Task<IEnumerable<Request>> GetRequestsByClientId(int clientId);
+        Task<IEnumerable<Request>> GetRequestsByClientId(int clientId);
         Task<IEnumerable<RequestDto>> GetRequestsByClient(ZakaziUser client);
         Task<IEnumerable<Request>> GetRequestsByWorkerId(int workerId);
         Task<Request> CreateRequest(Request request);

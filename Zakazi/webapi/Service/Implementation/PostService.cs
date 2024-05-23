@@ -67,7 +67,12 @@ namespace webapi.Domain.Services
             return await _context.Posts.Where(p => p.UserId == userId).ToListAsync();
         }
 
-        
+        public async Task DeletePostsByBusinessId(int businessId)
+        {
+            var posts = await _context.Posts.Where(p => p.BusinessId == businessId).ToListAsync();
+            _context.Posts.RemoveRange(posts);
+            await _context.SaveChangesAsync();
+        }
 
     }
 }

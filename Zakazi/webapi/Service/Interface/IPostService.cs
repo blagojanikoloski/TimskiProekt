@@ -14,7 +14,7 @@ namespace webapi.Domain.Services
         Task UpdatePost(Post post);
         Task DeletePost(int id);
         Task<List<Post>> GetPostsByUserId(int userId);
-        
+        Task DeletePostsByBusinessId(int businessId);
 
     }
 }

@@ -49,6 +49,23 @@ namespace webapi.Domain.Services
                 .ToListAsync();
         }
 
+        public IEnumerable<Business> GetAllBusinesses()
+        {
+            return _context.Businesses.ToList();
+        }
+
+        public async Task<Business> DeleteBusinessAsync(int businessId)
+        {
+            var business = await _context.Businesses.FindAsync(businessId);
+            if (business == null)
+                return null;
+
+            _context.Businesses.Remove(business);
+            await _context.SaveChangesAsync();
+
+            return business;
+        }
+
         // Implement more methods as needed for managing businesses
     }
 }

@@ -35,7 +35,7 @@ export class SearchOfferComponent {
     localStorage.setItem('startTimestamp', formattedStartTimestamp);
     localStorage.setItem('endTimestamp', formattedEndTimestamp);
     // Call the API endpoint with formatted timestamps
-    this.http.get<any[]>(`https://localhost:7200/api/Posts/BetweenTimestamps?startTimestamp=${formattedStartTimestamp}&endTimestamp=${formattedEndTimestamp}`).subscribe(
+    this.http.get<any[]>(`https://localhost:7200/api/Business/businesses`).subscribe(
       (response) => {
         // Handle the response
         this.responseMessage = JSON.stringify(response);

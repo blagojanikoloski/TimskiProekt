@@ -77,55 +77,87 @@
   </div>
   <div class="business-services-features">
     <div class="featuresContainer">
+
+
       <div class="business-services-features1">
         <div class="business-services-container2">
 
-          <div class="business-service-card-container">
+          <!-- Edit Form Section -->
+          <style>
+            /* Centering the form */
+            #edit-form {
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              z-index: 9999; /* Ensure it's above everything */
+              border: 2px solid #333; /* Adding a border */
+              padding: 20px; /* Adding padding for better visibility */
+              background-color: #fff; /* Setting background color */
+            }
+
+              /* Adjusting form elements */
+              #edit-form form {
+                width: 300px; /* Adjust width as needed */
+              }
+          </style>
+
+          <div *ngIf="isEditing" id="edit-form">
+            <h3>Edit Service</h3>
+            <form [formGroup]="editForm" (ngSubmit)="submitEdit()">
+              <div class="form-group">
+                <label for="nameOfService">Name of Service:</label>
+                <input type="text" id="nameOfService" formControlName="nameOfService" required>
+              </div>
+              <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" id="price" formControlName="price" step="0.01" required>
+              </div>
+              <div class="form-group">
+                <label for="businessSelect">Your Businesses:</label>
+                <select id="businessSelect" formControlName="businessId">
+                  <option *ngFor="let business of businessOptions" [ngValue]="business.businessId">{{ business.businessName }}</option>
+                </select>
+              </div>
+              <button type="submit">Save Changes</button>
+              <button type="button" (click)="cancelEditing()">Cancel</button>
+            </form>
+          </div>
+
+
+          <!-- Posts Section -->
+          <div class="business-service-card-container" *ngFor="let post of posts">
             <div class="business-service-card-blog-post-card">
               <div class="business-service-card-container1">
                 <span class="business-service-card-text">Hair Dresser</span>
-                <span class="business-service-card-text01">I will cut you hair</span>
-                <span class="business-service-card-text02">
-                  Lorem ipsum dolor sit amet, consectetur, adipiscing elit. Sed non
-                  volutpat turpis. ​ Mauris luctus rutrum mi ut rhoncus. Integer in
-                  dignissim tortor. Lorem ​​ ipsum dolor sit amet, consectetur adipiscing
-                  elit.
-                </span>
+                <span class="business-service-card-text01">{{ post.nameOfService }}</span>
                 <div class="business-service-card-container2">
-                  <div class="business-service-card-profile">
-                    <img alt="profile"
-                         src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                         image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                         class="business-service-card-image" />
-                    <span class="business-service-card-text03">Jon Doe</span>
-                  </div>
-                  <span class="business-service-card-text04">10$/hr</span>
+                  <span class="business-service-card-text04">{{ post.price }}$/hr</span>
                 </div>
               </div>
               <div class="business-service-card-container3">
                 <div class="business-service-card-container4">
-                  <button class="buttonFilled">
-                    <span>
-                      <span>Edit Service</span>
-                      <br />
-                    </span>
+                  <button class="buttonFilled" (click)="startEditing(post)">
+                    <span>Edit Service</span>
                   </button>
                 </div>
                 <div class="business-service-card-container5">
-                  <button class="buttonFilled">
-                    <span>
-                      <span>Delete Service</span>
-                      <br />
-                    </span>
+                  <button class="buttonFilled" (click)="deletePost(post.postId)">
+                    <span>Delete Service</span>
                   </button>
                 </div>
               </div>
             </div>
           </div>
 
-
         </div>
       </div>
+
+
+
+
+
+
     </div>
   </div>
   <div class="business-services-footer">

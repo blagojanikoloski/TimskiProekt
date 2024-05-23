@@ -80,48 +80,26 @@
       <div class="my-businesses-container2">
         <h1 class="my-businesses-hero-heading1 heading1">My Businesses</h1>
       </div>
+
+
       <div class="my-businesses-features1">
-        <div class="business-card-container">
+
+
+        <div class="business-card-container" *ngFor="let business of businesses">
           <div class="business-card-blog-post-card">
             <div class="business-card-container1">
               <span class="business-card-text">Hair Dresser</span>
-              <span class="business-card-text1">I will cut you hair</span>
-              <div class="business-card-container2">
-                <div class="business-card-profile">
-                  <img alt="profile"
-                       src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                       image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                       class="business-card-image" />
-                  <span class="business-card-text2">Jon Doe</span>
-                </div>
-              </div>
+              <span class="business-card-text1">{{business.businessName}}</span>
+              <div class="business-card-container2"></div>
             </div>
             <div class="business-card-container3">
-              <button class="buttonFilled">View Services</button>
+              <button class="buttonFilled" (click)="viewServices(business.businessId)">View Services</button>
             </div>
           </div>
         </div>
 
-        <div class="business-card-container">
-          <div class="business-card-blog-post-card">
-            <div class="business-card-container1">
-              <span class="business-card-text">Hair Dresser</span>
-              <span class="business-card-text1">I will cut you hair</span>
-              <div class="business-card-container2">
-                <div class="business-card-profile">
-                  <img alt="profile"
-                       src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                       image_src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixid=Mnw5MTMyMXwwfDF8c2VhcmNofDd8fG1hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTYyNjQzMTMwMw&amp;ixlib=rb-1.2.1&amp;h=1200"
-                       class="business-card-image" />
-                  <span class="business-card-text2">Jon Doe</span>
-                </div>
-              </div>
-            </div>
-            <div class="business-card-container3">
-              <button class="buttonFilled">View Services</button>
-            </div>
-          </div>
-        </div>
+
+
 
       </div>
     </div>

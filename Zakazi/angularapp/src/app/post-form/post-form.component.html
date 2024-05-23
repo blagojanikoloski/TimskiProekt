@@ -10,14 +10,6 @@
       <input type="number" id="price" name="price" formControlName="price" step="0.01" required>
     </div>
     <div class="form-group">
-      <label for="availabilityFrom">Availability From:</label>
-      <input type="datetime-local" id="availabilityFrom" name="availabilityFrom" formControlName="availabilityFrom" required>
-    </div>
-    <div class="form-group">
-      <label for="availabilityTo">Availability To:</label>
-      <input type="datetime-local" id="availabilityTo" name="availabilityTo" formControlName="availabilityTo" required>
-    </div>
-    <div class="form-group">
       <label for="businessSelect">Your Businesses:</label>
       <select id="businessSelect" name="businessSelect" formControlName="businessId">
         <option *ngFor="let business of businessOptions" [ngValue]="business.businessId">{{ business.businessName }}</option>

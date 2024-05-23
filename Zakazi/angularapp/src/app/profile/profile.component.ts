@@ -88,6 +88,7 @@ export class ProfileComponent {
             console.log('Profile updated successfully');
             // Optionally, you can reload the profile data after update
             this.getProfileData();
+            this.isEditing = false;
           },
           error => {
             console.error('Error updating profile:', error);
@@ -179,6 +180,7 @@ export class ProfileComponent {
       this.http.get<any[]>(`https://localhost:7200/api/Requests/client/${userId}/requests`).subscribe(
         (requests: any[]) => {
           this.requestOptionsClientPending = requests; // Assuming requestOptions is an array of objects representing requests
+          console.log(requests);
         },
         error => {
           console.error('Error fetching requests:', error);

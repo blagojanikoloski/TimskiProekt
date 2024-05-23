@@ -43,6 +43,8 @@ namespace webapi.Domain.DTOs
         public double Price { get; set; }
         [Required]
         public string RequestStatusInString {  get; set; }
+        [Required]
+        public List<PostDto> Posts { get; set; }
 
 
     }

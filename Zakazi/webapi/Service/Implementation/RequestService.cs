@@ -76,10 +76,10 @@ namespace webapi.Domain.Services
             }
         }
 
-        //public async Task<IEnumerable<Request>> GetRequestsByClientId(int clientId)
-        //{
-        //    return await _context.Requests.Where(r => r.ClientId == clientId).ToListAsync();
-        //}
+        public async Task<IEnumerable<Request>> GetRequestsByClientId(int clientId)
+        {
+            return await _context.Requests.Where(r => r.ClientId == clientId).ToListAsync();
+        }
 
         public async Task<IEnumerable<RequestDto>> GetRequestsByClient(ZakaziUser client)
         {

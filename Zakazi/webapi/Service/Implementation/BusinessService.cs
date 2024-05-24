@@ -42,6 +42,11 @@ namespace webapi.Domain.Services
             }
         }
 
+        //public async Task<Business> CreateBusinessAsync(Business entity)
+        //{
+        //    return await _businessRepository.Insert(entity);
+        //}
+
         public async Task<IEnumerable<Business>> GetBusinessesByOwnerIdAsync(int ownerId)
         {
             return await _context.Businesses

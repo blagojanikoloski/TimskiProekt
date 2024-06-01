@@ -5,6 +5,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Business, WebApiClient } from '../services/web-api-client.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'business-services',
@@ -16,7 +18,7 @@ export class BusinessServicesComponent implements OnInit {
   posts: any[] = [];
   isEditing: boolean = false;
   editForm: FormGroup;
-  businessOptions: { businessId: number, businessName: string }[] = [];
+  businessOptions: Business[] = [];
 
   constructor(
     private title: Title,
@@ -25,7 +27,8 @@ export class BusinessServicesComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private jwtHelper: JwtHelperService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private webApiClient: WebApiClient
   ) {
     this.title.setTitle('BusinessServicesComponent - Zakazi');
     this.meta.addTags([
@@ -111,21 +114,7 @@ export class BusinessServicesComponent implements OnInit {
     }
   }
 
-  fetchBusinesses(): void {
-    const userString = localStorage.getItem('user');
-    if (userString) {
-      const user = JSON.parse(userString);
-      const token = this.jwtHelper.decodeToken(user);
-      const userId: number = +token.nameid;
-
-      this.http.get<any[]>(`https://localhost:7200/api/business/owner/${userId}/businesses`).subscribe(
-        (businesses: any[]) => {
-          this.businessOptions = businesses;
-        },
-        error => {
-          console.error('Error fetching businesses:', error);
-        }
-      );
-    }
+  async fetchBusinesses(){
+   this.businessOptions = await lastValueFrom(this.webApiClient.business_GetCurrentUserBusinesses());
   }
 }

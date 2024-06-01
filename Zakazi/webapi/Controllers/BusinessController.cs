@@ -10,7 +10,7 @@ using webapi.Domain.Services;
 
 namespace webapi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BusinessController : ControllerBase
@@ -29,84 +29,69 @@ namespace webapi.Controllers
         }
 
         [HttpPost("business")]
-        public async Task<ActionResult<Business>> CreateBusiness([FromBody] Business model)
+        public async Task<ActionResult<Business>> CreateBusiness(BusinessCreationDto businessCreationDto)
         {
-            try
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
             {
-                var business = await _businessService.CreateBusinessAsync(model.OwnerId, model.BusinessName);
-                return Ok(business);
+                return Unauthorized();
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+
+            var business = new Business();
+            _mapper.Map(businessCreationDto, business);
+            business.OwnerId = userId;
+            return Ok(await _businessService.CreateBusinessAsync(business));
         }
-
-        //[HttpPost("business")]
-        //public async Task<ActionResult<Business>> CreateBusiness(BusinessCreationDto businessCreationDto)
-        //{
-        //    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        //    var user = await _userManager.FindByIdAsync(userId.ToString());
-
-        //    if (user == null)
-        //    {
-        //        return Unauthorized();
-        //    }
-
-        //    var business = new Business();
-        //    _mapper.Map(businessCreationDto, business);
-        //    business.OwnerId = userId;
-        //    return Ok(await _businessService.CreateBusinessAsync(business));
-        //}
 
         [HttpGet("owner/{ownerId}/businesses")]
         public async Task<ActionResult<IEnumerable<Business>>> GetBusinessesByOwnerId(int ownerId)
         {
-            try
-            {
-                var businesses = await _businessService.GetBusinessesByOwnerIdAsync(ownerId);
-                return Ok(businesses);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+            return Ok(await _businessService.GetBusinessesByOwnerIdAsync(ownerId));
         }
 
+        [HttpGet("current-user/businesses")]
+        public async Task<ActionResult<IEnumerable<Business>>> GetCurrentUserBusinesses()
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(await _businessService.GetBusinessesByOwnerIdAsync(userId));
+        }
+
+        [AllowAnonymous]
         [HttpGet("businesses")]
         public async Task<ActionResult<IEnumerable<Business>>> GetAllBusinesses()
         {
-            try
-            {
-                var businesses =  _businessService.GetAllBusinesses();
-                return Ok(businesses);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+           return Ok(await _businessService.GetAllBusinesses());
         }
 
 
+        // will only work if business does not have any requests sent to it
         [HttpDelete("{businessId}")]
-        public async Task<ActionResult> DeleteBusiness(int businessId)
+        public async Task<ActionResult<Business>> DeleteBusiness(int businessId)
         {
-            try
-            {
-                // Delete all posts associated with the business
-                await _postService.DeletePostsByBusinessId(businessId);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
 
-                // Then delete the business
-                var deletedBusiness = await _businessService.DeleteBusinessAsync(businessId);
-                if (deletedBusiness == null)
-                    return NotFound($"Business with id {businessId} not found");
-
-                return NoContent();
-            }
-            catch (Exception ex)
+            if (user == null)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return Unauthorized();
             }
+
+            var business = await _businessService.GetBusinessById(businessId);
+
+            if(business != null && business.OwnerId == userId)
+            {
+                return await _businessService.DeleteBusinessAsync(business);
+            }
+            return Unauthorized();
         }
 
 

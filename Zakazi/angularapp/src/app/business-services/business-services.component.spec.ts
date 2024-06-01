@@ -1,21 +1,21 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import { RouterModule } from '@angular/router'
-import { CommonModule } from '@angular/common'
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ComponentsModule } from '../components/components.module'
-import { BusinessServicesComponent } from './business-services.component'
+import { BusinessServicesComponent } from './business-services.component';
 
-const routes = [
-  {
-    path: '',
-    component: BusinessServicesComponent,
-  },
-]
+describe('HomePageComponent', () => {
+  let component: BusinessServicesComponent;
+  let fixture: ComponentFixture<BusinessServicesComponent>;
 
-@NgModule({
-  declarations: [BusinessServicesComponent],
-  imports: [CommonModule, ComponentsModule, RouterModule.forChild(routes)],
-  exports: [BusinessServicesComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-})
-export class BusinessServicesModule {}
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [BusinessServicesComponent]
+    });
+    fixture = TestBed.createComponent(BusinessServicesComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

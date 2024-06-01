@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -12,7 +12,6 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { OffersComponent } from './offers/offers.component';
-import { MyBusinessesComponent } from './my-businesses/my-businesses.component';
 import { BusinessServicesComponent } from './business-services/business-services.component';
 import { SearchOfferComponent } from './search-offer/search-offer.component';
 import { EditOfferComponent } from './offers/edit-offer/edit-offer.component';
@@ -21,6 +20,9 @@ import { BusinessFormComponent } from './business-form/business-form.component';
 import { PostFormComponent } from './post-form/post-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
+import { JwtInterceptor } from './services/jwt-interceptor.service';
+import { CommonModule } from '@angular/common';
+import { MyBusinessesComponent } from './my-businesses/my-businesses.component';
 
 export function tokenGetter() {
   const token = localStorage.getItem('user');
@@ -28,16 +30,39 @@ export function tokenGetter() {
 }
 
 @NgModule({
-  declarations: [AppComponent, HomePageComponent, LoginComponent, RegisterComponent, ProfileComponent, OffersComponent, MyBusinessesComponent, BusinessServicesComponent , SearchOfferComponent, EditOfferComponent, BusinessFormComponent, PostFormComponent],
-  imports: [BrowserModule, HttpClientModule, NgbModule, SharedModule, BrowserAnimationsModule, FormsModule,ReactiveFormsModule, 
+  declarations: [
+    AppComponent,
+    HomePageComponent,
+    LoginComponent,
+    RegisterComponent,
+    ProfileComponent,
+    OffersComponent,
+    BusinessServicesComponent,
+    SearchOfferComponent,
+    EditOfferComponent,
+    BusinessFormComponent,
+    PostFormComponent,
+    MyBusinessesComponent
+  ],
+  imports: [
+    CommonModule,
+    BrowserModule,
+    HttpClientModule,
+    NgbModule,
+    SharedModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     JwtModule.forRoot({
-    config: {
-      tokenGetter: tokenGetter,
-      disallowedRoutes: [],
-    },
-  }),],
+      config: {
+        tokenGetter: tokenGetter,
+        disallowedRoutes: [],
+      },
+    }),
+  ],
   providers: [
     WebApiClient,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: API_BASE_URL, useValue: environment.apiUrl },
   ],
   bootstrap: [AppComponent],

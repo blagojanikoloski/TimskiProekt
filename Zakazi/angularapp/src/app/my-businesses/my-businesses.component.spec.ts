@@ -1,21 +1,21 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import { RouterModule } from '@angular/router'
-import { CommonModule } from '@angular/common'
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ComponentsModule } from '../components/components.module'
-import { MyBusinessesComponent } from './my-businesses.component'
+import { MyBusinessesComponent } from './my-businesses.component';
 
-const routes = [
-  {
-    path: '',
-    component: MyBusinessesComponent,
-  },
-]
+describe('MyBusinessesComponent', () => {
+  let component: MyBusinessesComponent;
+  let fixture: ComponentFixture<MyBusinessesComponent>;
 
-@NgModule({
-  declarations: [MyBusinessesComponent],
-  imports: [CommonModule, ComponentsModule, RouterModule.forChild(routes)],
-  exports: [MyBusinessesComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-})
-export class MyBusinessesModule {}
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [MyBusinessesComponent]
+    });
+    fixture = TestBed.createComponent(MyBusinessesComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

@@ -6,12 +6,10 @@ namespace webapi.Domain.Services
     public interface IBusinessService
     {
         Task<Business> GetBusinessById(int businessId);
-        Task<Business> CreateBusinessAsync(int userId, string businessName);
-        //Task<Business> CreateBusinessAsync(Business entity);
-
+        Task<Business> CreateBusinessAsync(Business entity);
         Task<IEnumerable<Business>> GetBusinessesByOwnerIdAsync(int ownerId);
-        IEnumerable<Business> GetAllBusinesses();
-        Task<Business> DeleteBusinessAsync(int businessId);
+        Task<IEnumerable<Business>> GetAllBusinesses();
+        Task<Business> DeleteBusinessAsync(Business business);
         // Add more methods as needed for managing businesses
     }
 }

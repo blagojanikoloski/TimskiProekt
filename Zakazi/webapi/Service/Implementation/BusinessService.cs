@@ -2,73 +2,42 @@
 using Microsoft.EntityFrameworkCore;
 using webapi.Domain.Models;
 using webapi.Repository;
+using webapi.Repository.InterFace;
 
 namespace webapi.Domain.Services
 {
     public class BusinessService : IBusinessService
     {
-        private readonly DataContext _context;
+        private readonly IBusinessRepository _businessRepository;
 
-        public BusinessService(DataContext context)
+        public BusinessService(IBusinessRepository businessRepository)
         {
-            _context = context;
+            _businessRepository = businessRepository;
         }
 
         public async Task<Business> GetBusinessById(int businessId)
         {
-            return await _context.Businesses.FirstOrDefaultAsync(b => b.BusinessId == businessId);
+            return await _businessRepository.GetBusinessByIdAsync(businessId);
         }
 
-        public async Task<Business> CreateBusinessAsync(int userId, string businessName)
+        public async Task<Business> CreateBusinessAsync(Business entity)
         {
-            try
-            {
-                // Assuming you have a DbSet<Business> named Businesses in your DbContext
-                var business = new Business
-                {
-                    BusinessName = businessName,
-                    OwnerId = userId // Assuming the user ID is the owner ID
-                };
-
-                _context.Businesses.Add(business);
-                await _context.SaveChangesAsync();
-
-                return business;
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it appropriately
-                throw new Exception("Error creating business.", ex);
-            }
+            return await _businessRepository.Insert(entity);
         }
-
-        //public async Task<Business> CreateBusinessAsync(Business entity)
-        //{
-        //    return await _businessRepository.Insert(entity);
-        //}
 
         public async Task<IEnumerable<Business>> GetBusinessesByOwnerIdAsync(int ownerId)
         {
-            return await _context.Businesses
-                .Where(b => b.OwnerId == ownerId)
-                .ToListAsync();
+            return await _businessRepository.GetBusinessesByOwnerIdAsync(ownerId);
         }
 
-        public IEnumerable<Business> GetAllBusinesses()
+        public async Task<IEnumerable<Business>> GetAllBusinesses()
         {
-            return _context.Businesses.ToList();
+            return await _businessRepository.GetAllBusinessesAsync();
         }
 
-        public async Task<Business> DeleteBusinessAsync(int businessId)
+        public async Task<Business> DeleteBusinessAsync(Business business)
         {
-            var business = await _context.Businesses.FindAsync(businessId);
-            if (business == null)
-                return null;
-
-            _context.Businesses.Remove(business);
-            await _context.SaveChangesAsync();
-
-            return business;
+            return await _businessRepository.Delete(business);
         }
 
         // Implement more methods as needed for managing businesses

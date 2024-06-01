@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Business, WebApiClient } from '../services/web-api-client.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'my-businesses',
@@ -12,9 +14,9 @@ import { Router } from '@angular/router';
 })
 export class MyBusinessesComponent {
 
-  businesses: { businessId: number, businessName: string }[] = []; // Define businessOptions as an array of objects
+  businesses: Business[] = []; // Define businessOptions as an array of objects
 
-  constructor(private title: Title, private meta: Meta, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
+  constructor(private title: Title, private meta: Meta, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService, private webApiClient: WebApiClient) {
     this.title.setTitle('MyBusinesses - Zakazi')
     this.meta.addTags([
       {
@@ -30,22 +32,8 @@ export class MyBusinessesComponent {
   }
 
 
-  fetchBusinesses(): void {
-    const userString = localStorage.getItem('user');
-    if (userString) {
-      const user = JSON.parse(userString);
-      const token = this.jwtHelper.decodeToken(user);
-      const userId: number = +token.nameid;
-
-      this.http.get<any[]>(`https://localhost:7200/api/business/owner/${userId}/businesses`).subscribe(
-        (businesses: any[]) => {
-          this.businesses = businesses; // Assuming businesses is an array of objects with businessId and businessName properties
-        },
-        error => {
-          console.error('Error fetching businesses:', error);
-        }
-      );
-    }
+  async fetchBusinesses(){
+    this.businesses = await lastValueFrom(this.webApiClient.business_GetCurrentUserBusinesses());
   }
 
   viewServices(businessId: number): void {

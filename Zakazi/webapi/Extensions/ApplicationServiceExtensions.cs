@@ -3,6 +3,7 @@ using webapi.Domain.Services;
 using webapi.Repository;
 using webapi.Repository.Implementation;
 using webapi.Repository.Interface;
+using webapi.Repository.InterFace;
 using webapi.Service.Implementation;
 using webapi.Service.Interface;
 
@@ -30,6 +31,7 @@ namespace Time.Extensions
 
             // template to register service
             services.AddScoped<IRequestRepository, RequestRepository>();
+            services.AddScoped<IBusinessRepository, BusinessRepository>();
 
             return services;
         }

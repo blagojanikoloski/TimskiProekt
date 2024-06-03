@@ -15,6 +15,8 @@ namespace Time.Helpers
             CreateMap<Request, RequestDto>()
                 .ForMember(dest => dest.BusinessName, opt => opt.MapFrom(src => src.Business.BusinessName))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Posts.Sum(post => post.Price)));
+            CreateMap<BusinessCreationDto, Business>()
+            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageUrl));
         }
     }
 }

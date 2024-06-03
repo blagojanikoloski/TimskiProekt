@@ -21,6 +21,7 @@ export class PostFormComponent implements OnInit {
       businessId: [null],
       nameOfService: ['', Validators.required],
       price: [0, Validators.required],
+      imageUrl: [''],
     });
 
     this.fetchBusinesses();
@@ -39,6 +40,7 @@ export class PostFormComponent implements OnInit {
         nameOfService: this.postForm.get('nameOfService')!.value,
         price: this.postForm.get('price')!.value,
         businessId: this.postForm.get('businessId')!.value,
+        imageUrl: this.postForm.get('imageUrl')!.value,
         userId: userId
       };
 

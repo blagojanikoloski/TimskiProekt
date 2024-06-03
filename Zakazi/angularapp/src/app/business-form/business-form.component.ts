@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class BusinessFormComponent {
   businessForm = this.fb.group({
     businessName: ['', Validators.required],
+    imageUrl: [''],
   });
 
 
@@ -30,7 +31,7 @@ export class BusinessFormComponent {
 
         console.log('Business Form Data:', this.businessForm.value); // Log the form data
 
-        this.http.post<any>(`https://localhost:7200/api/Business/business`, { ownerId: userId, businessName: this.businessForm.value.businessName })
+        this.http.post<any>(`https://localhost:7200/api/Business/business`, { ownerId: userId, businessName: this.businessForm.value.businessName, imageUrl: this.businessForm.value.imageUrl })
           .subscribe(
             (response) => {
               console.log('Business created successfully:', response);

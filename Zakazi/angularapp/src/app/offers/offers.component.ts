@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CalendarEvent, CalendarView } from 'angular-calendar';
+import { isSameMonth, isSameDay } from 'date-fns';
+import { Subject } from 'rxjs';
 // Define the interface for Offer
 interface Offer {
   postId: number;
@@ -24,14 +27,23 @@ interface Offer {
   styleUrls: ['./offers.component.css']
 })
 export class OffersComponent implements OnInit {
+  @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
+
   allBusinesses: any;
   businessServices: any[] = [];
   isPopupOpen: boolean = false;
   selectedPostIds: number[] = [];
   businessId!: number;
 
+  view: CalendarView = CalendarView.Month;
+  CalendarView = CalendarView;
+  viewDate: Date = new Date();
+  events: CalendarEvent[] = [];
+  activeDayIsOpen: boolean = false;
+  refresh: Subject<any> = new Subject();
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
+
+  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService, private modal: NgbModal) {
   }
 
   ngOnInit(): void {
@@ -42,9 +54,20 @@ export class OffersComponent implements OnInit {
         // Deserialize the serialized result back to objects
         this.allBusinesses = JSON.parse(serializedResult) as Offer[];
         console.log(this.allBusinesses);
+        this.initializeCalendarEvents();
       }
     });
   }
+
+  initializeCalendarEvents(): void {
+    this.events = this.allBusinesses.map((offer: Offer) => ({
+      start: new Date(offer.availabilityFrom),
+      end: new Date(offer.availabilityTo),
+      title: offer.nameOfService,
+      color: { primary: '#1e90ff', secondary: '#D1E8FF' }
+    }));
+  }
+
 
 
   getServices(businessId: number) {
@@ -132,6 +155,29 @@ export class OffersComponent implements OnInit {
           // Handle error - e.g., show an error message to the user
         }
       );
+  }
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (isSameMonth(date, this.viewDate)) {
+      if ((isSameDay(this.viewDate, date) && this.activeDayIsOpen) || events.length === 0) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+      }
+      this.viewDate = date;
+    }
+  }
+
+  eventTimesChanged({ event, newStart, newEnd }: any): void {
+    // Handle event drag and drop if needed
+  }
+
+  openModal(): void {
+    this.modal.open(this.modalContent, { size: 'lg' });
+  }
+
+  closeModal(): void {
+    this.modal.dismissAll();
   }
 
     

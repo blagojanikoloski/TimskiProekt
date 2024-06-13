@@ -23,6 +23,8 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { JwtInterceptor } from './services/jwt-interceptor.service';
 import { CommonModule } from '@angular/common';
 import { MyBusinessesComponent } from './my-businesses/my-businesses.component';
+import { CalendarModule } from 'angular-calendar';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 export function tokenGetter() {
   const token = localStorage.getItem('user');
@@ -53,6 +55,8 @@ export function tokenGetter() {
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModalModule,
+    CalendarModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

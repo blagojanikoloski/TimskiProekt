@@ -6,17 +6,18 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { isSameMonth, isSameDay } from 'date-fns';
 import { Subject } from 'rxjs';
+
 // Define the interface for Offer
 interface Offer {
   postId: number;
-  businessName: string; 
+  businessName: string;
   nameOfService: string;
   price: number;
   availabilityFrom: string;
-  availabilityTo: string; 
-  name: string; 
-  surname: string; 
-  email: string; 
+  availabilityTo: string;
+  name: string;
+  surname: string;
+  email: string;
   phoneNumber: string;
   businessId: number;
 }
@@ -29,7 +30,7 @@ interface Offer {
 export class OffersComponent implements OnInit {
   @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
 
-  allBusinesses: any;
+  allBusinesses: Offer[] = [];
   businessServices: any[] = [];
   isPopupOpen: boolean = false;
   selectedPostIds: number[] = [];
@@ -42,9 +43,13 @@ export class OffersComponent implements OnInit {
   activeDayIsOpen: boolean = false;
   refresh: Subject<any> = new Subject();
 
-
-  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService, private modal: NgbModal) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private router: Router,
+    private jwtHelper: JwtHelperService,
+    private modal: NgbModal
+  ) { }
 
   ngOnInit(): void {
     // Retrieve serialized search result from route parameters
@@ -68,12 +73,9 @@ export class OffersComponent implements OnInit {
     }));
   }
 
-
-
   getServices(businessId: number) {
-    console.log(businessId);
+    console.log(this.allBusinesses);
     this.businessId = businessId;
-
     this.http.get<any>(`https://localhost:7200/api/Posts/ByBusiness/${businessId}`)
       .subscribe(
         response => {
@@ -94,11 +96,9 @@ export class OffersComponent implements OnInit {
   }
 
   closePopup() {
-    console.log('Closing popup');
     this.isPopupOpen = false;
     this.selectedPostIds = [];
   }
-
 
   toggleSelection(postId: number) {
     const index = this.selectedPostIds.indexOf(postId);
@@ -126,7 +126,6 @@ export class OffersComponent implements OnInit {
     // Fetch start and end timestamps from localStorage
     const startTimestamp = localStorage.getItem('startTimestamp') ?? '';
     const endTimestamp = localStorage.getItem('endTimestamp') ?? '';
-
     // Create appointment data object
     const appointmentData = {
       timestamp: new Date().toISOString(),
@@ -139,9 +138,7 @@ export class OffersComponent implements OnInit {
       // You may need to include other data here from your component
       // For example, business name, service name, price, etc.
     };
-
     console.log(appointmentData);
-
     // Make HTTP POST request to the backend API
     this.http.post<any>('https://localhost:7200/api/Requests/request', appointmentData)
       .subscribe(
@@ -159,11 +156,7 @@ export class OffersComponent implements OnInit {
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
-      if ((isSameDay(this.viewDate, date) && this.activeDayIsOpen) || events.length === 0) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
+      this.activeDayIsOpen = (isSameDay(this.viewDate, date) && this.activeDayIsOpen) || events.length !== 0;
       this.viewDate = date;
     }
   }
@@ -179,8 +172,4 @@ export class OffersComponent implements OnInit {
   closeModal(): void {
     this.modal.dismissAll();
   }
-
-    
-
- 
 }

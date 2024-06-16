@@ -27,13 +27,13 @@ export class SearchOfferComponent {
     const endTimestamp = new Date(this.searchParams.endTimestamp);
 
     // Format timestamps to the specified format
-    const formattedStartTimestamp = startTimestamp.toISOString().replace('T', ' ').split('.')[0];
-    const formattedEndTimestamp = endTimestamp.toISOString().replace('T', ' ').split('.')[0];
+    // const formattedStartTimestamp = startTimestamp.toISOString().replace('T', ' ').split('.')[0];
+    // const formattedEndTimestamp = endTimestamp.toISOString().replace('T', ' ').split('.')[0];
 
 
     // Store timestamps in localStorage
-    localStorage.setItem('startTimestamp', formattedStartTimestamp);
-    localStorage.setItem('endTimestamp', formattedEndTimestamp);
+    localStorage.setItem('startTimestamp', startTimestamp.toISOString());
+    localStorage.setItem('endTimestamp', endTimestamp.toISOString());
     // Call the API endpoint with formatted timestamps
     this.http.get<any[]>(`https://localhost:7200/api/Business/businesses`).subscribe(
       (response) => {

@@ -23,7 +23,8 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { JwtInterceptor } from './services/jwt-interceptor.service';
 import { CommonModule } from '@angular/common';
 import { MyBusinessesComponent } from './my-businesses/my-businesses.component';
-import { CalendarModule } from 'angular-calendar';
+import { CalendarModule, DateAdapter  } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 export function tokenGetter() {
@@ -44,7 +45,7 @@ export function tokenGetter() {
     EditOfferComponent,
     BusinessFormComponent,
     PostFormComponent,
-    MyBusinessesComponent
+    MyBusinessesComponent,
   ],
   imports: [
     CommonModule,
@@ -56,7 +57,10 @@ export function tokenGetter() {
     FormsModule,
     ReactiveFormsModule,
     NgbModalModule,
-    CalendarModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

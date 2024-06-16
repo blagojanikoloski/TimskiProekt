@@ -204,14 +204,14 @@
 
                     <div [ngSwitch]="view">
                       <div *ngSwitchCase="'month'">
-                        <angular-calendar [view]="view"
+                        <mwl-calendar-month-view
                                           [viewDate]="viewDate"
                                           [events]="events"
                                           [refresh]="refresh"
                                           [activeDayIsOpen]="activeDayIsOpen"
                                           (dayClicked)="dayClicked($event)"
                                           (eventTimesChanged)="eventTimesChanged($event)">
-                        </angular-calendar>
+                        </mwl-calendar-month-view>
                       </div>
                     </div>
                   </div>

@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { isSameMonth, isSameDay } from 'date-fns';
 import { Subject } from 'rxjs';
+import { CalendarMonthViewDay } from 'angular-calendar';
 
 // Define the interface for Offer
 interface Offer {
@@ -154,12 +155,12 @@ export class OffersComponent implements OnInit {
       );
   }
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
-      this.activeDayIsOpen = (isSameDay(this.viewDate, date) && this.activeDayIsOpen) || events.length !== 0;
-      this.viewDate = date;
+  dayClicked(event: { day: CalendarMonthViewDay; sourceEvent: MouseEvent|KeyboardEvent; }) {
+    if (isSameMonth(event.day.date, this.viewDate)) {
+          this.activeDayIsOpen = (isSameDay(this.viewDate, event.day.date) && this.activeDayIsOpen) || event.day.events.length !== 0;
+          this.viewDate = event.day.date;
+        }
     }
-  }
 
   eventTimesChanged({ event, newStart, newEnd }: any): void {
     // Handle event drag and drop if needed

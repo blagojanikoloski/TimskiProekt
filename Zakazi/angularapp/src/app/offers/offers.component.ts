@@ -6,6 +6,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { isSameDay } from 'date-fns';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarView, CalendarEventTimesChangedEvent, CalendarWeekViewBeforeRenderEvent } from 'angular-calendar';
+import { start } from '@popperjs/core';
 
 interface Offer {
   postId: number;
@@ -163,7 +164,9 @@ export class OffersComponent implements OnInit {
 
       const startTimestamp = new Date(this.startDate);
       const endTimestamp = new Date(this.endDate);
-
+      // Convert to macedonian time
+      startTimestamp.setHours(startTimestamp.getHours() + 2);
+      endTimestamp.setHours(endTimestamp.getHours() + 2);
       // Store timestamps in localStorage
       localStorage.setItem('startTimestamp', startTimestamp.toISOString());
       localStorage.setItem('endTimestamp', endTimestamp.toISOString());
@@ -171,24 +174,5 @@ export class OffersComponent implements OnInit {
 
   }
 
-
-  // Define a minimum date (to disable everything in the past you can just write this)
-  minDate: Date = new Date();
-
-
-  beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
-    renderEvent.hourColumns.forEach(hourColumn => {
-      hourColumn.hours.forEach(hour => {
-        hour.segments.forEach(segment => {
-          if (
-            segment.date.getHours() >= 6 &&
-            segment.date.getHours() <= 5
-          ) {
-            segment.cssClass = 'bg-disabled';
-          }
-        });
-      });
-    });
-  }
 
 }

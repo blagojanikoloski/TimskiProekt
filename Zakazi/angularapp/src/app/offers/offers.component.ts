@@ -5,7 +5,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { isSameDay } from 'date-fns';
 import { Subject } from 'rxjs';
-import { CalendarMonthViewDay, CalendarEvent, CalendarView, CalendarEventTimesChangedEvent } from 'angular-calendar';
+import { CalendarEvent, CalendarView, CalendarEventTimesChangedEvent, CalendarWeekViewBeforeRenderEvent } from 'angular-calendar';
 
 interface Offer {
   postId: number;
@@ -19,16 +19,23 @@ interface Offer {
   email: string;
   phoneNumber: string;
   businessId: number;
+  imageUrl: string;
 }
 
 @Component({
   selector: 'app-offers',
   templateUrl: './offers.component.html',
-  styleUrls: ['./offers.component.css']
+  styleUrls: ['./offers.component.css'],
+  styles: [
+    `
+      .bg-disabled {
+        background-color: #cccccc !important;
+        cursor: not-allowed;
+      }
+    `
+  ]
 })
 export class OffersComponent implements OnInit {
-  @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
-  @ViewChild('timeSelectionModal', { static: true }) timeSelectionModal!: TemplateRef<any>;
 
   allBusinesses: Offer[] = [];
   businessServices: any[] = [];
@@ -36,23 +43,17 @@ export class OffersComponent implements OnInit {
   selectedPostIds: number[] = [];
   businessId!: number;
 
-  view: CalendarView = CalendarView.Week; // Default to Week view
-  CalendarView = CalendarView;
+  view: CalendarView = CalendarView.Week; 
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
   refresh: Subject<any> = new Subject();
-  selectedEventDate!: Date;
-  selectedTime: { hour: number, minute: number } = { hour: 0, minute: 0 };
-  activeDayIsOpen: boolean = true; // Declare activeDayIsOpen here
 
-  private modalRef!: NgbModalRef;
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,
     private jwtHelper: JwtHelperService,
-    private modal: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -60,18 +61,9 @@ export class OffersComponent implements OnInit {
       const serializedResult = params['searchResult'];
       if (serializedResult) {
         this.allBusinesses = JSON.parse(serializedResult) as Offer[];
-        this.initializeCalendarEvents();
+        
       }
     });
-  }
-
-  initializeCalendarEvents(): void {
-    this.events = this.allBusinesses.map((offer: Offer) => ({
-      start: new Date(offer.availabilityFrom),
-      end: new Date(offer.availabilityTo),
-      title: offer.nameOfService,
-      color: { primary: '#1e90ff', secondary: '#D1E8FF' }
-    }));
   }
 
   getServices(businessId: number) {
@@ -148,24 +140,8 @@ export class OffersComponent implements OnInit {
       );
   }
 
-  dayClicked({ day }: { day: CalendarMonthViewDay }): void {
-    const date: Date = day.date;
-    const events: CalendarEvent[] = day.events;
-    if ((isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0) {
-      this.activeDayIsOpen = false;
-    } else {
-      this.activeDayIsOpen = true;
-    }
-    this.viewDate = date;
-  }
 
-  openModal(): void {
-    this.modal.open(this.modalContent);
-  }
 
-  closeModal(): void {
-    this.modal.dismissAll();
-  }
 
   startDate!: string;
   endDate!: string;
@@ -193,10 +169,26 @@ export class OffersComponent implements OnInit {
       localStorage.setItem('endTimestamp', endTimestamp.toISOString());
     }
 
-    // Close any open modal (if any)
-    if (this.modalRef) {
-      this.modalRef.close();
-    }
+  }
+
+
+  // Define a minimum date (to disable everything in the past you can just write this)
+  minDate: Date = new Date();
+
+
+  beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
+    renderEvent.hourColumns.forEach(hourColumn => {
+      hourColumn.hours.forEach(hour => {
+        hour.segments.forEach(segment => {
+          if (
+            segment.date.getHours() >= 6 &&
+            segment.date.getHours() <= 5
+          ) {
+            segment.cssClass = 'bg-disabled';
+          }
+        });
+      });
+    });
   }
 
 }

@@ -458,3 +458,9 @@
   font-size: 30px;
   display:none;
 }
+
+
+.cal-disabled {
+  background-color: #eee;
+  pointer-events: none;
+}

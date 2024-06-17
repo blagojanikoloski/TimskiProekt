@@ -61,7 +61,20 @@
           <div class="list-offers-card-container" *ngFor="let offer of allBusinesses">
             <div class="list-offers-card-blog-post-card">
               <div class="list-offers-card-container1">
+
+                <style>
+                  img {
+                    max-width: 50%;
+                    max-height: 50%
+                  }
+                </style>
+
+
                 <span class="list-offers-card-text">{{offer.businessName}}</span>
+
+                <div class="image-container">
+                  <img src="{{offer.imageUrl}}" />
+                </div>
                 <span class="list-offers-card-text1">
                   {{offer.nameOfService}}
                 </span>
@@ -194,26 +207,16 @@
                   <div class="col-md-12">
                     <div class="card">
                       <div class="card-body" style="overflow-y: auto; max-height: 400px;">
-                        <ng-template #modalContent let-modal>
-                          <div class="modal-header">
-                            <h4 class="modal-title" id="modal-basic-title">Calendar Event Details</h4>
-                            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <!-- Modal content here if needed -->
-                          </div>
-                        </ng-template>
+
 
                         <div [ngSwitch]="view">
-                          <div *ngSwitchCase="'week'">
+                          
                             <mwl-calendar-week-view [viewDate]="viewDate"
                                                     [events]="events"
                                                     [refresh]="refresh"
                                                     (hourSegmentClicked)="hourSegmentClicked($event)">
                             </mwl-calendar-week-view>
-                          </div>
+                         
                         </div>
                       </div>
                     </div>

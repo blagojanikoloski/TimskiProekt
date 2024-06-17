@@ -21,8 +21,6 @@ public class Post
     [Required]
     public double Price { get; set; } = 0;
 
-    [Required]
-    public string ImageUrl { get; set; }
 
     // prevents dependency loop 
     [JsonIgnore]

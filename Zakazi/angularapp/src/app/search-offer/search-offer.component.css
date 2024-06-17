@@ -157,10 +157,8 @@
   justify-content: flex-start;
 }
 .search-offer-container2 {
-  width: 100%;
-  display: grid;
-  grid-gap: var(--dl-space-space-oneandhalfunits);
-  grid-template-columns: 1fr 1fr;
+  width: 50%;
+
 }
 .search-offer-container3 {
   display: flex;

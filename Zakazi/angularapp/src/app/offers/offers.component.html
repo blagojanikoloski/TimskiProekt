@@ -172,76 +172,66 @@
                 </li>
               </ul>
               <button class="popup-button" (click)="bookAppointment()">Book Appointment</button>
-            </div>
-          </div>
 
 
 
+              <div class="start-date-text" id="start-date-text">
+
+                <p>Select start date:</p>
+                <p>{{ startDate }}</p>
+              </div>
+
+              <div class="end-date-text" id="end-date-text">
+
+                <p>Select end date:</p>
+                <p>{{ endDate }}</p>
+              </div>
 
 
 
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card">
+                      <div class="card-body" style="overflow-y: auto; max-height: 400px;">
+                        <ng-template #modalContent let-modal>
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="modal-basic-title">Calendar Event Details</h4>
+                            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <!-- Modal content here if needed -->
+                          </div>
+                        </ng-template>
 
-
-
-
-
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-body">
-                    <ng-template #modalContent let-modal>
-                      <div class="modal-header">
-                        <h4 class="modal-title" id="modal-basic-title">Calendar Event Details</h4>
-                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <!-- Modal content here if needed -->
-                      </div>
-                    </ng-template>
-
-                    <div [ngSwitch]="view">
-                      <div *ngSwitchCase="'month'">
-                        <mwl-calendar-month-view
-                                          [viewDate]="viewDate"
-                                          [events]="events"
-                                          [refresh]="refresh"
-                                          [activeDayIsOpen]="activeDayIsOpen"
-                                          (dayClicked)="dayClicked($event)"
-                                          (eventTimesChanged)="eventTimesChanged($event)">
-                        </mwl-calendar-month-view>
+                        <div [ngSwitch]="view">
+                          <div *ngSwitchCase="'week'">
+                            <mwl-calendar-week-view [viewDate]="viewDate"
+                                                    [events]="events"
+                                                    [refresh]="refresh"
+                                                    (hourSegmentClicked)="hourSegmentClicked($event)">
+                            </mwl-calendar-week-view>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+
+
+
+
             </div>
           </div>
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+       
 
         </div>
       </div>

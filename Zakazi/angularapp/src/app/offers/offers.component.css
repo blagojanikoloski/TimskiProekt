@@ -439,3 +439,28 @@
   }
 
 
+
+/* offers.component.css */
+.cal-event-selected {
+  background-color: #f0f0f0; /* Example background color for selected hour */
+}
+
+.cal-hour-selected {
+  background-color: #eaf6ff; /* Example background color for selected hour */
+}
+
+
+.start-date-text {
+  font-size: 30px;
+}
+
+.end-date-text{
+  font-size: 30px;
+  display:none;
+}
+
+
+.cal-disabled {
+  background-color: #eee;
+  pointer-events: none;
+}

@@ -2,13 +2,12 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarEvent, CalendarView } from 'angular-calendar';
-import { isSameMonth, isSameDay } from 'date-fns';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { isSameDay } from 'date-fns';
 import { Subject } from 'rxjs';
-import { CalendarMonthViewDay } from 'angular-calendar';
+import { CalendarEvent, CalendarView, CalendarEventTimesChangedEvent, CalendarWeekViewBeforeRenderEvent } from 'angular-calendar';
+import { start } from '@popperjs/core';
 
-// Define the interface for Offer
 interface Offer {
   postId: number;
   businessName: string;
@@ -21,15 +20,23 @@ interface Offer {
   email: string;
   phoneNumber: string;
   businessId: number;
+  imageUrl: string;
 }
 
 @Component({
   selector: 'app-offers',
   templateUrl: './offers.component.html',
-  styleUrls: ['./offers.component.css']
+  styleUrls: ['./offers.component.css'],
+  styles: [
+    `
+      .bg-disabled {
+        background-color: #cccccc !important;
+        cursor: not-allowed;
+      }
+    `
+  ]
 })
 export class OffersComponent implements OnInit {
-  @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
 
   allBusinesses: Offer[] = [];
   businessServices: any[] = [];
@@ -37,57 +44,39 @@ export class OffersComponent implements OnInit {
   selectedPostIds: number[] = [];
   businessId!: number;
 
-  view: CalendarView = CalendarView.Month;
-  CalendarView = CalendarView;
+  view: CalendarView = CalendarView.Week; 
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
-  activeDayIsOpen: boolean = false;
   refresh: Subject<any> = new Subject();
+
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,
     private jwtHelper: JwtHelperService,
-    private modal: NgbModal
   ) { }
 
   ngOnInit(): void {
-    // Retrieve serialized search result from route parameters
     this.route.queryParams.subscribe(params => {
       const serializedResult = params['searchResult'];
       if (serializedResult) {
-        // Deserialize the serialized result back to objects
         this.allBusinesses = JSON.parse(serializedResult) as Offer[];
-        console.log(this.allBusinesses);
-        this.initializeCalendarEvents();
+        
       }
     });
   }
 
-  initializeCalendarEvents(): void {
-    this.events = this.allBusinesses.map((offer: Offer) => ({
-      start: new Date(offer.availabilityFrom),
-      end: new Date(offer.availabilityTo),
-      title: offer.nameOfService,
-      color: { primary: '#1e90ff', secondary: '#D1E8FF' }
-    }));
-  }
-
   getServices(businessId: number) {
-    console.log(this.allBusinesses);
     this.businessId = businessId;
     this.http.get<any>(`https://localhost:7200/api/Posts/ByBusiness/${businessId}`)
       .subscribe(
         response => {
           this.isPopupOpen = true;
           this.businessServices = response;
-          console.log('Servies:', this.businessServices);
-          // Handle success - e.g., show a success message to the user
         },
         error => {
           console.error('Error booking appointment:', error);
-          // Handle error - e.g., show an error message to the user
         }
       );
   }
@@ -99,21 +88,25 @@ export class OffersComponent implements OnInit {
   closePopup() {
     this.isPopupOpen = false;
     this.selectedPostIds = [];
+
+    let startDateHTML = document.getElementById('start-date-text') as HTMLElement;
+    let endDateHTML = document.getElementById('end-date-text') as HTMLElement;
+    startDateHTML?.style.setProperty('font-size', '30px');
+    endDateHTML?.style.setProperty('display', 'none');
+    this.startDate = '';
+    this.endDate = '';
   }
 
   toggleSelection(postId: number) {
     const index = this.selectedPostIds.indexOf(postId);
     if (index === -1) {
-      // If postId is not in the array, add it
       this.selectedPostIds.push(postId);
     } else {
-      // If postId is already in the array, remove it
       this.selectedPostIds.splice(index, 1);
     }
   }
 
   bookAppointment() {
-    // Fetch user information from localStorage
     const userString = localStorage.getItem('user');
     if (!userString) {
       console.error('User information not found.');
@@ -122,55 +115,64 @@ export class OffersComponent implements OnInit {
 
     const user = JSON.parse(userString);
     const token = this.jwtHelper.decodeToken(user);
-    const userId: number = +token.nameid; // Parse nameid to number
+    const userId: number = +token.nameid;
 
-    // Fetch start and end timestamps from localStorage
     const startTimestamp = localStorage.getItem('startTimestamp') ?? '';
     const endTimestamp = localStorage.getItem('endTimestamp') ?? '';
-    // Create appointment data object
+
     const appointmentData = {
       timestamp: new Date().toISOString(),
-      requestStatus: 0, // Assuming RequestStatus is an enum
+      requestStatus: 0,
       postIds: this.selectedPostIds,
-      businessId: this.businessId, // Assuming allBusinesses is populated with data
+      businessId: this.businessId,
       clientId: userId,
       from: new Date(startTimestamp).toISOString(),
       to: new Date(endTimestamp).toISOString(),
-      // You may need to include other data here from your component
-      // For example, business name, service name, price, etc.
     };
-    console.log(appointmentData);
-    // Make HTTP POST request to the backend API
+
     this.http.post<any>('https://localhost:7200/api/Requests/request', appointmentData)
       .subscribe(
         response => {
-          console.log('Appointment booked successfully:', response);
           this.router.navigate(['/home']);
-          // Handle success - e.g., show a success message to the user
         },
         error => {
           console.error('Error booking appointment:', error);
-          // Handle error - e.g., show an error message to the user
         }
       );
   }
 
-  dayClicked(event: { day: CalendarMonthViewDay; sourceEvent: MouseEvent|KeyboardEvent; }) {
-    if (isSameMonth(event.day.date, this.viewDate)) {
-          this.activeDayIsOpen = (isSameDay(this.viewDate, event.day.date) && this.activeDayIsOpen) || event.day.events.length !== 0;
-          this.viewDate = event.day.date;
-        }
+
+
+
+  startDate!: string;
+  endDate!: string;
+
+  hourSegmentClicked(event: { date: Date }): void {
+
+    let startDateHTML = document.getElementById('start-date-text') as HTMLElement;
+    let endDateHTML = document.getElementById('end-date-text') as HTMLElement;
+
+    if (!this.startDate) {
+      this.startDate = new Date(event.date).toLocaleString();
+      startDateHTML?.style.setProperty('font-size', '20px');
+      endDateHTML?.style.setProperty('display', 'unset');
+
+    }
+    else {
+      this.endDate = new Date(event.date).toLocaleString();
+      endDateHTML?.style.setProperty('font-size', '20px');
+
+      const startTimestamp = new Date(this.startDate);
+      const endTimestamp = new Date(this.endDate);
+      // Convert to macedonian time
+      startTimestamp.setHours(startTimestamp.getHours() + 2);
+      endTimestamp.setHours(endTimestamp.getHours() + 2);
+      // Store timestamps in localStorage
+      localStorage.setItem('startTimestamp', startTimestamp.toISOString());
+      localStorage.setItem('endTimestamp', endTimestamp.toISOString());
     }
 
-  eventTimesChanged({ event, newStart, newEnd }: any): void {
-    // Handle event drag and drop if needed
   }
 
-  openModal(): void {
-    this.modal.open(this.modalContent, { size: 'lg' });
-  }
 
-  closeModal(): void {
-    this.modal.dismissAll();
-  }
 }

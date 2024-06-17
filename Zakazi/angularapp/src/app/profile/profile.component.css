@@ -1387,9 +1387,8 @@
   .my-profile-client-container03 {
     width: auto;
     height: 100%;
-    display: grid;
-    grid-gap: var(--dl-space-space-oneandhalfunits);
-    grid-template-columns: 1fr 1fr;
+
+
   }
   .my-profile-client-container04 {
     display: flex;
@@ -1949,4 +1948,3 @@
     cursor: pointer;
     color: black;
   }
-  

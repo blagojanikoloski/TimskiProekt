@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CalendarEvent, CalendarView, CalendarEventTimesChangedEvent, CalendarWeekViewBeforeRenderEvent } from 'angular-calendar';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -21,6 +23,13 @@ export class ProfileComponent {
   requestOptionsClientPending: any[] = [];
   requestOptionsWorker: any[] = [];
   postOptionsWorker: any[] = [];
+
+
+
+  view: CalendarView = CalendarView.Week;
+  viewDate: Date = new Date();
+  events: CalendarEvent[] = [];
+  refresh: Subject<any> = new Subject();
   constructor(private fb: FormBuilder, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
   }
 
@@ -234,4 +243,46 @@ export class ProfileComponent {
     const requestToTime = new Date(request.to);
     return requestToTime < currentTime;
   }
+
+
+  beforeViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent): void {
+    renderEvent.hourColumns.forEach(hourColumn => {
+      hourColumn.hours.forEach(hour => {
+        hour.segments.forEach(segment => {
+          // Check if segment falls within any range in requestOptionsWorker
+          const status = this.getSegmentStatus(segment.date);
+          if (status === 'accepted') {
+            segment.cssClass = 'bg-accepted';
+          } else if (status === 'pending') {
+            segment.cssClass = 'bg-pending';
+          }
+        });
+      });
+    });
+  }
+
+  // Function to get segment status (accepted, pending, or none)
+  getSegmentStatus(segmentDate: Date): 'accepted' | 'pending' | 'none' {
+    const segmentTime = segmentDate.getTime();
+
+    // Loop through each request in requestOptionsWorker
+    for (const request of this.requestOptionsWorker) {
+      const startTime = new Date(request.from).getTime();
+      const endTime = new Date(request.to).getTime();
+
+      // Check if segmentTime falls within the request range
+      if (segmentTime >= startTime && segmentTime <= endTime) {
+        if (request.requestStatus === 1) {
+          return 'accepted'; // Segment falls within an accepted request
+        } else if (request.requestStatus === 0) {
+          return 'pending'; // Segment falls within a pending request
+        }
+      }
+    }
+
+    return 'none'; // Segment does not fall within any request
+  }
+
+
+
 }

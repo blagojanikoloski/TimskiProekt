@@ -191,7 +191,7 @@
         <div class="my-profile-client-container03" *ngFor="let request of requestOptionsClientPending">
 
 
-          
+
           <div class="my-profile-client-container04" *ngIf="!isRequestExpired(request)">
             <div class="my-profile-client-container05">
               <span class="my-profile-client-text">{{request.businessName}}</span>
@@ -253,7 +253,7 @@
 
 
 
-        
+
       </div>
     </div>
   </div>
@@ -364,19 +364,62 @@
                 <button (click)="declineRequest(request.requestId)" class="buttonFilled">Delete Offer</button>
 
               </div>
+
             </div>
           </ng-container>
 
 
         </div>
       </div>
+
+      <style>
+        ::ng-deep .bg-accepted {
+          background-color: #00ff00 !important; /* Example disabled background color */
+          cursor: not-allowed !important; /* Example cursor style */
+          opacity: 0.5; /* Example opacity to visually indicate disabled state */
+        }
+
+        ::ng-deep .bg-pending {
+          background-color: #ffff00 !important; /* Example disabled background color */
+          cursor: not-allowed !important; /* Example cursor style */
+          opacity: 0.5; /* Example opacity to visually indicate disabled state */
+        }
+      </style>
+
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body" style="overflow-y: auto; max-height: 400px;">
+                <div [ngSwitch]="view">
+                  <mwl-calendar-week-view [viewDate]="viewDate"
+                                          [events]="events"
+                                          [refresh]="refresh"
+                                          (beforeViewRender)="beforeViewRender($event)">
+                  </mwl-calendar-week-view>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
     </div>
+
+
   </div>
 
 
 
 
- 
+
 
 
 

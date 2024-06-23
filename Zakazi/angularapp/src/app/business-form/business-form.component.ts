@@ -1,54 +1,57 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BusinessService } from '../services/business';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { BusinessCreationDto, WebApiClient } from '../services/web-api-client.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-business-form',
   templateUrl: './business-form.component.html',
-  styleUrls: ['./business-form.component.css']
+  styleUrls: ['./business-form.component.css'],
 })
-export class BusinessFormComponent {
+export class BusinessFormComponent implements OnDestroy{
+  businessSubscription!: Subscription;
+
   businessForm = this.fb.group({
     businessName: ['', Validators.required],
+    businessType: ['', Validators.required],
     imageUrl: [''],
   });
 
+  constructor(
+    private fb: FormBuilder,
+    private businessService: BusinessService,
+    private http: HttpClient,
+    private router: Router,
+    private jwtHelper: JwtHelperService,
+    private webApiClient: WebApiClient
+  ) {}
 
-  constructor(private fb: FormBuilder, private businessService: BusinessService, private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
-  }
-
-  onSubmit() {
+  async onSubmit() {
     if (this.businessForm.valid) {
-      const userString = localStorage.getItem('user');
-      if (userString) {
-        const user = JSON.parse(userString);
-        const token = this.jwtHelper.decodeToken(user);
-        const userId: number = +token.nameid; // Parse nameid to number
-        console.log('User ID:', userId); // Log the user ID as a number
-
-        console.log('Business Form Data:', this.businessForm.value); // Log the form data
-
-        this.http.post<any>(`https://localhost:7200/api/Business/business`, { ownerId: userId, businessName: this.businessForm.value.businessName, imageUrl: this.businessForm.value.imageUrl })
-          .subscribe(
-            (response) => {
-              console.log('Business created successfully:', response);
-              // Optionally, you can redirect to another page or perform other actions upon successful creation
-              this.router.navigate(['/home']);
-            },
-            (error) => {
-              console.error('Error creating business:', error);
-            }
-          );
-
-      } else {
-        console.error('User data not found in local storage.');
-      }
+      var businessCreationDto = new BusinessCreationDto();
+        businessCreationDto.businessName = this.businessForm.value.businessName!;
+        businessCreationDto.imageUrl = this.businessForm.value.imageUrl!;
+        this.businessSubscription = await this.webApiClient.business_CreateBusiness(businessCreationDto).subscribe(
+        (response) =>{
+          console.log('Business created successfully:', response);
+          this.router.navigate(['/home']);
+        },
+        (error) => {
+          console.error('Error creating business:', error);
+        }
+      );
     } else {
       console.error('Form is invalid.');
     }
   }
 
+  ngOnDestroy(): void {
+    if(this.businessSubscription){
+      this.businessSubscription.unsubscribe();
+    }
+  }
 }

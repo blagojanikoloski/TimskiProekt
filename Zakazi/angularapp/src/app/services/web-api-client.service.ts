@@ -1739,6 +1739,7 @@ export class Business implements IBusiness {
     businessId?: number;
     businessName?: string;
     ownerId?: number;
+    imageUrl?: string;
     employees?: ZakaziUser[];
     posts?: Post[];
     requests?: Request[];
@@ -1757,6 +1758,7 @@ export class Business implements IBusiness {
             this.businessId = _data["businessId"];
             this.businessName = _data["businessName"];
             this.ownerId = _data["ownerId"];
+            this.imageUrl = _data["imageUrl"];
             if (Array.isArray(_data["employees"])) {
                 this.employees = [] as any;
                 for (let item of _data["employees"])
@@ -1787,6 +1789,7 @@ export class Business implements IBusiness {
         data["businessId"] = this.businessId;
         data["businessName"] = this.businessName;
         data["ownerId"] = this.ownerId;
+        data["imageUrl"] = this.imageUrl;
         if (Array.isArray(this.employees)) {
             data["employees"] = [];
             for (let item of this.employees)
@@ -1810,6 +1813,7 @@ export interface IBusiness {
     businessId?: number;
     businessName?: string;
     ownerId?: number;
+    imageUrl?: string;
     employees?: ZakaziUser[];
     posts?: Post[];
     requests?: Request[];
@@ -2282,6 +2286,7 @@ export enum RequestStatus {
 
 export class BusinessCreationDto implements IBusinessCreationDto {
     businessName?: string;
+    imageUrl?: string;
 
     constructor(data?: IBusinessCreationDto) {
         if (data) {
@@ -2295,6 +2300,7 @@ export class BusinessCreationDto implements IBusinessCreationDto {
     init(_data?: any) {
         if (_data) {
             this.businessName = _data["businessName"];
+            this.imageUrl = _data["imageUrl"];
         }
     }
 
@@ -2308,12 +2314,14 @@ export class BusinessCreationDto implements IBusinessCreationDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["businessName"] = this.businessName;
+        data["imageUrl"] = this.imageUrl;
         return data;
     }
 }
 
 export interface IBusinessCreationDto {
     businessName?: string;
+    imageUrl?: string;
 }
 
 export class OfferDto implements IOfferDto {
@@ -2579,6 +2587,7 @@ export class PostDto implements IPostDto {
     postId?: number;
     nameOfService?: string;
     price?: number;
+    imageUrl?: string;
 
     constructor(data?: IPostDto) {
         if (data) {
@@ -2594,6 +2603,7 @@ export class PostDto implements IPostDto {
             this.postId = _data["postId"];
             this.nameOfService = _data["nameOfService"];
             this.price = _data["price"];
+            this.imageUrl = _data["imageUrl"];
         }
     }
 
@@ -2609,6 +2619,7 @@ export class PostDto implements IPostDto {
         data["postId"] = this.postId;
         data["nameOfService"] = this.nameOfService;
         data["price"] = this.price;
+        data["imageUrl"] = this.imageUrl;
         return data;
     }
 }
@@ -2617,6 +2628,7 @@ export interface IPostDto {
     postId?: number;
     nameOfService?: string;
     price?: number;
+    imageUrl?: string;
 }
 
 export class RequestCreationDto implements IRequestCreationDto {
